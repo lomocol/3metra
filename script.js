@@ -15,6 +15,15 @@ const PAYMENT_LINKS = {
    Formspree etc.). Leave empty to skip network submission. */
 const BOOKING_ENDPOINT = "";
 
+/* Seats left FOR MEN per event — honest scarcity, update by hand after
+   each booking (or wire to a backend). Set to null to hide the counter. */
+const SEATS_LEFT_MEN = {
+  jul16: 6,
+  jul17: 9,
+  jul26: 11,
+  jul27: 12,
+};
+
 const EVENTS = {
   jul16: { label: "четверг, 16 июля", group: "22–33" },
   jul17: { label: "пятница, 17 июля", group: "33–50" },
@@ -28,6 +37,25 @@ const CONTACT_METHODS = {
   max: { placeholder: "+7 900 000-00-00 или @username", type: "text", inputmode: "text", autocomplete: "off" },
   instagram: { placeholder: "@username", type: "text", inputmode: "text", autocomplete: "off" },
 };
+
+/* ============================================================
+   Seat counters on event cards
+   ============================================================ */
+
+function seatsWord(n) {
+  const mod10 = n % 10, mod100 = n % 100;
+  if (mod10 === 1 && mod100 !== 11) return "место";
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return "места";
+  return "мест";
+}
+
+document.querySelectorAll("[data-seats]").forEach((el) => {
+  const left = SEATS_LEFT_MEN[el.dataset.seats];
+  if (typeof left === "number" && left > 0) {
+    el.textContent = `Осталось ${left} ${seatsWord(left)} для мужчин`;
+    el.hidden = false;
+  }
+});
 
 /* ============================================================
    Nav background on scroll
