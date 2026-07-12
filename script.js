@@ -5,30 +5,37 @@
 /* Payment links per event (YooKassa / CloudPayments / T-Bank pay link).
    While a link is empty, the pay button shows a "we'll contact you" note. */
 const PAYMENT_LINKS = {
-  jul16: "",
   jul17: "",
-  jul26: "",
-  jul27: "",
+  jul18: "",
+  jul24: "",
+  jul25: "",
 };
 
 /* Where to send booking requests (your backend, Telegram-bot webhook,
    Formspree etc.). Leave empty to skip network submission. */
 const BOOKING_ENDPOINT = "";
 
-/* Seats left FOR MEN per event — honest scarcity, update by hand after
-   each booking (or wire to a backend). Set to null to hide the counter. */
-const SEATS_LEFT_MEN = {
-  jul16: 6,
-  jul17: 9,
-  jul26: 11,
-  jul27: 12,
+/* Honest availability status per event — update by hand (or wire to a
+   backend). Allowed values: "open" | "few" | "closed" | null (hides it).
+   No numeric counters: never show numbers you can't keep accurate. */
+const AVAILABILITY = {
+  jul17: "open",
+  jul18: "open",
+  jul24: "open",
+  jul25: "open",
+};
+
+const AVAILABILITY_LABELS = {
+  open: { short: "Места есть", long: "Места на этот вечер есть — каждую бронь подтверждаем вручную." },
+  few: { short: "Мест мало", long: "Мест на этот вечер осталось мало — бронь подтверждаем вручную." },
+  closed: { short: "Запись закрыта", long: "Запись на этот вечер закрыта — группа собрана. Выберите другую дату." },
 };
 
 const EVENTS = {
-  jul16: { label: "четверг, 16 июля", group: "22–33" },
-  jul17: { label: "пятница, 17 июля", group: "33–50" },
-  jul26: { label: "воскресенье, 26 июля", group: "22–33" },
-  jul27: { label: "понедельник, 27 июля", group: "33–50" },
+  jul17: { label: "пятница, 17 июля", group: "основная группа 22–33" },
+  jul18: { label: "суббота, 18 июля", group: "старшая группа 33–50" },
+  jul24: { label: "пятница, 24 июля", group: "основная группа 22–33" },
+  jul25: { label: "суббота, 25 июля", group: "старшая группа 33–50" },
 };
 
 const CONTACT_METHODS = {
@@ -39,22 +46,30 @@ const CONTACT_METHODS = {
 };
 
 /* ============================================================
-   Seat counters on event cards
+   Availability statuses on event cards
    ============================================================ */
 
-function seatsWord(n) {
-  const mod10 = n % 10, mod100 = n % 100;
-  if (mod10 === 1 && mod100 !== 11) return "место";
-  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return "места";
-  return "мест";
-}
-
-document.querySelectorAll("[data-seats]").forEach((el) => {
-  const left = SEATS_LEFT_MEN[el.dataset.seats];
-  if (typeof left === "number" && left > 0) {
-    el.textContent = `Осталось ${left} ${seatsWord(left)} для мужчин`;
-    el.hidden = false;
+document.querySelectorAll("[data-availability]").forEach((el) => {
+  const status = AVAILABILITY[el.dataset.availability];
+  const label = AVAILABILITY_LABELS[status];
+  if (!label) return;
+  el.textContent = label.short;
+  el.hidden = false;
+  if (status === "closed") {
+    el.classList.add("event-row__status--closed");
+    const btn = el.closest(".event-row, .next-card")?.querySelector("[data-open-booking]");
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = "Запись закрыта";
+    }
   }
+});
+
+document.querySelectorAll("[data-availability-long]").forEach((el) => {
+  const label = AVAILABILITY_LABELS[AVAILABILITY[el.dataset.availabilityLong]];
+  if (!label) return;
+  el.textContent = label.long;
+  el.hidden = false;
 });
 
 /* ============================================================
@@ -134,7 +149,7 @@ function openModal(eventId) {
   doneView.hidden = true;
   clearErrors();
 
-  const preset = eventId && EVENTS[eventId] ? eventId : "jul16";
+  const preset = eventId && EVENTS[eventId] ? eventId : "jul17";
   const radio = form.querySelector(`input[name="event"][value="${preset}"]`);
   if (radio) radio.checked = true;
 
@@ -240,6 +255,12 @@ form.addEventListener("submit", (e) => {
     firstInvalid = firstInvalid || form.querySelector("#booking-name");
   }
 
+  const age = parseInt(data.age, 10);
+  if (!age || age < 18 || age > 99) {
+    showError("age");
+    firstInvalid = firstInvalid || form.querySelector("#booking-age");
+  }
+
   const contact = (data.contact || "").trim();
   const contactOk =
     data.method === "phone"
@@ -263,6 +284,8 @@ form.addEventListener("submit", (e) => {
   submittedData = {
     event: data.event,
     name: data.name.trim(),
+    age,
+    gender: data.gender || "m",
     method: data.method,
     contact,
     submittedAt: new Date().toISOString(),
@@ -278,8 +301,8 @@ form.addEventListener("submit", (e) => {
 
   const ev = EVENTS[data.event];
   summaryEl.textContent =
-    `${data.name.trim()}, ждём вас: ${ev.label}, группа ${ev.group}, 19:00, бар Gazgaz. ` +
-    `Мы подтвердим бронь по контакту: ${contact}.`;
+    `${data.name.trim()}, вы выбрали: ${ev.label}, ${ev.group}, 19:00, бар Gazgaz. ` +
+    `Осталось внести предоплату 1 000 ₽ — после оплаты мы подтвердим бронь по контакту: ${contact}.`;
 
   form.hidden = true;
   payNote.hidden = true;
