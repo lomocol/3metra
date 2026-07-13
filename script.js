@@ -38,6 +38,8 @@ const EVENTS = {
   jul25: { label: "суббота, 25 июля", group: "старшая группа" },
 };
 
+const TICKET_PRICES = { m: "2 000 ₽", f: "2 300 ₽" };
+
 const CONTACT_METHODS = {
   phone: { placeholder: "+7 900 000-00-00", type: "tel", inputmode: "tel", autocomplete: "tel" },
   telegram: { placeholder: "@username", type: "text", inputmode: "text", autocomplete: "off" },
@@ -56,8 +58,8 @@ document.querySelectorAll("[data-availability]").forEach((el) => {
   el.textContent = label.short;
   el.hidden = false;
   if (status === "closed") {
-    el.classList.add("event-row__status--closed");
-    const btn = el.closest(".event-row, .next-card")?.querySelector("[data-open-booking]");
+    el.classList.add("event-card__status--closed");
+    const btn = el.closest(".event-card, .next-card")?.querySelector("[data-open-booking]");
     if (btn) {
       btn.disabled = true;
       btn.textContent = "Запись закрыта";
@@ -205,6 +207,21 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
+/* Gender switches the ticket price on the pay buttons */
+
+const submitBtn = form.querySelector(".booking__submit");
+
+function currentPrice() {
+  const g = form.querySelector('input[name="gender"]:checked');
+  return TICKET_PRICES[g ? g.value : "m"];
+}
+
+form.querySelectorAll('input[name="gender"]').forEach((radio) =>
+  radio.addEventListener("change", () => {
+    submitBtn.textContent = `Перейти к оплате — ${currentPrice()}`;
+  })
+);
+
 /* Contact method switches the input's keyboard and placeholder */
 
 form.querySelectorAll('input[name="method"]').forEach((radio) =>
@@ -300,9 +317,11 @@ form.addEventListener("submit", (e) => {
   }
 
   const ev = EVENTS[data.event];
+  const price = currentPrice();
   summaryEl.textContent =
     `${data.name.trim()}, вы выбрали: ${ev.label}, ${ev.group}, 19:00, бар Gazgaz. ` +
-    `Осталось внести предоплату 1 000 ₽ — после оплаты мы подтвердим бронь по контакту: ${contact}.`;
+    `Осталось оплатить билет — ${price}. После оплаты мы подтвердим бронь по контакту: ${contact}.`;
+  payBtn.textContent = `Оплатить билет — ${price}`;
 
   form.hidden = true;
   payNote.hidden = true;

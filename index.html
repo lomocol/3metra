@@ -38,10 +38,10 @@
       <span class="nav__city">Ростов-на-Дону</span>
     </a>
     <nav class="nav__links" aria-label="Разделы страницы">
-      <a href="#why">Почему вживую</a>
+      <a href="#why">О вечере</a>
       <a href="#format">Формат</a>
       <a href="#dates">Расписание</a>
-      <a href="#price">Оплата</a>
+      <a href="#price">Что входит</a>
       <a href="#faq">Вопросы</a>
     </nav>
     <button class="btn btn--primary nav__cta" type="button" data-open-booking>Забронировать место</button>
@@ -142,30 +142,17 @@
     </div>
   </div>
 
-  <section class="vs section" id="why">
-    <div class="container">
-      <header class="section-head reveal">
-        <h2>Приложения съедают месяцы. Здесь — один вечер</h2>
-      </header>
-      <div class="vs__grid">
-        <article class="vs-card reveal">
-          <p class="vs-card__title">Месяц в приложениях</p>
-          <ul class="vs-card__list vs-card__list--minus">
-            <li>Сотни свайпов ради пары мэтчей</li>
-            <li>Переписки, которые обрываются</li>
-            <li>Одна встреча — если повезёт</li>
-            <li>Фото и реальность не совпадают</li>
-          </ul>
-        </article>
-        <article class="vs-card vs-card--accent reveal" data-delay="100">
-          <p class="vs-card__title">Один вечер в «3 метрах»</p>
-          <ul class="vs-card__list vs-card__list--plus">
-            <li>10–15 живых разговоров тет-а-тет</li>
-            <li>Взаимные симпатии — в тот же вечер</li>
-            <li>Никаких отказов на публике</li>
-            <li>Все пришли знакомиться</li>
-          </ul>
-        </article>
+  <section class="concept section" id="why">
+    <div class="container concept__grid">
+      <div class="concept__copy reveal">
+        <h2>Не сайт знакомств, не свидание вслепую и не шумная вечеринка</h2>
+        <p>Это вечер, где все пришли с одной целью — познакомиться. Спокойный бар, продуманный формат и ведущий, который снимает неловкость. Вам остаётся только разговаривать.</p>
+        <p>Мужчин и женщин собираем поровну, одной возрастной группы — каждый успевает поговорить с каждым. Если заметный перекос всё же случится, вернём оплату или перенесём запись.</p>
+      </div>
+      <div class="concept__stats">
+        <div class="stat reveal"><b>10–15</b><span>пар за вечер — камерно, без толпы</span></div>
+        <div class="stat reveal" data-delay="90"><b>5 минут</b><span>на разговор тет-а-тет — с каждым участником</span></div>
+        <div class="stat reveal" data-delay="180"><b>50 / 50</b><span>мужчин и женщин — состав собираем вручную</span></div>
       </div>
     </div>
   </section>
@@ -173,37 +160,30 @@
   <section class="steps section" id="format">
     <div class="container">
       <header class="section-head reveal">
-        <h2>Четыре шага — от трёх метров до одного столика</h2>
+        <h2>Четыре шага — и остальное случается само</h2>
       </header>
       <ol class="steps__list">
         <li class="step reveal">
-          <span class="step__dist">3 м</span>
-          <h3>Вы приходите</h3>
-          <p>Ведущий встретит и проводит за столик.</p>
+          <span class="step__num">01</span>
+          <h3>Приходите</h3>
+          <p>Встречаем у входа, знакомим с форматом и провожаем за столик. Рядом ведущий — никакой неловкости с первой минуты.</p>
         </li>
         <li class="step reveal" data-delay="90">
-          <span class="step__dist">1 м</span>
-          <h3>5 минут тет-а-тет</h3>
-          <p>По сигналу — следующий столик. За вечер — 10–15 знакомств.</p>
+          <span class="step__num">02</span>
+          <h3>Общаетесь</h3>
+          <p>Серия коротких разговоров один на один. Каждые пять минут — новый собеседник, и так со всеми участниками вечера.</p>
         </li>
         <li class="step reveal" data-delay="180">
-          <span class="step__dist">50 см</span>
+          <span class="step__num">03</span>
           <h3>Отмечаете симпатии</h3>
-          <p>В карточке, которую видите только вы.</p>
+          <p>Спокойно и приватно отмечаете, с кем хочется продолжить. Никто, кроме нас, этого не увидит.</p>
         </li>
         <li class="step reveal" data-delay="270">
-          <span class="step__dist">0 м</span>
-          <h3>Взаимно — контакты</h3>
-          <p>Свяжем в тот же вечер и подарим первое свидание.</p>
+          <span class="step__num">04</span>
+          <h3>Совпадаете</h3>
+          <p>При взаимной симпатии обмениваетесь контактами и получаете подарок для второй встречи: билеты, мастер-класс или необычное свидание.</p>
         </li>
       </ol>
-    </div>
-  </section>
-
-  <section class="parity section">
-    <div class="container parity__inner reveal">
-      <h2>На каждом вечере — <em>поровну</em> мужчин и женщин</h2>
-      <p class="parity__sub">Состав собираем вручную и подтверждаем каждую бронь лично. Если заметный перекос всё же случится — вернём предоплату или перенесём бронь на другую дату.</p>
     </div>
   </section>
 
@@ -249,55 +229,70 @@
       </header>
       <div class="schedule">
         <section class="group-col reveal" aria-labelledby="group-main">
-          <header class="group-col__head">
+          <img class="group-col__img" src="media/group-main.jpg" width="900" height="480" loading="lazy"
+               alt="Пара знакомится на вечере основной группы">
+          <div class="group-col__head">
             <h3 id="group-main">Основная группа</h3>
-            <span class="pill pill--rose">М 22–33 · Ж 23–35</span>
-          </header>
-          <div class="event-row">
-            <div class="event-row__info">
-              <p class="event-row__date">17 июля</p>
-              <p class="event-row__meta">пятница · 19:00 · Gazgaz</p>
-              <p class="event-row__price">мужчины — 2 000 ₽ · женщины — 2 300 ₽</p>
-              <p class="event-row__status" data-availability="jul17" hidden></p>
+            <p class="group-col__ages">Мужчины 22–33 · Женщины 23–35</p>
+          </div>
+          <article class="event-card">
+            <div class="event-card__top">
+              <p class="event-card__date">17 июля</p>
+              <span class="event-card__time">пт · 19:00</span>
             </div>
+            <div class="event-card__prices">
+              <div><span>Мужчины</span><b>2 000 ₽</b></div>
+              <div><span>Женщины</span><b>2 300 ₽</b></div>
+            </div>
+            <p class="event-card__status" data-availability="jul17" hidden></p>
             <button class="btn btn--outline" type="button" data-open-booking data-event="jul17">Забронировать</button>
-          </div>
-          <div class="event-row">
-            <div class="event-row__info">
-              <p class="event-row__date">24 июля</p>
-              <p class="event-row__meta">пятница · 19:00 · Gazgaz</p>
-              <p class="event-row__price">мужчины — 2 000 ₽ · женщины — 2 300 ₽</p>
-              <p class="event-row__status" data-availability="jul24" hidden></p>
+          </article>
+          <article class="event-card">
+            <div class="event-card__top">
+              <p class="event-card__date">24 июля</p>
+              <span class="event-card__time">пт · 19:00</span>
             </div>
+            <div class="event-card__prices">
+              <div><span>Мужчины</span><b>2 000 ₽</b></div>
+              <div><span>Женщины</span><b>2 300 ₽</b></div>
+            </div>
+            <p class="event-card__status" data-availability="jul24" hidden></p>
             <button class="btn btn--outline" type="button" data-open-booking data-event="jul24">Забронировать</button>
-          </div>
+          </article>
         </section>
         <section class="group-col reveal" data-delay="90" aria-labelledby="group-senior">
-          <header class="group-col__head">
+          <img class="group-col__img" src="media/group-senior.jpg" width="900" height="500" loading="lazy"
+               alt="Гости старшей группы за столиками бара">
+          <div class="group-col__head">
             <h3 id="group-senior">Старшая группа</h3>
-            <span class="pill pill--amber">М 33–55 · Ж 33–50</span>
-          </header>
-          <div class="event-row">
-            <div class="event-row__info">
-              <p class="event-row__date">18 июля</p>
-              <p class="event-row__meta">суббота · 19:00 · Gazgaz</p>
-              <p class="event-row__price">мужчины — 2 000 ₽ · женщины — 2 300 ₽</p>
-              <p class="event-row__status" data-availability="jul18" hidden></p>
+            <p class="group-col__ages">Мужчины 33–55 · Женщины 33–50</p>
+          </div>
+          <article class="event-card">
+            <div class="event-card__top">
+              <p class="event-card__date">18 июля</p>
+              <span class="event-card__time">сб · 19:00</span>
             </div>
+            <div class="event-card__prices">
+              <div><span>Мужчины</span><b>2 000 ₽</b></div>
+              <div><span>Женщины</span><b>2 300 ₽</b></div>
+            </div>
+            <p class="event-card__status" data-availability="jul18" hidden></p>
             <button class="btn btn--outline" type="button" data-open-booking data-event="jul18">Забронировать</button>
-          </div>
-          <div class="event-row">
-            <div class="event-row__info">
-              <p class="event-row__date">25 июля</p>
-              <p class="event-row__meta">суббота · 19:00 · Gazgaz</p>
-              <p class="event-row__price">мужчины — 2 000 ₽ · женщины — 2 300 ₽</p>
-              <p class="event-row__status" data-availability="jul25" hidden></p>
+          </article>
+          <article class="event-card">
+            <div class="event-card__top">
+              <p class="event-card__date">25 июля</p>
+              <span class="event-card__time">сб · 19:00</span>
             </div>
+            <div class="event-card__prices">
+              <div><span>Мужчины</span><b>2 000 ₽</b></div>
+              <div><span>Женщины</span><b>2 300 ₽</b></div>
+            </div>
+            <p class="event-card__status" data-availability="jul25" hidden></p>
             <button class="btn btn--outline" type="button" data-open-booking data-event="jul25">Забронировать</button>
-          </div>
+          </article>
         </section>
       </div>
-      <p class="dates__note reveal">Закрываем запись, когда группа собрана и сбалансирована. Никаких счётчиков «осталось 2 места» — только честные статусы.</p>
     </div>
   </section>
 
@@ -317,21 +312,52 @@
     </div>
   </section>
 
-  <section class="price section" id="price">
+  <section class="included section" id="price">
     <div class="container">
       <header class="section-head reveal">
-        <h2>Предоплата 1 000 ₽ — остальное на месте</h2>
+        <h2>Всё, чтобы вечер прошёл легко</h2>
       </header>
-      <div class="pay-card reveal">
-        <ul class="pay-card__list">
-          <li><strong>1 000 ₽</strong> — предоплата онлайн при брони, идёт в счёт билета</li>
-          <li><strong>Остальное на месте:</strong> 1 000 ₽ мужчины · 1 300 ₽ женщины</li>
-          <li><strong>700 ₽ на меню бара</strong> уже включены в полный билет</li>
-        </ul>
-        <div class="pay-card__aside">
-          <p>Предоплата помогает нам держать равный состав мужчин и женщин. Отмена за 48 часов — полный возврат, позже — перенос на другую дату.</p>
-          <button class="btn btn--primary" type="button" data-open-booking>Забронировать место</button>
+      <div class="included__grid">
+        <div class="included-item reveal">
+          <div class="included-item__icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
+          </div>
+          <div>
+            <h3>Закрытая площадка</h3>
+            <p>Только участники вечера — никаких случайных людей и посторонних глаз.</p>
+          </div>
         </div>
+        <div class="included-item reveal" data-delay="80">
+          <div class="included-item__icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 8v4l2.5 1.5"/></svg>
+          </div>
+          <div>
+            <h3>Ведущий вечера</h3>
+            <p>Задаёт ритм, следит за временем и атмосферой. Всё идёт само собой.</p>
+          </div>
+        </div>
+        <div class="included-item reveal" data-delay="160">
+          <div class="included-item__icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 15v6M17 4H7v4a5 5 0 0010 0V4z"/><path d="M17 5h2.5a1.5 1.5 0 010 3H17M7 5H4.5a1.5 1.5 0 000 3H7"/></svg>
+          </div>
+          <div>
+            <h3>700 ₽ на меню бара</h3>
+            <p>Уже включены в билет — потратите на еду и напитки в этот же вечер.</p>
+          </div>
+        </div>
+        <div class="included-item reveal" data-delay="240">
+          <div class="included-item__icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v9H4v-9M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
+          </div>
+          <div>
+            <h3>Подарок за совпадение</h3>
+            <p>За взаимную симпатию — повод для второй встречи: билеты, мастер-класс или квест.</p>
+          </div>
+        </div>
+      </div>
+      <div class="included__cta reveal">
+        <p>Билет: мужчины — <strong>2 000 ₽</strong>, женщины — <strong>2 300 ₽</strong>. Оплата при записи.</p>
+        <button class="btn btn--primary" type="button" data-open-booking>Забронировать место</button>
       </div>
     </div>
   </section>
@@ -397,7 +423,7 @@
       <div class="faq__list reveal">
         <details>
           <summary>Кого будет больше — мужчин или женщин?<span class="faq__icon" aria-hidden="true"></span></summary>
-          <p>Собираем группу из 10–15 пар поровну и подтверждаем каждую бронь вручную. Если к вечеру возникнет заметный перекос — вернём предоплату или перенесём бронь, на ваш выбор.</p>
+          <p>Собираем группу из 10–15 пар поровну и подтверждаем каждую бронь вручную. Если к вечеру возникнет заметный перекос — вернём оплату или перенесём бронь, на ваш выбор.</p>
         </details>
         <details>
           <summary>Кто приходит? Не странно ли прийти одному?<span class="faq__icon" aria-hidden="true"></span></summary>
@@ -412,8 +438,8 @@
           <p>На практике это самая комфортная часть формата: разговор заканчивается на интересе, а не на неловкой паузе. Продолжить можно на первом свидании.</p>
         </details>
         <details>
-          <summary>Как проходит оплата и можно ли вернуть предоплату?<span class="faq__icon" aria-hidden="true"></span></summary>
-          <p>Полный билет — 2 000 ₽ для мужчин и 2 300 ₽ для женщин, включая 700 ₽ на меню бара. При брони вносится предоплата 1 000 ₽ онлайн, остальное — на месте. Отмена за 48 часов до вечера — полный возврат, позже — перенос на другую дату.</p>
+          <summary>Сколько стоит участие и можно ли вернуть оплату?<span class="faq__icon" aria-hidden="true"></span></summary>
+          <p>Билет — 2 000 ₽ для мужчин и 2 300 ₽ для женщин, включая 700 ₽ на меню бара. Оплата — онлайн при записи. Отмена за 48 часов до вечера — полный возврат, позже — перенос на другую дату.</p>
         </details>
         <details>
           <summary>Что надеть?<span class="faq__icon" aria-hidden="true"></span></summary>
@@ -479,7 +505,7 @@
 
     <form class="booking" id="booking-form" novalidate>
       <h2 id="booking-title">Бронь места</h2>
-      <p class="booking__sub">Предоплата 1 000 ₽ идёт в счёт билета. Остальное — на месте.</p>
+      <p class="booking__sub">Билет: мужчины — 2 000 ₽, женщины — 2 300 ₽. В цену включены 700 ₽ на меню бара.</p>
 
       <fieldset class="booking__fieldset">
         <legend>Выберите вечер</legend>
@@ -550,8 +576,8 @@
       </label>
       <p class="booking__error" data-error-for="consent" hidden>Без согласия мы не можем принять бронь</p>
 
-      <button class="btn btn--primary btn--lg booking__submit" type="submit">Перейти к оплате — 1 000 ₽</button>
-      <p class="booking__fineprint">Бронь подтверждается после оплаты предоплаты. * Instagram принадлежит Meta, признанной экстремистской и запрещённой в РФ.</p>
+      <button class="btn btn--primary btn--lg booking__submit" type="submit">Перейти к оплате — 2 000 ₽</button>
+      <p class="booking__fineprint">Бронь подтверждается после оплаты. * Instagram принадлежит Meta, признанной экстремистской и запрещённой в РФ.</p>
     </form>
 
     <div class="booking-done" id="booking-done" hidden>
@@ -560,7 +586,7 @@
       </div>
       <h2>Данные заполнены</h2>
       <p class="booking-done__summary" id="booking-summary"></p>
-      <button class="btn btn--primary btn--lg" type="button" id="booking-pay">Оплатить предоплату — 1 000 ₽</button>
+      <button class="btn btn--primary btn--lg" type="button" id="booking-pay">Оплатить билет — 2 000 ₽</button>
       <p class="booking-done__hint">Бронь будет подтверждена после успешной оплаты. Если оплата не пройдёт, место не резервируется.</p>
       <p class="booking__error" id="booking-pay-note" hidden>Оплата пока не подключена — мы свяжемся с вами по указанному контакту, пришлём ссылку на оплату и после неё подтвердим бронь.</p>
     </div>
