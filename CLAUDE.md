@@ -5,7 +5,9 @@ Page language is Russian. All UI copy uses «вы», Russian typographic quotes 
 
 ## The service
 
-Offline speed-dating evenings at bar Gazgaz (closed for the event; only participants,
+Offline speed-dating evenings at bar-restaurant GasGas — on the page always
+«бар-ресторан GasGas», never plain «бар» or the old spelling «Gazgaz» (closed for the
+event; only participants,
 host, and the team). 10–15 pairs per evening, ~5-minute one-on-one conversations with
 rotation. Guests privately mark sympathies; only **mutual** matches are revealed, and a
 matched pair receives a first-date gift certificate (workshop / escape room / cinema).
@@ -21,13 +23,15 @@ All evenings start 19:00. **Prices: men 2 000 ₽, women 2 300 ₽ — full paym
 registration** (no deposits/prepayments; this wording was deliberately removed sitewide).
 Every ticket includes a 700 ₽ bar credit — never call it a «депозит».
 
-### Policies shown on the page (owner has NOT explicitly confirmed the starred ones)
+### Policies
 
-- Balanced 50/50 composition, assembled manually; if a noticeable imbalance happens:
-  refund or transfer, guest's choice.
-- *48-hour full-refund window, later — transfer to another date.
-- *No mutual matches → a free seat at the next evening of your group (once, within 60 days).
-- Confirm these with the owner before launch or when writing legal/offer documents.
+- Shown on the page: balanced 50/50 composition, assembled manually; if a noticeable
+  imbalance happens — refund or transfer, guest's choice. Photo/video published only
+  with the guest's consent (FAQ + included card).
+- NO LONGER shown anywhere (removed with the July 2026 FAQ rework; owner never
+  explicitly confirmed them — do not re-add without confirmation): 48-hour full-refund
+  window; no-mutual-matches → free seat at the next evening (once, within 60 days).
+  Refund/cancellation terms now live only in future legal/offer documents.
 
 ## Audience & positioning
 
@@ -51,6 +55,11 @@ address men exclusively — the booking form has a gender toggle (male preselect
 - The logo is the owner's exact artwork (`media/logo.jpg`, favicon derived from it) —
   never redraw or restyle it.
 - Consent checkbox (152-ФЗ) is required in the form; keep it.
+- **No trailing period at the end of any copy block** (paragraphs, list items, captions,
+  modal texts) — internal sentence periods stay.
+- Never call the format «быстрые свидания»/speed dating on the page; describe the
+  mechanics instead (короткие разговоры один на один, ротация каждые пять минут) with a
+  calm, modern tone — it must not read as a format for the desperate.
 
 ## Design system
 
@@ -86,7 +95,7 @@ Mobile (≤700px) specifics — owner-requested, do not regress:
 hero (portrait video) → next (2 upcoming-evening cards) → ticker → concept/value prop
 (#why) → steps 01–04 (#format) → gallery mosaic → schedule, 2 group columns with photos
 and event cards (#dates) → gift band → «Всё, чтобы вечер прошёл легко» (#price) →
-reviews (placeholders) → founder story + photo → venue + Yandex map → FAQ (#faq) →
+reviews (chat screenshots) → founder story + photo → venue + Yandex map → FAQ (#faq) →
 final CTA band → footer. Reference layouts came from
 `/Users/sprudnikov99/git/landing-factory/3metra_v2/index.html`.
 
@@ -104,12 +113,18 @@ final CTA band → footer. Reference layouts came from
 ## Pending before launch (clearly marked placeholders in the page)
 
 payment links + booking endpoint; real contacts (phone/Telegram/MAX) and ИП requisites;
-privacy policy + offer documents (footer links are `#`); venue exact address + map pin
-(map currently marks Rostov city center — swap `ll`/`pt` coords in the iframe URL);
-gallery photos (4 slots show a duplicated venue.jpg stand-in with «Место для фото»
-captions — replace the files `media/gallery-{guests,tables,host,bar}.jpg` and update the
-captions); review screenshots + real reviews (3 dashed slots);
-organizer names/bio (photo is in place: `media/founders.jpg`).
+organizer names/bio (photo is in place: `media/founders.jpg`);
+a separate «Согласие на обработку персональных данных» document (both links in the
+booking form's legal note currently point to policy.html; offerta §10.1 and policy §1.5
+reference the consent as a separate on-site document);
+offerta placeholders: §7.1 and §11.1 contain «УКАЗАТЬ ССЫЛКУ ИЛИ ЛОГИН / АДРЕС» for
+cancellation/claims contacts (edit offerta.txt and regenerate, or edit offerta.html).
+
+Legal pages: `policy.html` + `offerta.html` (generated from `policy.txt`/`offerta.txt`,
+styled via `.doc` block in styles.css, linked from the footer and the booking form).
+
+NB: review screenshots (`media/review-{dmitry,alina,sergey}.jpg`) are owner-staged
+mock-ups, not real guest messages — swap for real ones after the first evenings.
 
 ## Dev & verification notes
 

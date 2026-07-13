@@ -26,9 +26,9 @@ const AVAILABILITY = {
 };
 
 const AVAILABILITY_LABELS = {
-  open: { short: "Места есть", long: "Места на этот вечер есть — каждую бронь подтверждаем вручную." },
-  few: { short: "Мест мало", long: "Мест на этот вечер осталось мало — бронь подтверждаем вручную." },
-  closed: { short: "Запись закрыта", long: "Запись на этот вечер закрыта — группа собрана. Выберите другую дату." },
+  open: { short: "Места есть", long: "Места на этот вечер есть — каждую бронь подтверждаем вручную" },
+  few: { short: "Мест мало", long: "Мест на этот вечер осталось мало — бронь подтверждаем вручную" },
+  closed: { short: "Запись закрыта", long: "Запись на этот вечер закрыта — группа собрана. Выберите другую дату" },
 };
 
 const EVENTS = {
@@ -366,8 +366,8 @@ form.addEventListener("submit", (e) => {
   const ev = EVENTS[data.event];
   const price = currentPrice();
   summaryEl.textContent =
-    `${data.name.trim()}, вы выбрали: ${ev.label}, ${ev.group}, 19:00, бар Gazgaz. ` +
-    `Осталось оплатить билет — ${price}. После оплаты мы подтвердим бронь по контакту: ${contact}.`;
+    `${data.name.trim()}, вы выбрали: ${ev.label}, ${ev.group}, 19:00, бар-ресторан GasGas. ` +
+    `Осталось оплатить билет — ${price}. После оплаты мы подтвердим бронь по контакту: ${contact}`;
   payBtn.textContent = `Оплатить билет — ${price}`;
 
   form.hidden = true;

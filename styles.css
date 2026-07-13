@@ -1072,6 +1072,7 @@ summary:focus-visible {
   margin: 0 -20px;
   aspect-ratio: 2 / 1;
   object-fit: cover;
+  object-position: 50% 38%;
   display: block;
 }
 
@@ -1673,6 +1674,20 @@ summary:focus-visible {
   cursor: pointer;
 }
 
+.booking__legal {
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--text-faint);
+  margin-bottom: 14px;
+}
+
+.booking__legal a {
+  color: var(--text-soft);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.booking__legal a:hover { color: var(--brass-strong); }
+
 .booking__submit { width: 100%; }
 
 .booking__error {
@@ -1713,6 +1728,63 @@ summary:focus-visible {
   font-size: 13px;
   color: var(--text-faint);
 }
+
+/* ---------- Legal document pages ---------- */
+
+.doc {
+  padding-top: calc(var(--nav-h) + 44px);
+  padding-bottom: 88px;
+}
+
+.doc h1 {
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  margin-bottom: 10px;
+}
+
+.doc__sub {
+  font-size: 14px;
+  color: var(--text-faint);
+  margin-bottom: 8px;
+}
+
+.doc h2 {
+  font-size: 1.4rem;
+  margin: 40px 0 14px;
+}
+
+.doc p {
+  font-size: 15px;
+  color: var(--text-soft);
+  margin: 0 0 12px;
+}
+
+.doc ul, .doc ol {
+  margin: 0 0 14px;
+  padding-left: 22px;
+  font-size: 15px;
+  color: var(--text-soft);
+}
+
+.doc li { margin-bottom: 6px; }
+
+.doc li::marker { color: var(--brass); }
+
+.doc strong { color: var(--text); font-weight: 600; }
+
+.doc a {
+  color: var(--brass-strong);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.doc__back { margin-top: 48px; }
+
+.doc__back a {
+  font-size: 15px;
+  color: var(--text-soft);
+  text-decoration: none;
+}
+.doc__back a:hover { color: var(--text); }
 
 /* ---------- Reveal animations ---------- */
 
