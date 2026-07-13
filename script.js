@@ -44,7 +44,6 @@ const CONTACT_METHODS = {
   phone: { placeholder: "+7 900 000-00-00", type: "tel", inputmode: "tel", autocomplete: "tel" },
   telegram: { placeholder: "@username", type: "text", inputmode: "text", autocomplete: "off" },
   max: { placeholder: "+7 900 000-00-00 или @username", type: "text", inputmode: "text", autocomplete: "off" },
-  instagram: { placeholder: "@username", type: "text", inputmode: "text", autocomplete: "off" },
 };
 
 /* ============================================================

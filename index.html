@@ -193,7 +193,15 @@
         <h2>Атмосфера прошедших вечеров</h2>
       </header>
       <div class="gallery__grid reveal">
-        <figure class="gallery__item gallery__item--video">
+        <figure class="gallery__item gallery__item--tall">
+          <img src="media/hero-poster.jpg" width="1080" height="1920" loading="lazy"
+               alt="Зал вечера знакомств: пары за столиками с тюльпанами и свечами, тёплый красный свет">
+          <figcaption>Весна 2026</figcaption>
+        </figure>
+        <figure class="gallery__item gallery__item--placeholder">
+          <figcaption>Место для фото — гости вечера</figcaption>
+        </figure>
+        <figure class="gallery__item gallery__item--wide gallery__item--video">
           <video autoplay muted loop playsinline preload="metadata"
                  width="1080" height="1920" poster="media/hero-poster.jpg"
                  aria-label="Видео с вечера знакомств: зал, пары за столиками">
@@ -201,19 +209,11 @@
           </video>
           <figcaption>Видео с вечера «Познакомим»</figcaption>
         </figure>
-        <figure class="gallery__item">
-          <img src="media/hero-poster.jpg" width="1080" height="1920" loading="lazy"
-               alt="Зал вечера знакомств: пары за столиками с тюльпанами и свечами, тёплый красный свет">
-          <figcaption>Весна 2026</figcaption>
-        </figure>
         <figure class="gallery__item gallery__item--placeholder">
           <figcaption>Место для фото — рассадка и столики</figcaption>
         </figure>
         <figure class="gallery__item gallery__item--placeholder">
           <figcaption>Место для фото — ведущий и зал</figcaption>
-        </figure>
-        <figure class="gallery__item gallery__item--placeholder">
-          <figcaption>Место для фото — гости вечера</figcaption>
         </figure>
         <figure class="gallery__item gallery__item--placeholder">
           <figcaption>Место для фото — атмосфера бара</figcaption>
@@ -369,14 +369,17 @@
       </header>
       <div class="reviews__grid reveal">
         <article class="review review--placeholder">
+          <div class="review__shot" aria-hidden="true"><span>Скриншот отзыва из соцсетей</span></div>
           <p>Место для отзыва реального участника. Попросите короткий отзыв после ближайшего вечера и добавьте сюда с именем и возрастом.</p>
           <footer>Имя, возраст</footer>
         </article>
         <article class="review review--placeholder">
+          <div class="review__shot" aria-hidden="true"><span>Скриншот отзыва из соцсетей</span></div>
           <p>Место для второго отзыва. Живые формулировки работают лучше отполированных — публикуйте почти дословно.</p>
           <footer>Имя, возраст</footer>
         </article>
         <article class="review review--placeholder">
+          <div class="review__shot" aria-hidden="true"><span>Скриншот отзыва из соцсетей</span></div>
           <p>Место для третьего отзыва — лучше всего от участника, который пришёл один и волновался.</p>
           <footer>Имя, возраст</footer>
         </article>
@@ -403,6 +406,8 @@
       <div class="venue__grid">
         <div class="venue__info reveal">
           <h2>Бар Gazgaz</h2>
+          <img class="venue__photo" src="media/venue.jpg" width="900" height="517" loading="lazy"
+               alt="Зал бара Gazgaz во время вечера знакомств">
           <p>Закрытая площадка в центре Ростова-на-Дону. На время вечера зал только для участников, ведущего и команды — посторонних нет.</p>
           <p class="venue__todo">Точный адрес добавьте сюда, а точку на карте замените на бар (сейчас отмечен центр города).</p>
         </div>
@@ -450,10 +455,12 @@
   </section>
 
   <section class="final section">
-    <div class="container final__inner reveal">
-      <h2>Ближайшие вечера — <em>17 и 18 июля</em></h2>
-      <p>Основная группа — в пятницу, старшая — в субботу. Закрытая площадка в центре Ростова.</p>
-      <button class="btn btn--primary btn--lg" type="button" data-open-booking>Забронировать место</button>
+    <div class="container">
+      <div class="final__card reveal">
+        <h2>Ближайшие вечера — <em>17 и 18 июля</em></h2>
+        <p>Основная группа — в пятницу, старшая — в субботу. Закрытая площадка в центре Ростова.</p>
+        <button class="btn btn--primary btn--lg" type="button" data-open-booking>Забронировать место</button>
+      </div>
     </div>
   </section>
 
@@ -474,7 +481,6 @@
         <li><a href="tel:+79000000000">+7 900 000-00-00</a></li>
         <li><a href="https://t.me/username" rel="noopener">Telegram</a></li>
         <li><a href="https://max.ru" rel="noopener">MAX</a></li>
-        <li><a href="https://instagram.com/username" rel="noopener">Instagram*</a></li>
       </ul>
     </div>
     <div class="footer__legal">
@@ -485,9 +491,6 @@
       </ul>
       <p class="footer__requisites">ИП Фамилия И. О. · ОГРНИП 000000000000000</p>
     </div>
-  </div>
-  <div class="container footer__note">
-    <p>* Instagram принадлежит компании Meta, деятельность которой признана экстремистской и запрещена на территории РФ.</p>
   </div>
 </footer>
 
@@ -561,7 +564,6 @@
           <label class="method-option"><input type="radio" name="method" value="phone" checked><span>Телефон</span></label>
           <label class="method-option"><input type="radio" name="method" value="telegram"><span>Telegram</span></label>
           <label class="method-option"><input type="radio" name="method" value="max"><span>MAX</span></label>
-          <label class="method-option"><input type="radio" name="method" value="instagram"><span>Instagram*</span></label>
         </div>
         <div class="booking__field">
           <label for="booking-contact" class="sr-only">Контакт</label>
@@ -577,7 +579,7 @@
       <p class="booking__error" data-error-for="consent" hidden>Без согласия мы не можем принять бронь</p>
 
       <button class="btn btn--primary btn--lg booking__submit" type="submit">Перейти к оплате — 2 000 ₽</button>
-      <p class="booking__fineprint">Бронь подтверждается после оплаты. * Instagram принадлежит Meta, признанной экстремистской и запрещённой в РФ.</p>
+      <p class="booking__fineprint">Бронь подтверждается после оплаты.</p>
     </form>
 
     <div class="booking-done" id="booking-done" hidden>
