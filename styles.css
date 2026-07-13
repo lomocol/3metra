@@ -666,6 +666,7 @@ summary:focus-visible {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 18px;
+  align-items: start;
 }
 
 .review {
@@ -678,17 +679,12 @@ summary:focus-visible {
   background: var(--bg-elev);
 }
 
-.review p {
-  font-size: 15px;
-  color: var(--text-soft);
-  flex: 1;
-}
-
 .review footer {
   font-family: var(--font-display);
   font-style: italic;
   font-size: 17px;
   color: var(--text-faint);
+  text-align: center;
 }
 
 .review--placeholder {
@@ -696,28 +692,29 @@ summary:focus-visible {
   border-color: var(--line-strong);
 }
 
-.review--placeholder p { color: var(--text-faint); }
-
 .review__shot {
-  width: 150px;
-  aspect-ratio: 4 / 5;
-  display: grid;
-  place-items: center;
-  padding: 12px;
-  border: 1px dashed var(--line-strong);
+  width: 88%;
+  margin-inline: auto;
   border-radius: 12px;
-  background: var(--bg);
+  overflow: hidden;
   box-shadow: 0 14px 30px -18px rgba(0, 0, 0, 0.8);
-  transform: rotate(-2.4deg);
+  transform: rotate(-2.2deg);
 }
 
-.review:nth-child(2) .review__shot { transform: rotate(1.8deg); }
-.review:nth-child(3) .review__shot { transform: rotate(-1.2deg); }
+.review:nth-child(2) .review__shot {
+  width: 96%;
+  transform: rotate(1.4deg);
+}
 
-.review__shot span {
-  font-size: 12px;
-  text-align: center;
-  color: var(--text-faint);
+.review:nth-child(3) .review__shot {
+  width: 82%;
+  transform: rotate(-0.9deg);
+}
+
+.review__shot img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 /* ---------- Founder story ---------- */
