@@ -75,6 +75,11 @@ Mobile (≤700px) specifics — owner-requested, do not regress:
 - «Всё, чтобы вечер прошёл легко» (`.included__*`) must keep **simple, widely
   supported CSS** — no `min()` inside `minmax()` etc.; it previously broke on iOS Safari
   (cards lost borders/structure).
+- **No `auto-fit, minmax(NNNpx, 1fr)` grids with fixed px minimums** — on narrow
+  phones (~320–360px) the track overflows the container, widens the layout viewport and
+  mobile in-app browsers scale the page down, eating the side margins. Use explicit
+  media-query column switches (1 col → 2 cols) instead. `html` also keeps
+  `overflow-x: hidden` as a safety net.
 
 ## Page order
 
