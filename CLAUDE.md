@@ -114,14 +114,15 @@ final CTA band → footer. Reference layouts came from
 
 payment links + booking endpoint; real contacts (phone/Telegram/MAX) and ИП requisites;
 organizer names/bio (photo is in place: `media/founders.jpg`);
-a separate «Согласие на обработку персональных данных» document (both links in the
-booking form's legal note currently point to policy.html; offerta §10.1 and policy §1.5
-reference the consent as a separate on-site document);
 offerta placeholders: §7.1 and §11.1 contain «УКАЗАТЬ ССЫЛКУ ИЛИ ЛОГИН / АДРЕС» for
-cancellation/claims contacts (edit offerta.txt and regenerate, or edit offerta.html).
+cancellation/claims contacts (edit offerta.txt and regenerate, or edit offerta.html);
+button-name mismatch: soglasie.txt/offerta reference the button «Оставить заявку»,
+but the form's submit button says «Перейти к оплате» (the form's legal note follows the
+real button) — rename one side before launch.
 
-Legal pages: `policy.html` + `offerta.html` (generated from `policy.txt`/`offerta.txt`,
-styled via `.doc` block in styles.css, linked from the footer and the booking form).
+Legal pages: `policy.html` + `offerta.html` + `soglasie.html` (generated from the
+matching `.txt` sources, styled via `.doc` block in styles.css, linked from the footer;
+the booking form's legal note links soglasie.html + policy.html).
 
 NB: review screenshots (`media/review-{dmitry,alina,sergey}.jpg`) are owner-staged
 mock-ups, not real guest messages — swap for real ones after the first evenings.
