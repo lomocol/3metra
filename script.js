@@ -108,23 +108,75 @@ if ("IntersectionObserver" in window) {
 }
 
 /* ============================================================
-   Sticky mobile CTA — appears after the hero
+   Gallery lightbox
    ============================================================ */
 
-const stickyCta = document.querySelector(".sticky-cta");
-const stickyBtn = stickyCta.querySelector("button");
-const hero = document.querySelector(".hero");
-let modalOpen = false;
+const lightbox = document.getElementById("lightbox");
+const lightboxBody = lightbox.querySelector(".lightbox__body");
+const lightboxClose = lightbox.querySelector(".lightbox__close");
+let lightboxLastFocused = null;
 
-const updateStickyCta = () => {
-  const passedHero = window.scrollY > hero.offsetHeight * 0.7;
-  const show = passedHero && !modalOpen;
-  stickyCta.classList.toggle("is-visible", show);
-  stickyCta.setAttribute("aria-hidden", String(!show));
-  stickyBtn.tabIndex = show ? 0 : -1;
-};
-updateStickyCta();
-window.addEventListener("scroll", updateStickyCta, { passive: true });
+function openLightbox(media) {
+  const clone = media.cloneNode(true);
+  clone.removeAttribute("width");
+  clone.removeAttribute("height");
+  clone.removeAttribute("loading");
+  lightboxBody.replaceChildren(clone);
+
+  lightboxLastFocused = document.activeElement;
+  lightbox.hidden = false;
+  document.body.style.overflow = "hidden";
+
+  requestAnimationFrame(() => {
+    lightbox.classList.add("is-open");
+    lightboxClose.focus({ preventScroll: true });
+  });
+
+  if (clone.tagName === "VIDEO") {
+    clone.muted = true;
+    clone.loop = true;
+    clone.setAttribute("playsinline", "");
+    clone.play?.().catch(() => {});
+  }
+}
+
+function closeLightbox() {
+  lightbox.classList.remove("is-open");
+  document.body.style.overflow = "";
+
+  const finish = () => {
+    lightbox.hidden = true;
+    lightboxBody.replaceChildren();
+  };
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  reduced ? finish() : setTimeout(finish, 250);
+
+  lightboxLastFocused?.focus({ preventScroll: true });
+}
+
+document.querySelectorAll(".gallery__item:not(.gallery__item--placeholder)").forEach((item) => {
+  const media = item.querySelector("img, video");
+  if (!media) return;
+  item.classList.add("gallery__item--clickable");
+  item.setAttribute("role", "button");
+  item.setAttribute("tabindex", "0");
+  item.setAttribute("aria-label", "Открыть на весь экран");
+  item.addEventListener("click", () => openLightbox(media));
+  item.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      openLightbox(media);
+    }
+  });
+});
+
+lightboxClose.addEventListener("click", closeLightbox);
+lightbox.addEventListener("click", (e) => {
+  if (e.target === lightbox || e.target === lightboxBody) closeLightbox();
+});
+document.addEventListener("keydown", (e) => {
+  if (!lightbox.hidden && e.key === "Escape") closeLightbox();
+});
 
 /* ============================================================
    Booking modal
@@ -144,7 +196,6 @@ let submittedData = null;
 
 function openModal(eventId) {
   lastFocused = document.activeElement;
-  modalOpen = true;
 
   form.hidden = false;
   doneView.hidden = true;
@@ -156,7 +207,6 @@ function openModal(eventId) {
 
   modal.hidden = false;
   document.body.style.overflow = "hidden";
-  updateStickyCta();
 
   requestAnimationFrame(() => {
     modal.classList.add("is-open");
@@ -165,10 +215,8 @@ function openModal(eventId) {
 }
 
 function closeModal() {
-  modalOpen = false;
   modal.classList.remove("is-open");
   document.body.style.overflow = "";
-  updateStickyCta();
 
   const finish = () => { modal.hidden = true; };
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;

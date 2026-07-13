@@ -62,8 +62,19 @@ Google Fonts with Cyrillic. Buttons are pill-shaped; primary = brass fill with d
 Cards: `--bg-elev` surfaces, 1px hairline borders, 16–26px radii; featured bands get a
 brass border + radial glow + soft brass shadow. Scroll-reveal via IntersectionObserver
 (`.reveal` → `.is-in`), CSS marquee ticker (two identical halves for a seamless loop),
-`prefers-reduced-motion` respected. Mobile-first; booking modal becomes a bottom sheet;
-sticky bottom CTA bar appears on mobile after the hero.
+`prefers-reduced-motion` respected. Mobile-first; booking modal becomes a bottom sheet.
+
+Mobile (≤700px) specifics — owner-requested, do not regress:
+- **No sticky bottom CTA bar** (removed; the fixed nav CTA is the persistent entry point).
+- Hero video is a full-bleed section **background** with a dark gradient overlay
+  (`.hero__media::after`), copy bottom-aligned in a 100svh hero; the date badge is hidden.
+- Gallery is a compact 2-column grid (3/4 cells); real photos/videos open in a
+  **lightbox** (`#lightbox`, JS in script.js) — placeholders stay non-clickable.
+- Reviews are a horizontal scroll-snap carousel.
+- Steps show the number beside the title (2-col grid) to halve their height.
+- «Всё, чтобы вечер прошёл легко» (`.included__*`) must keep **simple, widely
+  supported CSS** — no `min()` inside `minmax()` etc.; it previously broke on iOS Safari
+  (cards lost borders/structure).
 
 ## Page order
 
@@ -90,7 +101,9 @@ final CTA band → footer. Reference layouts came from
 payment links + booking endpoint; real contacts (phone/Telegram/MAX) and ИП requisites;
 privacy policy + offer documents (footer links are `#`); venue exact address + map pin
 (map currently marks Rostov city center — swap `ll`/`pt` coords in the iframe URL);
-gallery photos (4 dashed slots); review screenshots + real reviews (3 dashed slots);
+gallery photos (4 slots show a duplicated venue.jpg stand-in with «Место для фото»
+captions — replace the files `media/gallery-{guests,tables,host,bar}.jpg` and update the
+captions); review screenshots + real reviews (3 dashed slots);
 organizer names/bio (photo is in place: `media/founders.jpg`).
 
 ## Dev & verification notes
