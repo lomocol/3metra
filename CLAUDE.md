@@ -52,8 +52,12 @@ address men exclusively — the booking form has a gender toggle (male preselect
 - Bookings are confirmed **only after successful payment** — the post-submit screen says
   «Заявка отправлена», never «Бронь подтверждена»; the form fineprint says «Заявка ни к
   чему не обязывает — бронь подтверждается после оплаты».
-- No Instagram anywhere (removed with its Meta disclaimer). Contact methods: Телефон,
-  Telegram, MAX.
+- No Instagram anywhere (removed with its Meta disclaimer). Site contacts (footer):
+  Telegram «@tri_metra_rostov» (t.me/tri_metra_rostov) and MAX — labelled «написать
+  администратору» because the MAX link opens the owner's personal account, not a
+  «3 метра» page. **No phone number anywhere on the page** (owner: nobody should
+  call) — the booking form's «Телефон» contact-method option stays (that's how the
+  organizer reaches the guest).
 - No small-caps eyebrow labels above headings — sections lead with serif h2 directly.
 - The logo is the owner's exact artwork (`media/logo.jpg`, favicon derived from it) —
   never redraw or restyle it.
@@ -124,8 +128,7 @@ final CTA band → footer. Reference layouts came from
 
 ## Pending before launch (clearly marked placeholders in the page)
 
-real contacts (phone/Telegram/MAX) in the
-footer; organizer names/bio (photo is in place: `media/founders.jpg`);
+organizer names/bio (photo is in place: `media/founders.jpg`);
 offerta placeholders: §7.1 and §11.1 contain «УКАЗАТЬ ССЫЛКУ ИЛИ ЛОГИН / АДРЕС» for
 cancellation/claims contacts (edit offerta.txt and regenerate, or edit offerta.html).
 
