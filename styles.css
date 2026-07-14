@@ -416,10 +416,10 @@ summary:focus-visible {
     inset: 0;
     background: linear-gradient(
       180deg,
-      rgba(16, 13, 10, 0.93) 0%,
-      rgba(16, 13, 10, 0.53) 38%,
-      rgba(16, 13, 10, 0.71) 64%,
-      rgba(16, 13, 10, 0.98) 100%
+      rgba(16, 13, 10, 0.96) 0%,
+      rgba(16, 13, 10, 0.56) 38%,
+      rgba(16, 13, 10, 0.74) 64%,
+      rgba(16, 13, 10, 1) 100%
     );
   }
 
