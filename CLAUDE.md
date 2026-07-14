@@ -127,8 +127,10 @@ final CTA band → footer. Reference layouts came from
   sync with script.js when dates change.
 - Yandex.Metrika counter 110737561 sits at the top of `<head>` (right after
   `<meta charset>`) on all four HTML pages, `<noscript>` pixel right after
-  `<body>`. Goal `lead_success` fires in script.js only after form-handler.php
-  returns `success: true` — never on click or on error.
+  `<body>`. Goal `lead_success` fires in script.js only when form-handler.php
+  returns `success: true` **and** `leadCreated: true` (a real amoCRM lead) —
+  never on click, on error, or on the honeypot's fake success
+  (`leadCreated: false`).
 
 ## Pending before launch
 

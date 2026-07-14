@@ -413,8 +413,9 @@ form.addEventListener("submit", async (e) => {
       return;
     }
 
-    /* Цель Метрики — только после подтверждённого успеха от amoCRM */
-    if (typeof window.ym === "function") {
+    /* Цель Метрики — только когда сделка реально создана в amoCRM
+       (honeypot-ответ приходит с leadCreated: false и цель не трогает) */
+    if (result.leadCreated === true && typeof window.ym === "function") {
       window.ym(110737561, "reachGoal", "lead_success");
     }
 

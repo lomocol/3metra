@@ -34,10 +34,13 @@ const GENDERS = array('m' => 'Мужчина', 'f' => 'Женщина');
 const METHODS = array('phone' => 'Телефон', 'telegram' => 'Telegram', 'max' => 'MAX');
 const UTM_KEYS = array('utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term');
 
-function respond($status, $success, $message = null)
+function respond($status, $success, $message = null, $leadCreated = null)
 {
     http_response_code($status);
     $body = array('success' => $success);
+    if ($leadCreated !== null) {
+        $body['leadCreated'] = $leadCreated;
+    }
     if ($message !== null) {
         $body['message'] = $message;
     }
@@ -154,9 +157,10 @@ if (!is_array($input) || $input === array()) {
 }
 
 /* Honeypot: скрытое поле «website» люди не заполняют. Боту отвечаем
-   успехом, но заявку не создаём */
+   успехом (leadCreated: false — цель Метрики не сработает), но заявку
+   не создаём */
 if (cleanString(isset($input['website']) ? $input['website'] : '') !== '') {
-    respond(200, true);
+    respond(200, true, null, false);
 }
 
 /* ------------------------------------------------------------------
@@ -308,4 +312,4 @@ if ($noteCurlError !== '' || $noteStatus < 200 || $noteStatus >= 300) {
     );
 }
 
-respond(200, true);
+respond(200, true, null, true);
