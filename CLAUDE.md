@@ -80,8 +80,9 @@ Mobile (≤700px) specifics — owner-requested, do not regress:
 - **No sticky bottom CTA bar** (removed; the fixed nav CTA is the persistent entry point).
 - Hero video is a full-bleed section **background** with a dark gradient overlay
   (`.hero__media::after`), copy bottom-aligned in a 100svh hero; the date badge is hidden.
-- Gallery is a compact 2-column grid (3/4 cells); real photos/videos open in a
-  **lightbox** (`#lightbox`, JS in script.js) — placeholders stay non-clickable.
+- Gallery is a compact 2-column grid (3/4 cells); all six cells are real media now
+  (5 photos + 1 video, **no captions** — owner removed them) and open in a **lightbox**
+  (`#lightbox`, JS in script.js).
 - Reviews are a horizontal scroll-snap carousel.
 - Steps show the number beside the title (2-col grid) to halve their height.
 - «Всё, чтобы вечер прошёл легко» (`.included__*`) must keep **simple, widely
@@ -125,6 +126,24 @@ the booking form's legal note links soglasie.html + policy.html).
 
 NB: review screenshots (`media/review-{dmitry,alina,sergey}.jpg`) are owner-staged
 mock-ups, not real guest messages — swap for real ones after the first evenings.
+Review captions include the age group: «Имя, возраст · основная/старшая группа».
+
+## Media assets (media/)
+
+- `hero.mp4` — hero video (mobile: full-bleed background; desktop: phone frame),
+  compressed to 720×1280 H.264 30fps ~800 KB. `hero-poster.jpg` is its poster + og:image.
+- `life_video.mp4` — gallery video, 720×1280 **H.264** (was HEVC — it broke
+  Firefox/Android; never re-encode media to HEVC).
+- `gallery-{evening,guests,tables,host,bar}.jpg` — gallery photos (mix of real event
+  shots from the owner and staged/AI images).
+- `group-main.jpg` / `group-senior.jpg` — schedule group cards (staged AI couples,
+  young/mature); crop tuned via `object-position` on `.group-col__img`.
+- `venue.jpg` — GasGas hall (bright interior with the brand on screen).
+- `founders.jpg` — real organizers' photo. `logo.jpg` — owner's artwork (see hard rules).
+- Compress new images with `sips` to ≤ ~250 KB (JPEG, quality 75–80, height ≤ 1600).
+
+Venue address is real: Кировский проспект, 51, Ростов-на-Дону; the Yandex map iframe
+pin uses coords 39.729485, 47.226895 (org id 137921832400).
 
 Requisites (footer + legal docs): Киселева Миледа Викторовна, ИНН 615433529117,
 плательщик налога на профессиональный доход (self-employed, NOT an ИП — never write
