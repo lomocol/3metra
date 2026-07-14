@@ -126,11 +126,11 @@ final CTA band → footer. Reference layouts came from
   The PHP handler duplicates the events list and validation rules — keep them in
   sync with script.js when dates change.
 
-## Pending before launch (clearly marked placeholders in the page)
+## Pending before launch
 
-organizer names/bio (photo is in place: `media/founders.jpg`);
-offerta placeholders: §7.1 and §11.1 contain «УКАЗАТЬ ССЫЛКУ ИЛИ ЛОГИН / АДРЕС» for
-cancellation/claims contacts (edit offerta.txt and regenerate, or edit offerta.html).
+No placeholders left on the page or legal docs. Offerta §7.1/§11.1
+cancellation/claims contacts are filled: Telegram @tri_metra_rostov +
+mileda.kiseleva2001@mail.ru (same email as policy/soglasie).
 
 Legal pages: `policy.html` + `offerta.html` + `soglasie.html` (generated from the
 matching `.txt` sources, styled via `.doc` block in styles.css, linked from the footer;
