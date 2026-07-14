@@ -125,6 +125,10 @@ final CTA band → footer. Reference layouts came from
   (honeypot), page, referrer, utm_source/medium/campaign/content/term, submittedAt.
   The PHP handler duplicates the events list and validation rules — keep them in
   sync with script.js when dates change.
+- Yandex.Metrika counter 110737561 sits at the top of `<head>` (right after
+  `<meta charset>`) on all four HTML pages, `<noscript>` pixel right after
+  `<body>`. Goal `lead_success` fires in script.js only after form-handler.php
+  returns `success: true` — never on click or on error.
 
 ## Pending before launch
 
