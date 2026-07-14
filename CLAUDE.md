@@ -105,17 +105,26 @@ final CTA band → footer. Reference layouts came from
 
 ## script.js config (top of file)
 
-- `BOOKING_ENDPOINT` — where the form POSTs JSON; planned target is a Yandex Cloud
-  function writing to a table. Empty = stub: guest just sees the «Заявка отправлена»
-  confirmation (no online payment on the site at all — see booking flow above).
+- `BOOKING_ENDPOINT` — `/form-handler.php`: a PHP handler in the site root that
+  creates a contact + lead in amoCRM (API v4, `/leads/complex`, main pipeline,
+  first status) and attaches a text note with the full request. Empty = stub:
+  guest just sees the «Заявка отправлена» confirmation (no online payment on the
+  site at all — see booking flow above). amoCRM domain + long-lived token live in
+  `amo-config.php` (gitignored; sample: `amo-config.example.php`; blocked from the
+  web along with `*.log` via `.htaccess`). The handler logs technical errors to
+  `form-handler.log` without the token or personal data. The form has a hidden
+  honeypot field `website` (`.booking__hp`) — bots that fill it get a fake success.
 - `AVAILABILITY` — hand-maintained per-event status.
 - `TICKET_PRICES` — used in the confirmation summary («Билет — 2 000 ₽, оплата после
   подтверждения места»).
-- Booking payload: event, name, age, gender, method, contact, submittedAt.
+- Booking payload: event, name, age, gender, method, contact, consent, website
+  (honeypot), page, referrer, utm_source/medium/campaign/content/term, submittedAt.
+  The PHP handler duplicates the events list and validation rules — keep them in
+  sync with script.js when dates change.
 
 ## Pending before launch (clearly marked placeholders in the page)
 
-booking endpoint (Yandex Cloud table); real contacts (phone/Telegram/MAX) in the
+real contacts (phone/Telegram/MAX) in the
 footer; organizer names/bio (photo is in place: `media/founders.jpg`);
 offerta placeholders: §7.1 and §11.1 contain «УКАЗАТЬ ССЫЛКУ ИЛИ ЛОГИН / АДРЕС» for
 cancellation/claims contacts (edit offerta.txt and regenerate, or edit offerta.html).

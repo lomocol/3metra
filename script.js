@@ -2,11 +2,12 @@
    CONFIG — edit these before going live
    ============================================================ */
 
-/* Where to send booking requests as JSON (planned: Yandex Cloud function
-   writing to a spreadsheet/table). Leave empty to skip network submission —
-   the form then works as a stub: the guest just sees the "we'll contact
-   you" confirmation. */
-const BOOKING_ENDPOINT = "";
+/* Where to send booking requests as JSON. The PHP handler in the site
+   root forwards them to amoCRM (contact + lead + note); config lives in
+   amo-config.php. Leave empty to skip network submission — the form then
+   works as a stub: the guest just sees the "we'll contact you"
+   confirmation. */
+const BOOKING_ENDPOINT = "/form-handler.php";
 
 /* Honest availability status per event — update by hand (or wire to a
    backend). Allowed values: "open" | "few" | "closed" | null (hides it).
@@ -254,17 +255,36 @@ function currentPrice() {
 
 /* Contact method switches the input's keyboard and placeholder */
 
+function applyContactMethod(value) {
+  const cfg = CONTACT_METHODS[value];
+  contactInput.type = cfg.type;
+  contactInput.placeholder = cfg.placeholder;
+  contactInput.setAttribute("inputmode", cfg.inputmode);
+  contactInput.setAttribute("autocomplete", cfg.autocomplete);
+}
+
 form.querySelectorAll('input[name="method"]').forEach((radio) =>
   radio.addEventListener("change", () => {
-    const cfg = CONTACT_METHODS[radio.value];
-    contactInput.type = cfg.type;
-    contactInput.placeholder = cfg.placeholder;
-    contactInput.setAttribute("inputmode", cfg.inputmode);
-    contactInput.setAttribute("autocomplete", cfg.autocomplete);
+    applyContactMethod(radio.value);
     contactInput.value = "";
     hideError("contact");
   })
 );
+
+/* Page URL, referrer and UTM params — attached to the booking payload
+   so the organizer sees where the request came from */
+
+function collectTracking() {
+  const params = new URLSearchParams(window.location.search);
+  const tracking = {
+    page: window.location.href,
+    referrer: document.referrer || "",
+  };
+  for (const key of ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"]) {
+    tracking[key] = params.get(key) || "";
+  }
+  return tracking;
+}
 
 /* ============================================================
    Validation + submission
@@ -285,8 +305,31 @@ function clearErrors() {
   document.querySelectorAll(".booking__error[data-error-for]").forEach((el) => (el.hidden = true));
 }
 
-form.addEventListener("submit", (e) => {
+const submitBtn = form.querySelector(".booking__submit");
+const submitBtnLabel = submitBtn.textContent;
+let submitting = false;
+
+function showSubmitError(message) {
+  const el = document.querySelector('[data-error-for="submit"]');
+  if (!el) return;
+  el.textContent = message;
+  el.hidden = false;
+}
+
+function showDoneView(data) {
+  const ev = EVENTS[data.event];
+  summaryEl.textContent =
+    `${data.name.trim()}, вы выбрали: ${ev.label}, ${ev.group}, 19:00, бар-ресторан GasGas. ` +
+    `Билет — ${currentPrice()}, оплата после подтверждения места`;
+
+  form.hidden = true;
+  doneView.hidden = false;
+  doneView.querySelector("button")?.focus({ preventScroll: true });
+}
+
+form.addEventListener("submit", async (e) => {
   e.preventDefault();
+  if (submitting) return;
   clearErrors();
 
   const data = Object.fromEntries(new FormData(form).entries());
@@ -335,23 +378,49 @@ form.addEventListener("submit", (e) => {
     gender: data.gender || "m",
     method: data.method,
     contact,
+    consent: true,
+    website: data.website || "",
+    ...collectTracking(),
     submittedAt: new Date().toISOString(),
   };
 
-  if (BOOKING_ENDPOINT) {
-    fetch(BOOKING_ENDPOINT, {
+  if (!BOOKING_ENDPOINT) {
+    showDoneView(data);
+    return;
+  }
+
+  submitting = true;
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Отправляем…";
+
+  try {
+    const res = await fetch(BOOKING_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(submittedData),
-    }).catch(() => {});
+    });
+    let result = null;
+    try {
+      result = await res.json();
+    } catch {}
+
+    if (!res.ok || !result || result.success !== true) {
+      showSubmitError(
+        result && result.message
+          ? result.message
+          : "Не удалось отправить заявку — попробуйте ещё раз"
+      );
+      return;
+    }
+
+    showDoneView(data);
+    form.reset();
+    applyContactMethod("phone");
+  } catch {
+    showSubmitError("Не удалось отправить заявку — проверьте связь и попробуйте ещё раз");
+  } finally {
+    submitting = false;
+    submitBtn.disabled = false;
+    submitBtn.textContent = submitBtnLabel;
   }
-
-  const ev = EVENTS[data.event];
-  summaryEl.textContent =
-    `${data.name.trim()}, вы выбрали: ${ev.label}, ${ev.group}, 19:00, бар-ресторан GasGas. ` +
-    `Билет — ${currentPrice()}, оплата после подтверждения места`;
-
-  form.hidden = true;
-  doneView.hidden = false;
-  doneView.querySelector("button")?.focus({ preventScroll: true });
 });

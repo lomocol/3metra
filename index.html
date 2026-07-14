@@ -521,6 +521,10 @@
       <h2 id="booking-title">Заявка на вечер</h2>
       <p class="booking__sub">Билет: мужчины — 2 000 ₽, женщины — 2 300 ₽, в цене 700 ₽ на меню бара-ресторана. Оплата — после подтверждения места</p>
 
+      <!-- Honeypot: люди это поле не видят и не заполняют -->
+      <input type="text" name="website" class="booking__hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+
       <fieldset class="booking__fieldset">
         <legend>Выберите вечер</legend>
         <div class="booking__events" id="booking-events">
@@ -591,6 +595,7 @@
 
       <p class="booking__legal">Нажимая кнопку «Оставить заявку», я даю согласие на обработку моих персональных данных на условиях <a href="soglasie.html" target="_blank" rel="noopener">Согласия на обработку персональных данных</a> и подтверждаю, что ознакомлен(а) с <a href="policy.html" target="_blank" rel="noopener">Политикой обработки персональных данных</a></p>
 
+      <p class="booking__error" data-error-for="submit" hidden>Не удалось отправить заявку — попробуйте ещё раз</p>
       <button class="btn btn--primary btn--lg booking__submit" type="submit">Оставить заявку</button>
       <p class="booking__fineprint">Бронь подтверждается после оплаты</p>
     </form>

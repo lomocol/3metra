@@ -1,0 +1,19 @@
+# Редирект с http на https создан автоматически при заказе бесплатного ssl-сертификата
+RewriteEngine On
+RewriteCond %{SERVER_PORT} !^443$
+RewriteRule .* https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
+# Конец редиректа
+
+# Запрет доступа к скрытым файлам и папкам (.git, .gitignore и т.п.)
+RewriteRule (^|/)\.(?!well-known($|/)) - [F]
+
+# Запрет доступа к конфигурации amoCRM (с токеном) и техническим логам
+<FilesMatch "^amo-config.*\.php$|\.log$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
