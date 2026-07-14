@@ -2,17 +2,10 @@
    CONFIG — edit these before going live
    ============================================================ */
 
-/* Payment links per event (YooKassa / CloudPayments / T-Bank pay link).
-   While a link is empty, the pay button shows a "we'll contact you" note. */
-const PAYMENT_LINKS = {
-  jul17: "",
-  jul18: "",
-  jul24: "",
-  jul25: "",
-};
-
-/* Where to send booking requests (your backend, Telegram-bot webhook,
-   Formspree etc.). Leave empty to skip network submission. */
+/* Where to send booking requests as JSON (planned: Yandex Cloud function
+   writing to a spreadsheet/table). Leave empty to skip network submission —
+   the form then works as a stub: the guest just sees the "we'll contact
+   you" confirmation. */
 const BOOKING_ENDPOINT = "";
 
 /* Honest availability status per event — update by hand (or wire to a
@@ -187,8 +180,6 @@ const panel = modal.querySelector(".modal__panel");
 const form = document.getElementById("booking-form");
 const doneView = document.getElementById("booking-done");
 const summaryEl = document.getElementById("booking-summary");
-const payBtn = document.getElementById("booking-pay");
-const payNote = document.getElementById("booking-pay-note");
 const contactInput = document.getElementById("booking-contact");
 
 let lastFocused = null;
@@ -254,20 +245,12 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-/* Gender switches the ticket price on the pay buttons */
-
-const submitBtn = form.querySelector(".booking__submit");
+/* Ticket price for the selected gender — shown in the confirmation summary */
 
 function currentPrice() {
   const g = form.querySelector('input[name="gender"]:checked');
   return TICKET_PRICES[g ? g.value : "m"];
 }
-
-form.querySelectorAll('input[name="gender"]').forEach((radio) =>
-  radio.addEventListener("change", () => {
-    submitBtn.textContent = `Перейти к оплате — ${currentPrice()}`;
-  })
-);
 
 /* Contact method switches the input's keyboard and placeholder */
 
@@ -364,23 +347,11 @@ form.addEventListener("submit", (e) => {
   }
 
   const ev = EVENTS[data.event];
-  const price = currentPrice();
   summaryEl.textContent =
     `${data.name.trim()}, вы выбрали: ${ev.label}, ${ev.group}, 19:00, бар-ресторан GasGas. ` +
-    `Осталось оплатить билет — ${price}. После оплаты мы подтвердим бронь по контакту: ${contact}`;
-  payBtn.textContent = `Оплатить билет — ${price}`;
+    `Билет — ${currentPrice()}, оплата после подтверждения места`;
 
   form.hidden = true;
-  payNote.hidden = true;
   doneView.hidden = false;
-  payBtn.focus({ preventScroll: true });
-});
-
-payBtn.addEventListener("click", () => {
-  const link = submittedData && PAYMENT_LINKS[submittedData.event];
-  if (link) {
-    window.location.href = link;
-  } else {
-    payNote.hidden = false;
-  }
+  doneView.querySelector("button")?.focus({ preventScroll: true });
 });

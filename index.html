@@ -58,7 +58,7 @@
         <h1 class="reveal" data-delay="80">10–15 свиданий — <em>за&nbsp;один вечер</em></h1>
         <p class="hero__lead reveal" data-delay="160">Вечер живых знакомств: короткие разговоры один на один с людьми вашего возраста — без приложений и долгих переписок</p>
         <div class="hero__actions reveal" data-delay="240">
-          <a class="btn btn--primary btn--lg" href="#dates">Расписание знакомств</a>
+          <a class="btn btn--primary btn--lg" href="#dates">Расписание встреч</a>
           <a class="btn btn--ghost btn--lg" href="#format">Как устроен вечер</a>
         </div>
         <ul class="hero__meta reveal" data-delay="320">
@@ -358,7 +358,7 @@
         </div>
       </div>
       <div class="included__cta reveal">
-        <p>Билет: мужчины — <strong>2 000 ₽</strong>, женщины — <strong>2 300 ₽</strong>. Оплата при записи</p>
+        <p>Билет: мужчины — <strong>2 000 ₽</strong>, женщины — <strong>2 300 ₽</strong>. Оплата — после подтверждения места</p>
         <button class="btn btn--primary" type="button" data-open-booking>Забронировать место</button>
       </div>
     </div>
@@ -496,9 +496,9 @@
       <ul>
         <li><a href="policy.html">Политика обработки персональных данных</a></li>
         <li><a href="soglasie.html">Согласие на обработку персональных данных</a></li>
-        <li><a href="offerta.html">Договор оферты</a></li>
+        <li><a href="offerta.html">Публичная оферта</a></li>
       </ul>
-      <p class="footer__requisites">ИП Фамилия И. О. · ОГРНИП 000000000000000</p>
+      <p class="footer__requisites">© 2026 «Три метра»<br>Киселева Миледа Викторовна · ИНН 615433529117<br>Плательщик налога на профессиональный доход</p>
     </div>
   </div>
 </footer>
@@ -518,8 +518,8 @@
     </button>
 
     <form class="booking" id="booking-form" novalidate>
-      <h2 id="booking-title">Бронь места</h2>
-      <p class="booking__sub">Билет: мужчины — 2 000 ₽, женщины — 2 300 ₽. В цену включены 700 ₽ на меню бара-ресторана</p>
+      <h2 id="booking-title">Заявка на вечер</h2>
+      <p class="booking__sub">Билет: мужчины — 2 000 ₽, женщины — 2 300 ₽, в цене 700 ₽ на меню бара-ресторана. Оплата — после подтверждения места</p>
 
       <fieldset class="booking__fieldset">
         <legend>Выберите вечер</legend>
@@ -589,9 +589,9 @@
       </label>
       <p class="booking__error" data-error-for="consent" hidden>Без согласия мы не можем принять бронь</p>
 
-      <p class="booking__legal">Нажимая кнопку «Перейти к оплате», я даю согласие на обработку моих персональных данных на условиях <a href="soglasie.html" target="_blank" rel="noopener">Согласия на обработку персональных данных</a> и подтверждаю, что ознакомлен(а) с <a href="policy.html" target="_blank" rel="noopener">Политикой обработки персональных данных</a></p>
+      <p class="booking__legal">Нажимая кнопку «Оставить заявку», я даю согласие на обработку моих персональных данных на условиях <a href="soglasie.html" target="_blank" rel="noopener">Согласия на обработку персональных данных</a> и подтверждаю, что ознакомлен(а) с <a href="policy.html" target="_blank" rel="noopener">Политикой обработки персональных данных</a></p>
 
-      <button class="btn btn--primary btn--lg booking__submit" type="submit">Перейти к оплате — 2 000 ₽</button>
+      <button class="btn btn--primary btn--lg booking__submit" type="submit">Оставить заявку</button>
       <p class="booking__fineprint">Бронь подтверждается после оплаты</p>
     </form>
 
@@ -599,11 +599,10 @@
       <div class="booking-done__mark" aria-hidden="true">
         <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M4 14l6 6L22 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
-      <h2>Данные заполнены</h2>
+      <h2>Заявка отправлена</h2>
       <p class="booking-done__summary" id="booking-summary"></p>
-      <button class="btn btn--primary btn--lg" type="button" id="booking-pay">Оплатить билет — 2 000 ₽</button>
-      <p class="booking-done__hint">Бронь будет подтверждена после успешной оплаты. Если оплата не пройдёт, место не резервируется</p>
-      <p class="booking__error" id="booking-pay-note" hidden>Оплата пока не подключена — мы свяжемся с вами по указанному контакту, пришлём ссылку на оплату и после неё подтвердим бронь</p>
+      <button class="btn btn--primary btn--lg" type="button" data-close-booking>Хорошо</button>
+      <p class="booking-done__hint">Спасибо! Мы свяжемся с вами по указанному контакту, уточним свободные места и запишем вас на вечер</p>
     </div>
   </div>
 </div>

@@ -19,9 +19,11 @@ Two age groups, each with its own evenings:
 | Основная группа | 22–33 | 23–35 | Fridays (Jul 17, Jul 24) |
 | Старшая группа | 33–55 | 33–50 | Saturdays (Jul 18, Jul 25) |
 
-All evenings start 19:00. **Prices: men 2 000 ₽, women 2 300 ₽ — full payment online at
-registration** (no deposits/prepayments; this wording was deliberately removed sitewide).
-Every ticket includes a 700 ₽ bar credit — never call it a «депозит».
+All evenings start 19:00. **Prices: men 2 000 ₽, women 2 300 ₽.** Booking flow (July
+2026): the site only collects a **заявка** (request form) — no online payment. The
+organizer contacts the guest, confirms a free seat, and only then takes payment by
+requisites (per offerta §1.6/§4). Sitewide wording: «Оплата — после подтверждения
+места». Every ticket includes a 700 ₽ bar credit — never call it a «депозит».
 
 ### Policies
 
@@ -47,8 +49,9 @@ address men exclusively — the booking form has a gender toggle (male preselect
 - **Honesty:** no fake scarcity, no numeric seat counters, no invented testimonials or
   statistics. Availability is a hand-set status (`AVAILABILITY` in `script.js`:
   open/few/closed) rendered as «Места есть» etc.
-- Bookings are confirmed **only after successful payment** — pre-payment screen says
-  «Данные заполнены», never «Бронь подтверждена».
+- Bookings are confirmed **only after successful payment** — the post-submit screen says
+  «Заявка отправлена», never «Бронь подтверждена»; the form fineprint says «Заявка ни к
+  чему не обязывает — бронь подтверждается после оплаты».
 - No Instagram anywhere (removed with its Meta disclaimer). Contact methods: Телефон,
   Telegram, MAX.
 - No small-caps eyebrow labels above headings — sections lead with serif h2 directly.
@@ -101,24 +104,20 @@ final CTA band → footer. Reference layouts came from
 
 ## script.js config (top of file)
 
-- `PAYMENT_LINKS` — per-event payment URLs, currently empty; pay button falls back to a
-  "we'll contact you" note. NB: no deposit anymore, so links must charge the full price,
-  which differs by gender (2 000/2 300 ₽) — per-event links alone are insufficient;
-  restructure when the payment provider is known.
-- `BOOKING_ENDPOINT` — where the form POSTs JSON (empty = submissions go nowhere).
+- `BOOKING_ENDPOINT` — where the form POSTs JSON; planned target is a Yandex Cloud
+  function writing to a table. Empty = stub: guest just sees the «Заявка отправлена»
+  confirmation (no online payment on the site at all — see booking flow above).
 - `AVAILABILITY` — hand-maintained per-event status.
-- `TICKET_PRICES` — drives dynamic price on submit/pay buttons by selected gender.
+- `TICKET_PRICES` — used in the confirmation summary («Билет — 2 000 ₽, оплата после
+  подтверждения места»).
 - Booking payload: event, name, age, gender, method, contact, submittedAt.
 
 ## Pending before launch (clearly marked placeholders in the page)
 
-payment links + booking endpoint; real contacts (phone/Telegram/MAX) and ИП requisites;
-organizer names/bio (photo is in place: `media/founders.jpg`);
+booking endpoint (Yandex Cloud table); real contacts (phone/Telegram/MAX) in the
+footer; organizer names/bio (photo is in place: `media/founders.jpg`);
 offerta placeholders: §7.1 and §11.1 contain «УКАЗАТЬ ССЫЛКУ ИЛИ ЛОГИН / АДРЕС» for
-cancellation/claims contacts (edit offerta.txt and regenerate, or edit offerta.html);
-button-name mismatch: soglasie.txt/offerta reference the button «Оставить заявку»,
-but the form's submit button says «Перейти к оплате» (the form's legal note follows the
-real button) — rename one side before launch.
+cancellation/claims contacts (edit offerta.txt and regenerate, or edit offerta.html).
 
 Legal pages: `policy.html` + `offerta.html` + `soglasie.html` (generated from the
 matching `.txt` sources, styled via `.doc` block in styles.css, linked from the footer;
@@ -126,6 +125,12 @@ the booking form's legal note links soglasie.html + policy.html).
 
 NB: review screenshots (`media/review-{dmitry,alina,sergey}.jpg`) are owner-staged
 mock-ups, not real guest messages — swap for real ones after the first evenings.
+
+Requisites (footer + legal docs): Киселева Миледа Викторовна, ИНН 615433529117,
+плательщик налога на профессиональный доход (self-employed, NOT an ИП — never write
+«ИП» or «ОГРНИП» anywhere). Footer documents list: «Политика обработки персональных
+данных», «Согласие на обработку персональных данных», «Публичная оферта» (not «Договор
+оферты»).
 
 ## Dev & verification notes
 
@@ -135,6 +140,7 @@ mock-ups, not real guest messages — swap for real ones after the first evening
   section into the top viewport (note: this breaks `position: fixed` children), or
   temporarily `display:none` the other sections; always force reveals first
   (`document.querySelectorAll('.reveal').forEach(el => el.classList.add('is-in'))`).
-- Verify the booking flow after changes: open modal → gender toggle changes button
-  price → validation (name/age 18–99/contact/consent) → «Данные заполнены» → pay button.
+- Verify the booking flow after changes: open modal («Заявка на вечер») → validation
+  (name/age 18–99/contact/consent) → «Оставить заявку» → «Заявка отправлена» screen with
+  summary (price by gender) and «Хорошо» button that closes the modal.
 - Weekday/date facts must be real: current dates are July 2026 (17/18/24/25).
