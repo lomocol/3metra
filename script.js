@@ -13,10 +13,10 @@ const BOOKING_ENDPOINT = "/form-handler.php";
    backend). Allowed values: "open" | "few" | "closed" | null (hides it).
    No numeric counters: never show numbers you can't keep accurate. */
 const AVAILABILITY = {
-  jul17: "open",
-  jul18: "open",
   jul24: "open",
   jul25: "open",
+  jul31: "open",
+  aug1: "open",
 };
 
 const AVAILABILITY_LABELS = {
@@ -26,10 +26,10 @@ const AVAILABILITY_LABELS = {
 };
 
 const EVENTS = {
-  jul17: { label: "пятница, 17 июля", group: "основная группа" },
-  jul18: { label: "суббота, 18 июля", group: "старшая группа" },
   jul24: { label: "пятница, 24 июля", group: "основная группа" },
   jul25: { label: "суббота, 25 июля", group: "старшая группа" },
+  jul31: { label: "пятница, 31 июля", group: "основная группа" },
+  aug1: { label: "суббота, 1 августа", group: "старшая группа" },
 };
 
 const TICKET_PRICES = { m: "2 000 ₽", f: "2 300 ₽" };
@@ -72,7 +72,16 @@ document.querySelectorAll("[data-availability-long]").forEach((el) => {
    ============================================================ */
 
 const nav = document.querySelector(".nav");
-const onScrollNav = () => nav.classList.toggle("is-scrolled", window.scrollY > 12);
+const mobileCta = document.getElementById("mobile-cta");
+const onScrollNav = () => {
+  nav.classList.toggle("is-scrolled", window.scrollY > 12);
+  /* Sticky CTA appears after the visitor scrolls past the hero */
+  if (mobileCta) {
+    const show = window.scrollY > window.innerHeight * 0.7;
+    mobileCta.classList.toggle("is-visible", show);
+    mobileCta.setAttribute("aria-hidden", show ? "false" : "true");
+  }
+};
 onScrollNav();
 window.addEventListener("scroll", onScrollNav, { passive: true });
 
@@ -193,7 +202,7 @@ function openModal(eventId) {
   doneView.hidden = true;
   clearErrors();
 
-  const preset = eventId && EVENTS[eventId] ? eventId : "jul17";
+  const preset = eventId && EVENTS[eventId] ? eventId : Object.keys(EVENTS)[0];
   const radio = form.querySelector(`input[name="event"][value="${preset}"]`);
   if (radio) radio.checked = true;
 
