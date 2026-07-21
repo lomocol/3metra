@@ -22,24 +22,30 @@ header('X-Content-Type-Options: nosniff');
 const MAX_FIELD_LENGTH = 500;
 const LOG_FILE = __DIR__ . '/form-handler.log';
 
-/* Список вечеров — должен совпадать с EVENTS в script.js */
+/* Список вечеров — должен совпадать с EVENTS в script.js и PAY_EVENTS
+   в pay.php */
 const EVENTS = array(
-    'jul17' => 'пятница, 17 июля — основная группа',
-    'jul18' => 'суббота, 18 июля — старшая группа',
     'jul24' => 'пятница, 24 июля — основная группа',
     'jul25' => 'суббота, 25 июля — старшая группа',
+    'jul31' => 'пятница, 31 июля — основная группа',
+    'aug1'  => 'суббота, 1 августа — старшая группа',
 );
 
 const GENDERS = array('m' => 'Мужчина', 'f' => 'Женщина');
 const METHODS = array('phone' => 'Телефон', 'telegram' => 'Telegram', 'max' => 'MAX');
 const UTM_KEYS = array('utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term');
 
-function respond($status, $success, $message = null, $leadCreated = null)
+function respond($status, $success, $message = null, $leadCreated = null, $leadId = null)
 {
     http_response_code($status);
     $body = array('success' => $success);
     if ($leadCreated !== null) {
         $body['leadCreated'] = $leadCreated;
+    }
+    if ($leadId !== null) {
+        /* ID сделки нужен script.js, чтобы передать его в pay.php
+           и связать оплату с заявкой */
+        $body['leadId'] = $leadId;
     }
     if ($message !== null) {
         $body['message'] = $message;
@@ -312,4 +318,4 @@ if ($noteCurlError !== '' || $noteStatus < 200 || $noteStatus >= 300) {
     );
 }
 
-respond(200, true, null, true);
+respond(200, true, null, true, $leadId);

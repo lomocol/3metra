@@ -20,8 +20,8 @@ const AVAILABILITY = {
 };
 
 const AVAILABILITY_LABELS = {
-  open: { short: "Места есть", long: "Места на этот вечер есть — каждую бронь подтверждаем вручную" },
-  few: { short: "Мест мало", long: "Мест на этот вечер осталось мало — бронь подтверждаем вручную" },
+  open: { short: "Места есть", long: "Места на этот вечер есть — состав собираем вручную, поровну мужчин и женщин" },
+  few: { short: "Мест мало", long: "Мест на этот вечер осталось мало — успейте забронировать" },
   closed: { short: "Запись закрыта", long: "Запись на этот вечер закрыта — группа собрана. Выберите другую дату" },
 };
 
@@ -317,6 +317,7 @@ function clearErrors() {
 const submitBtn = form.querySelector(".booking__submit");
 const submitBtnLabel = submitBtn.textContent;
 let submitting = false;
+let redirecting = false;
 
 function showSubmitError(message) {
   const el = document.querySelector('[data-error-for="submit"]');
@@ -428,14 +429,35 @@ form.addEventListener("submit", async (e) => {
       window.ym(110737561, "reachGoal", "lead_success");
     }
 
+    /* Сделка создана — ведём гостя на оплату PayAnyWay. pay.php сам
+       определит цену по коду услуги, сумме из браузера сервер не верит */
+    if (result.leadCreated === true && result.leadId) {
+      redirecting = true;
+      submitBtn.textContent = "Переходим к оплате…";
+      const payParams = new URLSearchParams({
+        lead: String(result.leadId),
+        event: data.event,
+        gender: data.gender || "m",
+      });
+      /* Небольшая пауза, чтобы Метрика успела отправить цель */
+      setTimeout(() => {
+        window.location.assign("pay.php?" + payParams.toString());
+      }, 400);
+      return;
+    }
+
+    /* Запасной путь (бот в honeypot или сервер без leadId) — прежний
+       экран «заявка отправлена» */
     showDoneView(data);
     form.reset();
     applyContactMethod("phone");
   } catch {
     showSubmitError("Не удалось отправить заявку — проверьте связь и попробуйте ещё раз");
   } finally {
-    submitting = false;
-    submitBtn.disabled = false;
-    submitBtn.textContent = submitBtnLabel;
+    if (!redirecting) {
+      submitting = false;
+      submitBtn.disabled = false;
+      submitBtn.textContent = submitBtnLabel;
+    }
   }
 });

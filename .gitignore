@@ -1,3 +1,6 @@
 .DS_Store
 amo-config.php
 form-handler.log
+payanyway-config.php
+payanyway.log
+payanyway-data/

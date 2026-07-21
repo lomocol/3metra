@@ -1,0 +1,257 @@
+<?php
+/**
+ * payanyway-callback.php — Pay URL для уведомлений PayAnyWay
+ * (https://docs.moneta.ru/assistant/v1/pay-notification/index.html).
+ *
+ * Принимает GET или POST. Проверяет MNT_SIGNATURE, номер счёта
+ * (MNT_TRANSACTION_ID, сформирован pay.php), ID сделки и сумму по
+ * серверному списку цен. После успешной проверки:
+ *   - добавляет к сделке amoCRM примечание «Оплата получена»;
+ *   - проставляет бюджет сделки (и статус «Оплачено», если задан в конфиге);
+ *   - запоминает счёт как обработанный (файл-маркер) — повторное
+ *     уведомление отвечает SUCCESS без повторной обработки.
+ *
+ * Ответы: SUCCESS — принято (или уже обработано), FAIL — ошибка
+ * (PayAnyWay будет повторять уведомление в течение суток).
+ */
+
+declare(strict_types=1);
+
+ini_set('display_errors', '0');
+
+const CB_LOG_FILE = __DIR__ . '/payanyway.log';
+const CB_DATA_DIR = __DIR__ . '/payanyway-data';
+
+function cbLog($message)
+{
+    @file_put_contents(
+        CB_LOG_FILE,
+        '[' . date('Y-m-d H:i:s') . '] callback: ' . $message . PHP_EOL,
+        FILE_APPEND | LOCK_EX
+    );
+}
+
+function cbRespond($answer)
+{
+    header('Content-Type: text/plain; charset=utf-8');
+    echo $answer;
+    exit;
+}
+
+function cbParam($name)
+{
+    if (isset($_POST[$name])) {
+        return (string) $_POST[$name];
+    }
+    if (isset($_GET[$name])) {
+        return (string) $_GET[$name];
+    }
+    return '';
+}
+
+function cbAmoRequest($url, $token, $method, array $payload)
+{
+    $ch = curl_init($url);
+    curl_setopt_array($ch, array(
+        CURLOPT_CUSTOMREQUEST => $method,
+        CURLOPT_POSTFIELDS => json_encode($payload, JSON_UNESCAPED_UNICODE),
+        CURLOPT_HTTPHEADER => array(
+            'Authorization: Bearer ' . $token,
+            'Content-Type: application/json',
+        ),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_CONNECTTIMEOUT => 5,
+        CURLOPT_TIMEOUT => 15,
+    ));
+    curl_exec($ch);
+    $error = curl_error($ch);
+    $status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+    return array($status, $error);
+}
+
+/* ------------------------------------------------------------------
+   Конфигурация
+   ------------------------------------------------------------------ */
+
+$config = @include __DIR__ . '/payanyway-config.php';
+if (
+    !is_array($config)
+    || empty($config['mnt_id']) || empty($config['integrity_code'])
+    || strpos((string) $config['mnt_id'], 'ВСТАВИТЬ') !== false
+    || strpos((string) $config['integrity_code'], 'ВСТАВИТЬ') !== false
+    || empty($config['prices']) || !is_array($config['prices'])
+) {
+    cbLog('payanyway-config.php отсутствует или не заполнен');
+    cbRespond('FAIL');
+}
+
+/* ------------------------------------------------------------------
+   Параметры уведомления и подпись
+   ------------------------------------------------------------------ */
+
+$mntId         = cbParam('MNT_ID');
+$transactionId = cbParam('MNT_TRANSACTION_ID');
+$operationId   = cbParam('MNT_OPERATION_ID');
+$amount        = cbParam('MNT_AMOUNT');
+$currency      = cbParam('MNT_CURRENCY_CODE');
+$subscriberId  = cbParam('MNT_SUBSCRIBER_ID');
+$testMode      = cbParam('MNT_TEST_MODE');
+$signature     = cbParam('MNT_SIGNATURE');
+
+if ($mntId === '' || $transactionId === '' || $amount === '' || $signature === '') {
+    cbLog('Неполное уведомление: tid=' . $transactionId);
+    cbRespond('FAIL');
+}
+
+if ($mntId !== (string) $config['mnt_id']) {
+    cbLog('Чужой MNT_ID: ' . $mntId);
+    cbRespond('FAIL');
+}
+
+/* MNT_SIGNATURE = MD5(MNT_ID + MNT_TRANSACTION_ID + MNT_OPERATION_ID +
+   MNT_AMOUNT + MNT_CURRENCY_CODE + MNT_SUBSCRIBER_ID + MNT_TEST_MODE +
+   КодПроверкиЦелостности) */
+$expectedSignature = md5(
+    $mntId . $transactionId . $operationId . $amount . $currency . $subscriberId
+    . $testMode . (string) $config['integrity_code']
+);
+if (!hash_equals($expectedSignature, strtolower($signature))) {
+    cbLog('Неверная подпись для счёта ' . $transactionId);
+    cbRespond('FAIL');
+}
+
+/* Тестовое уведомление в боевом режиме оплатой не считается */
+if ($testMode === '1' && empty($config['test_mode'])) {
+    cbLog('Отклонено тестовое уведомление в боевом режиме: ' . $transactionId);
+    cbRespond('FAIL');
+}
+
+/* ------------------------------------------------------------------
+   Разбор номера счёта и проверка суммы по серверным ценам
+   ------------------------------------------------------------------ */
+
+/* Формат из pay.php: 3M-{leadId}-{event}-{gender}-{ymdHis}-{rand} */
+if (!preg_match('/^3M-(\d+)-([a-z0-9]+)-([a-z])-\d{12}-[a-f0-9]{8}$/', $transactionId, $m)) {
+    cbLog('Нераспознанный номер счёта: ' . $transactionId);
+    cbRespond('FAIL');
+}
+$leadId = (int) $m[1];
+$event  = $m[2];
+$gender = $m[3];
+
+if ($leadId <= 0 || !isset($config['prices'][$gender])) {
+    cbLog('Неизвестная услуга в счёте ' . $transactionId);
+    cbRespond('FAIL');
+}
+
+if ($subscriberId !== '' && $subscriberId !== (string) $leadId) {
+    cbLog('MNT_SUBSCRIBER_ID не совпадает с ID сделки: ' . $transactionId);
+    cbRespond('FAIL');
+}
+
+$expectedAmount = number_format((float) $config['prices'][$gender], 2, '.', '');
+$expectedCurrency = isset($config['currency']) ? (string) $config['currency'] : 'RUB';
+if (number_format((float) $amount, 2, '.', '') !== $expectedAmount || $currency !== $expectedCurrency) {
+    cbLog(
+        'Сумма не совпала для счёта ' . $transactionId
+        . ': получено ' . $amount . ' ' . $currency
+        . ', ожидалось ' . $expectedAmount . ' ' . $expectedCurrency
+    );
+    cbRespond('FAIL');
+}
+
+/* ------------------------------------------------------------------
+   Идемпотентность: повторное уведомление не обрабатываем повторно
+   ------------------------------------------------------------------ */
+
+if (!is_dir(CB_DATA_DIR)) {
+    @mkdir(CB_DATA_DIR, 0755);
+    /* Каталог закрыт от чтения через веб — и здесь, и в корневом .htaccess */
+    @file_put_contents(
+        CB_DATA_DIR . '/.htaccess',
+        "Require all denied\n<IfModule !mod_authz_core.c>\nOrder allow,deny\nDeny from all\n</IfModule>\n"
+    );
+}
+
+$marker = CB_DATA_DIR . '/paid-' . preg_replace('/[^A-Za-z0-9_\-]/', '', $transactionId) . '.json';
+if (file_exists($marker)) {
+    cbRespond('SUCCESS');
+}
+
+/* ------------------------------------------------------------------
+   Отметка об оплате в amoCRM
+   ------------------------------------------------------------------ */
+
+$amoConfig = @include __DIR__ . '/amo-config.php';
+if (!is_array($amoConfig) || empty($amoConfig['domain']) || empty($amoConfig['token'])) {
+    cbLog('amo-config.php недоступен — оплата ' . $transactionId . ' не записана, ждём повтора');
+    cbRespond('FAIL');
+}
+$baseUrl = 'https://' . $amoConfig['domain'];
+
+$noteText = 'ОПЛАТА ПОЛУЧЕНА (PayAnyWay)' . ($testMode === '1' ? ' — ТЕСТОВЫЙ РЕЖИМ' : '')
+    . "\nНомер счёта: " . $transactionId
+    . "\nОперация MONETA: " . ($operationId !== '' ? $operationId : '—')
+    . "\nСумма: " . $amount . ' ' . $currency
+    . "\nВечер: " . $event . ', билет: ' . ($gender === 'f' ? 'женский' : 'мужской')
+    . "\nВремя: " . date('d.m.Y H:i:s');
+
+list($noteStatus, $noteError) = cbAmoRequest(
+    $baseUrl . '/api/v4/leads/' . $leadId . '/notes',
+    $amoConfig['token'],
+    'POST',
+    array(array('note_type' => 'common', 'params' => array('text' => $noteText)))
+);
+
+if ($noteError !== '' || $noteStatus < 200 || $noteStatus >= 300) {
+    cbLog(
+        'Примечание об оплате не добавлено к сделке ' . $leadId
+        . ' (HTTP ' . $noteStatus . ($noteError !== '' ? ', ' . $noteError : '') . ') — ждём повтора'
+    );
+    cbRespond('FAIL');
+}
+
+/* Оплата зафиксирована в сделке — с этого момента уведомление принято.
+   Маркер пишем сразу, чтобы повтор не продублировал примечание */
+@file_put_contents(
+    $marker,
+    json_encode(
+        array(
+            'transaction_id' => $transactionId,
+            'operation_id' => $operationId,
+            'lead_id' => $leadId,
+            'amount' => $amount,
+            'currency' => $currency,
+            'test_mode' => $testMode,
+            'processed_at' => date('c'),
+        ),
+        JSON_UNESCAPED_UNICODE
+    ),
+    LOCK_EX
+);
+
+/* Бюджет сделки и, если настроен, статус «Оплачено» — не критично:
+   при ошибке фиксируем в лог, но уведомление уже принято */
+$leadPatch = array('price' => (int) round((float) $amount));
+if (!empty($config['paid_status_id'])) {
+    $leadPatch['status_id'] = (int) $config['paid_status_id'];
+    if (!empty($config['paid_pipeline_id'])) {
+        $leadPatch['pipeline_id'] = (int) $config['paid_pipeline_id'];
+    }
+}
+list($patchStatus, $patchError) = cbAmoRequest(
+    $baseUrl . '/api/v4/leads/' . $leadId,
+    $amoConfig['token'],
+    'PATCH',
+    $leadPatch
+);
+if ($patchError !== '' || $patchStatus < 200 || $patchStatus >= 300) {
+    cbLog(
+        'Бюджет/статус сделки ' . $leadId . ' не обновлён (HTTP ' . $patchStatus
+        . ($patchError !== '' ? ', ' . $patchError : '') . ')'
+    );
+}
+
+cbLog('Оплата принята: ' . $transactionId . ', сделка ' . $leadId . ', ' . $amount . ' ' . $currency);
+cbRespond('SUCCESS');

@@ -4,16 +4,8 @@
     {
       "name": "site",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "4519"],
-      "port": 4519,
-      "autoPort": false
-    },
-    {
-      "name": "site-alt",
-      "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "4521"],
-      "port": 4521,
-      "autoPort": false
+      "runtimeArgs": ["-m", "http.server", "8321"],
+      "port": 8321
     }
   ]
 }
