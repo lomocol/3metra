@@ -103,7 +103,10 @@ $mntId        = (string) $config['mnt_id'];
 $currency     = isset($config['currency']) ? (string) $config['currency'] : 'RUB';
 $testMode     = !empty($config['test_mode']) ? '1' : '0';
 $amount       = number_format((float) $config['prices'][$gender], 2, '.', '');
-$subscriberId = (string) $leadId;
+/* MNT_SUBSCRIBER_ID не отправляем (в подписи — пустая строка): ID сделки
+   уже зашит в MNT_TRANSACTION_ID, а лишний необязательный параметр —
+   лишний шанс на расхождение подписи на стороне PayAnyWay */
+$subscriberId = '';
 
 /* Уникальный номер счёта. Внутри — ID сделки, вечер и код услуги:
    callback восстановит их из номера и проверит сумму без базы данных */
@@ -182,7 +185,6 @@ $fields = array(
     'MNT_AMOUNT'         => $amount,
     'MNT_CURRENCY_CODE'  => $currency,
     'MNT_TEST_MODE'      => $testMode,
-    'MNT_SUBSCRIBER_ID'  => $subscriberId,
     'MNT_DESCRIPTION'    => $description,
     'MNT_SUCCESS_URL'    => $baseUrl . '/payment-success.html',
     'MNT_FAIL_URL'       => $baseUrl . '/payment-fail.html',
