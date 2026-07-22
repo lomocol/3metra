@@ -32,7 +32,7 @@ const EVENTS = {
   aug1: { label: "суббота, 1 августа", group: "старшая группа" },
 };
 
-const TICKET_PRICES = { m: "2 000 ₽", f: "2 300 ₽" };
+const TICKET_PRICES = { m: "2 300 ₽", f: "2 300 ₽" };
 
 const CONTACT_METHODS = {
   phone: { placeholder: "+7 900 000-00-00", type: "tel", inputmode: "tel", autocomplete: "tel" },
@@ -44,15 +44,19 @@ const CONTACT_METHODS = {
    Availability statuses on event cards
    ============================================================ */
 
-document.querySelectorAll("[data-availability]").forEach((el) => {
-  const status = AVAILABILITY[el.dataset.availability];
-  const label = AVAILABILITY_LABELS[status];
+/* Строки «места есть / мест мало / мест нет» напротив мужчин и женщин
+   в карточках расписания — управляются AVAILABILITY выше */
+const SLOT_LABELS = { open: "места есть", few: "мест мало", closed: "мест нет" };
+
+document.querySelectorAll("[data-availability-gender]").forEach((el) => {
+  const status = AVAILABILITY[el.dataset.availabilityGender];
+  const label = SLOT_LABELS[status];
   if (!label) return;
-  el.textContent = label.short;
-  el.hidden = false;
+  el.textContent = label;
+  if (status === "few") el.classList.add("event-card__slot--few");
   if (status === "closed") {
-    el.classList.add("event-card__status--closed");
-    const btn = el.closest(".event-card, .next-card")?.querySelector("[data-open-booking]");
+    el.classList.add("event-card__slot--closed");
+    const btn = el.closest(".event-card")?.querySelector("[data-open-booking]");
     if (btn) {
       btn.disabled = true;
       btn.textContent = "Запись закрыта";
@@ -84,6 +88,30 @@ const onScrollNav = () => {
 };
 onScrollNav();
 window.addEventListener("scroll", onScrollNav, { passive: true });
+
+/* ============================================================
+   Cookie notice — уведомление без кнопок согласия (см. cookies.html);
+   закрытие запоминается в localStorage
+   ============================================================ */
+
+const cookieNote = document.getElementById("cookie-note");
+if (cookieNote) {
+  let cookieNoteClosed = false;
+  try {
+    cookieNoteClosed = localStorage.getItem("cookieNoteClosed") === "1";
+  } catch {}
+  if (!cookieNoteClosed) {
+    cookieNote.hidden = false;
+    requestAnimationFrame(() => cookieNote.classList.add("is-visible"));
+    cookieNote.querySelector(".cookie-note__close").addEventListener("click", () => {
+      cookieNote.classList.remove("is-visible");
+      setTimeout(() => { cookieNote.hidden = true; }, 320);
+      try {
+        localStorage.setItem("cookieNoteClosed", "1");
+      } catch {}
+    });
+  }
+}
 
 /* ============================================================
    Reveal-on-scroll
