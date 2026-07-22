@@ -34,4 +34,10 @@ return [
     /* Необязательно: базовый URL сайта для Success/Fail URL.
        Пусто — определяется по домену запроса */
     'base_url' => '',
+
+    /* Офлайн-цель Яндекс.Метрики после подтверждённой оплаты.
+       OAuth-токену нужен доступ metrika:offline_data или metrika:write. */
+    'metrika_counter_id' => 110737561,
+    'metrika_payment_goal' => 'payment_success',
+    'metrika_oauth_token' => 'ВСТАВИТЬ_OAUTH_ТОКЕН_МЕТРИКИ',
 ];

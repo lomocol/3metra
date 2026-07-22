@@ -434,6 +434,31 @@ function collectTracking() {
   return tracking;
 }
 
+function getMetrikaClientId() {
+  return new Promise((resolve) => {
+    if (typeof window.ym !== "function") {
+      resolve("");
+      return;
+    }
+
+    let settled = false;
+    const finish = (value = "") => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      const clientId = String(value).trim();
+      resolve(/^\d{5,32}$/.test(clientId) ? clientId : "");
+    };
+    const timer = setTimeout(finish, 800);
+
+    try {
+      window.ym(110737561, "getClientID", finish);
+    } catch {
+      finish();
+    }
+  });
+}
+
 /* ============================================================
    Validation + submission
    ============================================================ */
@@ -529,6 +554,7 @@ form.addEventListener("submit", async (e) => {
     contact,
     consent: true,
     website: data.website || "",
+    metrikaClientId: "",
     ...collectTracking(),
     submittedAt: new Date().toISOString(),
   };
@@ -543,6 +569,8 @@ form.addEventListener("submit", async (e) => {
   submitBtn.textContent = "Отправляем…";
 
   try {
+    submittedData.metrikaClientId = await getMetrikaClientId();
+
     const res = await fetch(BOOKING_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json" },

@@ -21,6 +21,7 @@ header('X-Content-Type-Options: nosniff');
 
 const MAX_FIELD_LENGTH = 500;
 const LOG_FILE = __DIR__ . '/form-handler.log';
+const PAYMENT_DATA_DIR = __DIR__ . '/payanyway-data';
 
 /* Список вечеров — должен совпадать с EVENTS в script.js и PAY_EVENTS
    в pay.php */
@@ -180,6 +181,12 @@ $gender = cleanString(isset($input['gender']) ? $input['gender'] : '');
 $method = cleanString(isset($input['method']) ? $input['method'] : '');
 $contact = cleanString(isset($input['contact']) ? $input['contact'] : '');
 $email = cleanString(isset($input['email']) ? $input['email'] : '');
+$metrikaClientIdRaw = cleanString(
+    isset($input['metrikaClientId']) ? $input['metrikaClientId'] : ''
+);
+$metrikaClientId = preg_match('/^\d{5,32}$/', $metrikaClientIdRaw)
+    ? $metrikaClientIdRaw
+    : '';
 $consent = !empty($input['consent']);
 
 $valid = mb_strlen($name) >= 2
@@ -292,6 +299,9 @@ if ($email !== '') {
 $lines[] = '';
 $lines[] = 'Страница: ' . ($page !== '' ? $page : '—');
 $lines[] = 'Referrer: ' . ($referrer !== '' ? $referrer : '—');
+if ($metrikaClientId !== '') {
+    $lines[] = 'ClientID Метрики: ' . $metrikaClientId;
+}
 foreach (UTM_KEYS as $key) {
     $label = 'UTM ' . substr($key, 4);
     $lines[] = $label . ': ' . ($utm[$key] !== '' ? $utm[$key] : '—');
@@ -316,6 +326,33 @@ if ($noteCurlError !== '' || $noteStatus < 200 || $noteStatus >= 300) {
         'Примечание к сделке ' . $leadId . ' не добавлено: '
         . amoErrorSummary($noteStatus, $noteBody, $noteCurlError)
     );
+}
+
+/* Связываем ClientID Метрики с созданной сделкой на сервере. pay.php
+   прочитает его по leadId и прикрепит к конкретному счёту PayAnyWay. */
+if ($metrikaClientId !== '') {
+    if (!is_dir(PAYMENT_DATA_DIR)) {
+        @mkdir(PAYMENT_DATA_DIR, 0755);
+        @file_put_contents(
+            PAYMENT_DATA_DIR . '/.htaccess',
+            "Require all denied\n<IfModule !mod_authz_core.c>\nOrder allow,deny\nDeny from all\n</IfModule>\n"
+        );
+    }
+    $leadAnalyticsSaved = @file_put_contents(
+        PAYMENT_DATA_DIR . '/lead-' . $leadId . '.json',
+        json_encode(
+            array(
+                'lead_id' => $leadId,
+                'client_id' => $metrikaClientId,
+                'created_at' => date('c'),
+            ),
+            JSON_UNESCAPED_UNICODE
+        ),
+        LOCK_EX
+    );
+    if ($leadAnalyticsSaved === false) {
+        logError('ClientID Метрики не сохранён для сделки ' . $leadId);
+    }
 }
 
 respond(200, true, null, true, $leadId);

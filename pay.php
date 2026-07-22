@@ -22,6 +22,7 @@ declare(strict_types=1);
 ini_set('display_errors', '0');
 
 const PAY_LOG_FILE = __DIR__ . '/payanyway.log';
+const PAY_DATA_DIR = __DIR__ . '/payanyway-data';
 
 /* Список вечеров — должен совпадать с EVENTS в script.js и form-handler.php */
 const PAY_EVENTS = array(
@@ -116,6 +117,49 @@ try {
     $rand = substr(md5(uniqid((string) mt_rand(), true)), 0, 8);
 }
 $transactionId = '3M-' . $leadId . '-' . $event . '-' . $gender . '-' . date('ymdHis') . '-' . $rand;
+
+/* ClientID Метрики сохраняем на сервере рядом со счётом. Он не входит
+   в платёжные параметры и не может быть подменён во время оплаты. */
+if (!is_dir(PAY_DATA_DIR)) {
+    @mkdir(PAY_DATA_DIR, 0755);
+    @file_put_contents(
+        PAY_DATA_DIR . '/.htaccess',
+        "Require all denied\n<IfModule !mod_authz_core.c>\nOrder allow,deny\nDeny from all\n</IfModule>\n"
+    );
+}
+$metrikaClientId = '';
+$leadAnalyticsFile = PAY_DATA_DIR . '/lead-' . $leadId . '.json';
+if (is_file($leadAnalyticsFile)) {
+    $leadAnalytics = json_decode((string) @file_get_contents($leadAnalyticsFile), true);
+    if (
+        is_array($leadAnalytics)
+        && isset($leadAnalytics['client_id'])
+        && preg_match('/^\d{5,32}$/', (string) $leadAnalytics['client_id'])
+    ) {
+        $metrikaClientId = (string) $leadAnalytics['client_id'];
+    }
+}
+$orderFile = PAY_DATA_DIR . '/order-' . $transactionId . '.json';
+$orderSaved = @file_put_contents(
+    $orderFile,
+    json_encode(
+        array(
+            'transaction_id' => $transactionId,
+            'lead_id' => $leadId,
+            'client_id' => $metrikaClientId,
+            'event' => $event,
+            'gender' => $gender,
+            'amount' => $amount,
+            'currency' => $currency,
+            'created_at' => date('c'),
+        ),
+        JSON_UNESCAPED_UNICODE
+    ),
+    LOCK_EX
+);
+if ($orderSaved === false) {
+    payLog('Не удалось сохранить аналитику счёта ' . $transactionId);
+}
 
 /* MNT_SIGNATURE = MD5(MNT_ID + MNT_TRANSACTION_ID + MNT_AMOUNT +
    MNT_CURRENCY_CODE + MNT_SUBSCRIBER_ID + MNT_TEST_MODE + КодПроверки) */

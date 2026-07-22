@@ -70,6 +70,84 @@ function cbAmoRequest($url, $token, $method, array $payload)
     return array($status, $error);
 }
 
+function cbSendMetrikaPayment(array $config, $clientId, $transactionId, $amount, $currency)
+{
+    $counterId = isset($config['metrika_counter_id'])
+        ? (int) $config['metrika_counter_id']
+        : 0;
+    $target = isset($config['metrika_payment_goal'])
+        ? trim((string) $config['metrika_payment_goal'])
+        : '';
+    $token = isset($config['metrika_oauth_token'])
+        ? trim((string) $config['metrika_oauth_token'])
+        : '';
+
+    if (
+        $counterId <= 0
+        || !preg_match('/^[A-Za-z0-9_-]+$/', $target)
+        || $token === ''
+        || strpos($token, 'ВСТАВИТЬ') !== false
+        || !preg_match('/^\d{5,32}$/', $clientId)
+    ) {
+        cbLog('Метрика оплаты не настроена или отсутствует ClientID для счёта ' . $transactionId);
+        return false;
+    }
+
+    $csvPath = @tempnam(CB_DATA_DIR, 'metrika-');
+    if ($csvPath === false) {
+        cbLog('Не удалось создать временный файл Метрики для счёта ' . $transactionId);
+        return false;
+    }
+
+    $fp = @fopen($csvPath, 'wb');
+    if ($fp === false) {
+        @unlink($csvPath);
+        cbLog('Не удалось открыть временный файл Метрики для счёта ' . $transactionId);
+        return false;
+    }
+    fputcsv($fp, array('ClientId', 'PurchaseId', 'Target', 'DateTime', 'Price', 'Currency'));
+    fputcsv(
+        $fp,
+        array($clientId, $transactionId, $target, time() - 5, $amount, $currency)
+    );
+    fclose($fp);
+
+    $ch = curl_init(
+        'https://api-metrika.yandex.net/management/v1/counter/'
+        . $counterId . '/offline_conversions/upload'
+    );
+    curl_setopt_array($ch, array(
+        CURLOPT_POST => true,
+        CURLOPT_POSTFIELDS => array(
+            'file' => new CURLFile($csvPath, 'text/csv', 'payment-conversion.csv'),
+        ),
+        CURLOPT_HTTPHEADER => array('Authorization: OAuth ' . $token),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_CONNECTTIMEOUT => 5,
+        CURLOPT_TIMEOUT => 15,
+    ));
+    $body = curl_exec($ch);
+    $error = curl_error($ch);
+    $status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+    @unlink($csvPath);
+
+    $response = is_string($body) ? json_decode($body, true) : null;
+    $uploadId = is_array($response) && isset($response['uploading']['id'])
+        ? (int) $response['uploading']['id']
+        : 0;
+    if ($error !== '' || $status < 200 || $status >= 300 || $uploadId <= 0) {
+        cbLog(
+            'Цель оплаты не передана в Метрику для счёта ' . $transactionId
+            . ' (HTTP ' . $status . ($error !== '' ? ', ' . $error : '') . ')'
+        );
+        return false;
+    }
+
+    cbLog('Цель оплаты передана в Метрику: счёт ' . $transactionId . ', загрузка ' . $uploadId);
+    return true;
+}
+
 /* ------------------------------------------------------------------
    Конфигурация
    ------------------------------------------------------------------ */
@@ -174,8 +252,36 @@ if (!is_dir(CB_DATA_DIR)) {
     );
 }
 
-$marker = CB_DATA_DIR . '/paid-' . preg_replace('/[^A-Za-z0-9_\-]/', '', $transactionId) . '.json';
+$safeTransactionId = preg_replace('/[^A-Za-z0-9_\-]/', '', $transactionId);
+$marker = CB_DATA_DIR . '/paid-' . $safeTransactionId . '.json';
+$metrikaMarker = CB_DATA_DIR . '/metrika-' . $safeTransactionId . '.json';
+$orderFile = CB_DATA_DIR . '/order-' . $safeTransactionId . '.json';
+$orderData = array();
+if (is_file($orderFile)) {
+    $decodedOrder = json_decode((string) @file_get_contents($orderFile), true);
+    if (is_array($decodedOrder)) {
+        $orderData = $decodedOrder;
+    }
+}
+$metrikaClientId = isset($orderData['client_id'])
+    && preg_match('/^\d{5,32}$/', (string) $orderData['client_id'])
+    ? (string) $orderData['client_id']
+    : '';
+
 if (file_exists($marker)) {
+    if (
+        $testMode !== '1'
+        && !file_exists($metrikaMarker)
+        && cbSendMetrikaPayment(
+            $config,
+            $metrikaClientId,
+            $transactionId,
+            $amount,
+            $currency
+        )
+    ) {
+        @file_put_contents($metrikaMarker, json_encode(array('sent_at' => date('c'))), LOCK_EX);
+    }
     cbRespond('SUCCESS');
 }
 
@@ -224,6 +330,7 @@ if ($noteError !== '' || $noteStatus < 200 || $noteStatus >= 300) {
             'amount' => $amount,
             'currency' => $currency,
             'test_mode' => $testMode,
+            'metrika_client_id' => $metrikaClientId,
             'processed_at' => date('c'),
         ),
         JSON_UNESCAPED_UNICODE
@@ -251,6 +358,22 @@ if ($patchError !== '' || $patchStatus < 200 || $patchStatus >= 300) {
         'Бюджет/статус сделки ' . $leadId . ' не обновлён (HTTP ' . $patchStatus
         . ($patchError !== '' ? ', ' . $patchError : '') . ')'
     );
+}
+
+/* Аналитика не влияет на приём платежа. При повторном callback попытка
+   отправки повторится, пока рядом со счётом нет отдельного маркера. */
+if (
+    $testMode !== '1'
+    && !file_exists($metrikaMarker)
+    && cbSendMetrikaPayment(
+        $config,
+        $metrikaClientId,
+        $transactionId,
+        $amount,
+        $currency
+    )
+) {
+    @file_put_contents($metrikaMarker, json_encode(array('sent_at' => date('c'))), LOCK_EX);
 }
 
 cbLog('Оплата принята: ' . $transactionId . ', сделка ' . $leadId . ', ' . $amount . ' ' . $currency);
