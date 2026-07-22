@@ -7,9 +7,9 @@ RewriteRule .* https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
 # Запрет доступа к скрытым файлам и папкам (.git, .gitignore и т.п.)
 RewriteRule (^|/)\.(?!well-known($|/)) - [F]
 
-# Запрет доступа к конфигурациям (токен amoCRM, код проверки PayAnyWay)
+# Запрет доступа к конфигурациям (токены amoCRM и ботов, код PayAnyWay)
 # и техническим логам
-<FilesMatch "^amo-config.*\.php$|^payanyway-config.*\.php$|\.log$">
+<FilesMatch "^amo-config.*\.php$|^payanyway-config.*\.php$|^notification-config.*\.php$|\.log$">
   <IfModule mod_authz_core.c>
     Require all denied
   </IfModule>

@@ -33,8 +33,11 @@ const EVENTS = array(
 );
 
 const GENDERS = array('m' => 'Мужчина', 'f' => 'Женщина');
+const SERVICES = array('m' => 'Мужской билет', 'f' => 'Женский билет');
 const METHODS = array('phone' => 'Телефон', 'telegram' => 'Telegram', 'max' => 'MAX');
 const UTM_KEYS = array('utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term');
+
+require_once __DIR__ . '/notification-sender.php';
 
 function respond($status, $success, $message = null, $leadCreated = null, $leadId = null)
 {
@@ -328,31 +331,63 @@ if ($noteCurlError !== '' || $noteStatus < 200 || $noteStatus >= 300) {
     );
 }
 
-/* Связываем ClientID Метрики с созданной сделкой на сервере. pay.php
-   прочитает его по leadId и прикрепит к конкретному счёту PayAnyWay. */
-if ($metrikaClientId !== '') {
-    if (!is_dir(PAYMENT_DATA_DIR)) {
-        @mkdir(PAYMENT_DATA_DIR, 0755);
-        @file_put_contents(
-            PAYMENT_DATA_DIR . '/.htaccess',
-            "Require all denied\n<IfModule !mod_authz_core.c>\nOrder allow,deny\nDeny from all\n</IfModule>\n"
-        );
-    }
-    $leadAnalyticsSaved = @file_put_contents(
-        PAYMENT_DATA_DIR . '/lead-' . $leadId . '.json',
-        json_encode(
-            array(
-                'lead_id' => $leadId,
-                'client_id' => $metrikaClientId,
-                'created_at' => date('c'),
-            ),
-            JSON_UNESCAPED_UNICODE
-        ),
-        LOCK_EX
+/* Сохраняем ClientID и данные заявки на сервере. pay.php прочитает их
+   по leadId и прикрепит к конкретному счёту PayAnyWay. */
+if (!is_dir(PAYMENT_DATA_DIR)) {
+    @mkdir(PAYMENT_DATA_DIR, 0755);
+    @file_put_contents(
+        PAYMENT_DATA_DIR . '/.htaccess',
+        "Require all denied\n<IfModule !mod_authz_core.c>\nOrder allow,deny\nDeny from all\n</IfModule>\n"
     );
-    if ($leadAnalyticsSaved === false) {
-        logError('ClientID Метрики не сохранён для сделки ' . $leadId);
-    }
+}
+$paymentConfig = @include __DIR__ . '/payanyway-config.php';
+$leadAmount = is_array($paymentConfig) && isset($paymentConfig['prices'][$gender])
+    ? number_format((float) $paymentConfig['prices'][$gender], 2, '.', '')
+    : null;
+$leadCurrency = is_array($paymentConfig) && !empty($paymentConfig['currency'])
+    ? (string) $paymentConfig['currency']
+    : 'RUB';
+$leadDataSaved = @file_put_contents(
+    PAYMENT_DATA_DIR . '/lead-' . $leadId . '.json',
+    json_encode(
+        array(
+            'lead_id' => $leadId,
+            'client_id' => $metrikaClientId,
+            'name' => $name,
+            'phone' => $phone !== '' ? $phone : $contact,
+            'event' => $event,
+            'gender' => $gender,
+            'amount' => $leadAmount,
+            'currency' => $leadCurrency,
+            'created_at' => date('c'),
+        ),
+        JSON_UNESCAPED_UNICODE
+    ),
+    LOCK_EX
+);
+if ($leadDataSaved === false) {
+    logError('Данные заявки не сохранены для сделки ' . $leadId);
+}
+
+$notification = sendSiteNotification(
+    buildDealNotification(
+        'Новая заявка',
+        array(
+            'name' => $name,
+            'phone' => $phone !== '' ? $phone : $contact,
+            'event' => EVENTS[$event],
+            'service' => SERVICES[$gender],
+            'amount' => $leadAmount,
+            'currency' => $leadCurrency,
+            'deal_url' => $baseUrl . '/leads/detail/' . $leadId,
+        )
+    )
+);
+if (!empty($notification['enabled']) && empty($notification['success'])) {
+    logError(
+        'Уведомление о сделке ' . $leadId . ' не отправлено: '
+        . notificationFailureSummary($notification)
+    );
 }
 
 respond(200, true, null, true, $leadId);

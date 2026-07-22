@@ -21,6 +21,14 @@ ini_set('display_errors', '0');
 
 const CB_LOG_FILE = __DIR__ . '/payanyway.log';
 const CB_DATA_DIR = __DIR__ . '/payanyway-data';
+const CB_EVENTS = array(
+    'jul24' => 'пятница, 24 июля — основная группа',
+    'jul25' => 'суббота, 25 июля — старшая группа',
+    'jul31' => 'пятница, 31 июля — основная группа',
+    'aug1'  => 'суббота, 1 августа — старшая группа',
+);
+
+require_once __DIR__ . '/notification-sender.php';
 
 function cbLog($message)
 {
@@ -148,6 +156,75 @@ function cbSendMetrikaPayment(array $config, $clientId, $transactionId, $amount,
     return true;
 }
 
+function cbSendPaymentNotification(
+    array $orderData,
+    $leadId,
+    $event,
+    $gender,
+    $amount,
+    $currency,
+    $dealUrl,
+    $testMode
+) {
+    $title = $testMode === '1' ? 'Оплата получена (тест)' : 'Оплата получена';
+    return sendSiteNotification(
+        buildDealNotification(
+            $title,
+            array(
+                'name' => isset($orderData['name']) ? (string) $orderData['name'] : '',
+                'phone' => isset($orderData['phone']) ? (string) $orderData['phone'] : '',
+                'event' => isset(CB_EVENTS[$event]) ? CB_EVENTS[$event] : $event,
+                'service' => $gender === 'f' ? 'Женский билет' : 'Мужской билет',
+                'amount' => $amount,
+                'currency' => $currency,
+                'deal_url' => $dealUrl,
+            )
+        )
+    );
+}
+
+function cbHandlePaymentNotification(
+    $marker,
+    array $orderData,
+    $leadId,
+    $event,
+    $gender,
+    $amount,
+    $currency,
+    $dealUrl,
+    $testMode,
+    $transactionId
+) {
+    if (file_exists($marker) || $dealUrl === '') {
+        return;
+    }
+    $result = cbSendPaymentNotification(
+        $orderData,
+        $leadId,
+        $event,
+        $gender,
+        $amount,
+        $currency,
+        $dealUrl,
+        $testMode
+    );
+    if (empty($result['enabled'])) {
+        return;
+    }
+    if (!empty($result['success'])) {
+        @file_put_contents(
+            $marker,
+            json_encode(array('sent_at' => date('c')), JSON_UNESCAPED_UNICODE),
+            LOCK_EX
+        );
+        return;
+    }
+    cbLog(
+        'Уведомление об оплате ' . $transactionId . ' не отправлено: '
+        . notificationFailureSummary($result)
+    );
+}
+
 /* ------------------------------------------------------------------
    Конфигурация
    ------------------------------------------------------------------ */
@@ -255,6 +332,7 @@ if (!is_dir(CB_DATA_DIR)) {
 $safeTransactionId = preg_replace('/[^A-Za-z0-9_\-]/', '', $transactionId);
 $marker = CB_DATA_DIR . '/paid-' . $safeTransactionId . '.json';
 $metrikaMarker = CB_DATA_DIR . '/metrika-' . $safeTransactionId . '.json';
+$notificationMarker = CB_DATA_DIR . '/notification-' . $safeTransactionId . '.json';
 $orderFile = CB_DATA_DIR . '/order-' . $safeTransactionId . '.json';
 $orderData = array();
 if (is_file($orderFile)) {
@@ -266,6 +344,10 @@ if (is_file($orderFile)) {
 $metrikaClientId = isset($orderData['client_id'])
     && preg_match('/^\d{5,32}$/', (string) $orderData['client_id'])
     ? (string) $orderData['client_id']
+    : '';
+$amoConfig = @include __DIR__ . '/amo-config.php';
+$dealUrl = is_array($amoConfig) && !empty($amoConfig['domain'])
+    ? 'https://' . $amoConfig['domain'] . '/leads/detail/' . $leadId
     : '';
 
 if (file_exists($marker)) {
@@ -282,6 +364,18 @@ if (file_exists($marker)) {
     ) {
         @file_put_contents($metrikaMarker, json_encode(array('sent_at' => date('c'))), LOCK_EX);
     }
+    cbHandlePaymentNotification(
+        $notificationMarker,
+        $orderData,
+        $leadId,
+        $event,
+        $gender,
+        $amount,
+        $currency,
+        $dealUrl,
+        $testMode,
+        $transactionId
+    );
     cbRespond('SUCCESS');
 }
 
@@ -289,7 +383,6 @@ if (file_exists($marker)) {
    Отметка об оплате в amoCRM
    ------------------------------------------------------------------ */
 
-$amoConfig = @include __DIR__ . '/amo-config.php';
 if (!is_array($amoConfig) || empty($amoConfig['domain']) || empty($amoConfig['token'])) {
     cbLog('amo-config.php недоступен — оплата ' . $transactionId . ' не записана, ждём повтора');
     cbRespond('FAIL');
@@ -359,6 +452,21 @@ if ($patchError !== '' || $patchStatus < 200 || $patchStatus >= 300) {
         . ($patchError !== '' ? ', ' . $patchError : '') . ')'
     );
 }
+
+/* Ошибка мессенджера не влияет на подтверждение оплаты. Маркер исключает
+   дубли, а повторный callback сможет повторить неудачную отправку. */
+cbHandlePaymentNotification(
+    $notificationMarker,
+    $orderData,
+    $leadId,
+    $event,
+    $gender,
+    $amount,
+    $currency,
+    $dealUrl,
+    $testMode,
+    $transactionId
+);
 
 /* Аналитика не влияет на приём платежа. При повторном callback попытка
    отправки повторится, пока рядом со счётом нет отдельного маркера. */

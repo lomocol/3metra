@@ -128,6 +128,8 @@ if (!is_dir(PAY_DATA_DIR)) {
     );
 }
 $metrikaClientId = '';
+$leadName = '';
+$leadPhone = '';
 $leadAnalyticsFile = PAY_DATA_DIR . '/lead-' . $leadId . '.json';
 if (is_file($leadAnalyticsFile)) {
     $leadAnalytics = json_decode((string) @file_get_contents($leadAnalyticsFile), true);
@@ -138,6 +140,10 @@ if (is_file($leadAnalyticsFile)) {
     ) {
         $metrikaClientId = (string) $leadAnalytics['client_id'];
     }
+    if (is_array($leadAnalytics)) {
+        $leadName = isset($leadAnalytics['name']) ? (string) $leadAnalytics['name'] : '';
+        $leadPhone = isset($leadAnalytics['phone']) ? (string) $leadAnalytics['phone'] : '';
+    }
 }
 $orderFile = PAY_DATA_DIR . '/order-' . $transactionId . '.json';
 $orderSaved = @file_put_contents(
@@ -147,6 +153,8 @@ $orderSaved = @file_put_contents(
             'transaction_id' => $transactionId,
             'lead_id' => $leadId,
             'client_id' => $metrikaClientId,
+            'name' => $leadName,
+            'phone' => $leadPhone,
             'event' => $event,
             'gender' => $gender,
             'amount' => $amount,
