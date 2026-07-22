@@ -197,9 +197,56 @@ if (mobileStripVideo) {
   document.addEventListener("visibilitychange", () => {
     if (!document.hidden) playMobileStripVideo();
   });
-  window.addEventListener("resize", playMobileStripVideo, { passive: true });
+  if (mobileStripQuery.addEventListener) {
+    mobileStripQuery.addEventListener("change", playMobileStripVideo);
+  } else {
+    mobileStripQuery.addListener(playMobileStripVideo);
+  }
   document.addEventListener("touchstart", playMobileStripVideo, { once: true, passive: true });
   document.addEventListener("pointerdown", playMobileStripVideo, { once: true, passive: true });
+}
+
+/* ============================================================
+   Gallery videos — load and play only near the viewport
+   ============================================================ */
+
+const galleryVideos = document.querySelectorAll("[data-gallery-video]");
+
+function playGalleryVideo(video) {
+  video.muted = true;
+  video.defaultMuted = true;
+  video.loop = true;
+  video.playsInline = true;
+  video.play?.().catch(() => {});
+}
+
+function isNearViewport(video) {
+  const rect = video.getBoundingClientRect();
+  return rect.bottom > -240 && rect.top < window.innerHeight + 240;
+}
+
+if (galleryVideos.length) {
+  if ("IntersectionObserver" in window) {
+    const galleryVideoIo = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) playGalleryVideo(entry.target);
+          else entry.target.pause?.();
+        }
+      },
+      { rootMargin: "240px 0px", threshold: 0.01 }
+    );
+    galleryVideos.forEach((video) => galleryVideoIo.observe(video));
+  } else {
+    galleryVideos.forEach(playGalleryVideo);
+  }
+
+  document.addEventListener("visibilitychange", () => {
+    galleryVideos.forEach((video) => {
+      if (document.hidden) video.pause?.();
+      else if (isNearViewport(video)) playGalleryVideo(video);
+    });
+  });
 }
 
 /* ============================================================
