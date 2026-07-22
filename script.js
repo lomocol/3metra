@@ -76,18 +76,45 @@ document.querySelectorAll("[data-availability-long]").forEach((el) => {
    ============================================================ */
 
 const nav = document.querySelector(".nav");
-const mobileCta = document.getElementById("mobile-cta");
-const onScrollNav = () => {
-  nav.classList.toggle("is-scrolled", window.scrollY > 12);
-  /* Sticky CTA appears after the visitor scrolls past the hero */
-  if (mobileCta) {
-    const show = window.scrollY > window.innerHeight * 0.7;
-    mobileCta.classList.toggle("is-visible", show);
-    mobileCta.setAttribute("aria-hidden", show ? "false" : "true");
-  }
-};
+const onScrollNav = () => nav.classList.toggle("is-scrolled", window.scrollY > 12);
 onScrollNav();
 window.addEventListener("scroll", onScrollNav, { passive: true });
+
+/* ============================================================
+   Счётчик «470 ростовчан познакомились» — оживает при появлении
+   ============================================================ */
+
+const countupEls = document.querySelectorAll("[data-countup]");
+if (
+  countupEls.length &&
+  "IntersectionObserver" in window &&
+  !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+) {
+  const countupIo = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        const el = entry.target;
+        countupIo.unobserve(el);
+        const target = parseInt(el.dataset.countup, 10);
+        if (!target) continue;
+        const started = performance.now();
+        const duration = 1200;
+        const tick = (now) => {
+          const p = Math.min(1, (now - started) / duration);
+          el.textContent = String(Math.round(target * (1 - Math.pow(1 - p, 3))));
+          if (p < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+        /* Страховка: если кадры анимации задушены (фоновая вкладка),
+           через duration всё равно показываем итоговое число */
+        setTimeout(() => { el.textContent = String(target); }, duration + 200);
+      }
+    },
+    { threshold: 0.6 }
+  );
+  countupEls.forEach((el) => countupIo.observe(el));
+}
 
 /* ============================================================
    Cookie notice — уведомление без кнопок согласия (см. cookies.html);
@@ -136,6 +163,43 @@ if ("IntersectionObserver" in window) {
   revealEls.forEach((el) => io.observe(el));
 } else {
   revealEls.forEach((el) => el.classList.add("is-in"));
+}
+
+/* ============================================================
+   Mobile hero-strip video — стартует после применения мобильных CSS
+   ============================================================ */
+
+const mobileStripVideo = document.querySelector("[data-mobile-strip-video]");
+const mobileStripQuery = window.matchMedia("(max-width: 760px)");
+
+function playMobileStripVideo() {
+  if (!mobileStripVideo) return;
+
+  if (!mobileStripQuery.matches) {
+    mobileStripVideo.pause?.();
+    return;
+  }
+
+  mobileStripVideo.muted = true;
+  mobileStripVideo.defaultMuted = true;
+  mobileStripVideo.loop = true;
+  mobileStripVideo.playsInline = true;
+  mobileStripVideo.setAttribute("muted", "");
+  mobileStripVideo.setAttribute("playsinline", "");
+
+  if (!mobileStripVideo.currentSrc) mobileStripVideo.load?.();
+  mobileStripVideo.play?.().catch(() => {});
+}
+
+if (mobileStripVideo) {
+  window.addEventListener("load", playMobileStripVideo, { once: true });
+  requestAnimationFrame(playMobileStripVideo);
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) playMobileStripVideo();
+  });
+  window.addEventListener("resize", playMobileStripVideo, { passive: true });
+  document.addEventListener("touchstart", playMobileStripVideo, { once: true, passive: true });
+  document.addEventListener("pointerdown", playMobileStripVideo, { once: true, passive: true });
 }
 
 /* ============================================================

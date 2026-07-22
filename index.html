@@ -18,7 +18,7 @@
   <title>3 метра — 10–15 живых свиданий за один вечер | Ростов-на-Дону</title>
   <meta name="description" content="Вечера живых знакомств в Ростове-на-Дону: 10–15 разговоров один на один за один вечер. Основная и старшая группы, поровну мужчин и женщин. Билет — 2 300 ₽">
   <meta property="og:title" content="3 метра — 10–15 живых свиданий за один вечер">
-  <meta property="og:description" content="Живые знакомства в баре-ресторане GasGas в центре Ростова-на-Дону. Без приложений и переписок">
+  <meta property="og:description" content="Живые знакомства в центре Ростова-на-Дону. Без приложений и переписок">
   <meta property="og:type" content="website">
   <meta property="og:image" content="media/hero-poster.jpg">
   <link rel="icon" type="image/png" href="media/favicon.png">
@@ -26,7 +26,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260722">
+  <link rel="stylesheet" href="styles.css?v=20260722i">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -79,7 +79,7 @@
         <ul class="hero__meta reveal" data-delay="320">
           <li>Билет — 2 300 ₽, из них 700 ₽ — на еду и напитки</li>
           <li>Мужчин и женщин — поровну, ровесники</li>
-          <li>2 часа, закрытый бар-ресторан в центре Ростова</li>
+          <li>2 часа, закрытая площадка в центре Ростова</li>
         </ul>
       </div>
       <div class="hero__media reveal" data-delay="200">
@@ -87,7 +87,7 @@
           <video autoplay muted loop playsinline preload="metadata"
                  width="1080" height="1920" poster="media/hero-poster.jpg"
                  aria-label="Атмосфера вечера знакомств: столики на пары при тёплом свете">
-            <source src="media/hero.mp4" type="video/mp4">
+            <source media="(min-width: 701px)" src="media/hero.mp4" type="video/mp4">
           </video>
           <figcaption class="hero__badge">
             <span class="hero__badge-label">ближайшие вечера</span>
@@ -96,21 +96,24 @@
         </figure>
       </div>
     </div>
-  </section>
 
-  <!-- Лента лиц: мужчина с рекламы должен сразу увидеть, кто приходит на вечера.
-       Чтобы заменить кадр: положите фото (портрет ~4:5, например 800×1000) в media/
-       и поменяйте src/width/height у соответствующего <img> ниже -->
-  <section class="strip" aria-label="Гости наших вечеров">
-    <div class="container">
+    <!-- Лента лиц: на мобильном показывается первым экраном, до заголовка.
+         Чтобы заменить кадр: положите фото (портрет ~4:5, например 800×1000)
+         в media/ и поменяйте src/width/height у соответствующего <img> -->
+    <div class="container hero__strip" aria-label="Гости наших вечеров">
       <div class="strip__row reveal">
         <figure class="strip__item">
-          <img src="media/gallery-guests.jpg" width="736" height="1600" loading="lazy"
-               alt="Девушка и мужчина общаются за столиком на вечере знакомств">
+          <img src="media/gallery-date-blonde.jpg" width="900" height="1124" fetchpriority="high" decoding="async"
+               alt="Девушка улыбается во время мини-свидания за столиком с тюльпаном и свечой">
         </figure>
-        <figure class="strip__item">
+        <figure class="strip__item strip__item--photo2">
           <img src="media/strip-2.jpg" width="941" height="1176" loading="lazy"
                alt="Пара знакомится за столиком с розой — основная группа">
+          <video data-mobile-strip-video autoplay muted loop playsinline preload="auto"
+                 width="540" height="960" poster="media/hero-mobile-poster.jpg"
+                 aria-label="Видео с вечера знакомств: пары общаются за столиками">
+            <source media="(max-width: 760px)" src="media/hero-mobile.mp4" type="video/mp4">
+          </video>
         </figure>
         <figure class="strip__item">
           <img src="media/gallery-evening.jpg" width="738" height="1600" loading="lazy"
@@ -124,6 +127,23 @@
           <img src="media/strip-5.jpg" width="819" height="1024" loading="lazy"
                alt="Пара старшей группы разговаривает при тёплом свете свечи">
         </figure>
+        <figure class="strip__item strip__item--mobile-extra">
+          <img src="media/gallery-room-wide.jpg" width="900" height="1572" loading="lazy"
+               alt="Зал вечера знакомств: пары общаются за отдельными столиками">
+        </figure>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="hero__stats reveal">
+        <div class="hero-stat">
+          <b><span data-countup="470">470</span></b>
+          <span>ростовчан познакомились у нас!</span>
+        </div>
+        <div class="hero-stat">
+          <b>1+ год</b>
+          <span>сводим ростовчан вместе</span>
+        </div>
       </div>
     </div>
   </section>
@@ -196,7 +216,7 @@
         <p>Мужчин и женщин поровну, одной возрастной группы. Если случится заметный перекос — вернём оплату или перенесём запись</p>
       </div>
       <div class="concept__stats">
-        <div class="stat reveal"><b>10–15</b><span>свиданий за вечер — с каждой участницей лично</span></div>
+        <div class="stat reveal"><b>10–15</b><span>мини-свиданий за вечер</span></div>
         <div class="stat reveal" data-delay="90"><b>5 минут</b><span>на разговор — достаточно, чтобы понять, есть ли интерес</span></div>
         <div class="stat reveal" data-delay="180"><b>50 / 50</b><span>мужчин и женщин — состав собираем вручную</span></div>
       </div>
@@ -217,12 +237,12 @@
         <li class="step reveal" data-delay="90">
           <span class="step__num">02</span>
           <h3>Общаетесь</h3>
-          <p>Каждые пять минут за ваш столик садится новая собеседница — так вы поговорите со всеми</p>
+          <p>Каждые пять минут пары меняются, у вас новая собеседница — так вы поговорите со всеми</p>
         </li>
         <li class="step reveal" data-delay="180">
           <span class="step__num">03</span>
           <h3>Отмечаете симпатии</h3>
-          <p>Приватно отмечаете, с кем хочется продолжить. Никто, кроме нас, этого не увидит — отказов «в лицо» здесь нет</p>
+          <p>Приватно отмечаете, с кем хочется продолжить. Никто, кроме нас, этого не увидит</p>
         </li>
         <li class="step reveal" data-delay="270">
           <span class="step__num">04</span>
@@ -239,16 +259,8 @@
         <h2>Атмосфера прошедших вечеров</h2>
       </header>
       <div class="gallery__grid reveal">
-        <figure class="gallery__item gallery__item--tall">
-          <img src="media/gallery-evening.jpg" width="738" height="1600" loading="lazy"
-               alt="Пара общается на диване у экрана с надписью «Познакомимся»">
-        </figure>
-        <figure class="gallery__item">
-          <img src="media/gallery-guests.jpg" width="736" height="1600" loading="lazy"
-               alt="Пара разговаривает за столиком на вечере знакомств, за спиной — световые линии">
-        </figure>
-        <figure class="gallery__item gallery__item--wide gallery__item--video">
-          <video autoplay muted loop playsinline preload="metadata"
+        <figure class="gallery__item gallery__item--tall gallery__item--video">
+          <video autoplay muted loop playsinline preload="none"
                  width="1080" height="1920" poster="media/hero-poster.jpg"
                  aria-label="Видео с вечера знакомств: зал, пары за столиками">
             <source src="media/life_video.mp4" type="video/mp4">
@@ -257,6 +269,21 @@
         <figure class="gallery__item">
           <img src="media/gallery-tables.jpg" width="787" height="1400" loading="lazy"
                alt="Уютный уголок зала: диван и столик с тюльпанами и свечой">
+        </figure>
+        <figure class="gallery__item">
+          <img src="media/gallery-guests.jpg" width="736" height="1600" loading="lazy"
+               alt="Девушка и мужчина общаются за столиком на вечере знакомств">
+        </figure>
+        <figure class="gallery__item">
+          <img src="media/gallery-date-white.jpg" width="900" height="1604" loading="lazy"
+               alt="Пара общается за столиком на вечере знакомств при свете свечи и неоновых линий">
+        </figure>
+        <figure class="gallery__item gallery__item--video">
+          <video autoplay muted loop playsinline preload="none"
+                 width="720" height="1280" poster="media/gallery-new-video-poster.jpg"
+                 aria-label="Видео с вечера знакомств: пара общается за столиком при неоновом свете">
+            <source src="media/gallery-new-video.mp4" type="video/mp4">
+          </video>
         </figure>
         <figure class="gallery__item">
           <img src="media/gallery-host.jpg" width="736" height="1600" loading="lazy"
@@ -535,11 +562,6 @@
   </button>
 </div>
 
-<div class="mobile-cta" id="mobile-cta" aria-hidden="true">
-  <p class="mobile-cta__info"><b>Пятница, 24 июля</b><span>билет — 2 300 ₽</span></p>
-  <button class="btn btn--primary" type="button" data-open-booking>Забронировать</button>
-</div>
-
 <footer class="footer">
   <div class="container footer__inner">
     <div class="footer__brand">
@@ -547,7 +569,7 @@
         <img class="footer__mark" src="media/logo.jpg" width="40" height="40" alt="" aria-hidden="true">
         <span>Ростов-на-Дону</span>
       </p>
-      <p>Вечера живых знакомств в баре-ресторане GasGas в центре Ростова. От трёх метров до одного столика</p>
+      <p>Вечера живых знакомств в центре Ростова. От трёх метров до одного столика</p>
     </div>
     <div class="footer__contacts">
       <p class="footer__head">Связаться с нами</p>
@@ -678,6 +700,6 @@
   </div>
 </div>
 
-<script src="script.js?v=20260722"></script>
+<script src="script.js?v=20260722h"></script>
 </body>
 </html>
