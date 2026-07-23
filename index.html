@@ -26,7 +26,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260722j">
+  <link rel="stylesheet" href="styles.css?v=20260722k">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -77,7 +77,7 @@
           <a class="btn btn--ghost btn--lg" href="#format">Как это устроено</a>
         </div>
         <ul class="hero__meta reveal" data-delay="320">
-          <li>Билет — 2 300 ₽, из них 700 ₽ — на еду и напитки</li>
+          <li>Билет — 2 300 ₽, включая депозит 700 ₽ на еду и напитки (доплачивать не нужно)</li>
           <li>Мужчин и женщин — поровну, ровесники</li>
           <li>2 часа, закрытая площадка в центре Ростова</li>
         </ul>
@@ -319,7 +319,7 @@
               <div><span>Мужчины</span><b class="event-card__slot" data-availability-gender="jul24">места есть</b></div>
               <div><span>Женщины</span><b class="event-card__slot" data-availability-gender="jul24">места есть</b></div>
             </div>
-            <p class="event-card__price">Билет — <b>2 300 ₽</b> · 700 ₽ из них — на еду и напитки</p>
+            <p class="event-card__price">Билет — <b>2 300 ₽</b> · внутри депозит 700 ₽ на бар, доплат нет</p>
             <button class="btn btn--outline" type="button" data-open-booking data-event="jul24">Забронировать</button>
           </article>
           <article class="event-card">
@@ -331,7 +331,7 @@
               <div><span>Мужчины</span><b class="event-card__slot" data-availability-gender="jul31">места есть</b></div>
               <div><span>Женщины</span><b class="event-card__slot" data-availability-gender="jul31">места есть</b></div>
             </div>
-            <p class="event-card__price">Билет — <b>2 300 ₽</b> · 700 ₽ из них — на еду и напитки</p>
+            <p class="event-card__price">Билет — <b>2 300 ₽</b> · внутри депозит 700 ₽ на бар, доплат нет</p>
             <button class="btn btn--outline" type="button" data-open-booking data-event="jul31">Забронировать</button>
           </article>
         </section>
@@ -351,7 +351,7 @@
               <div><span>Мужчины</span><b class="event-card__slot" data-availability-gender="jul25">места есть</b></div>
               <div><span>Женщины</span><b class="event-card__slot" data-availability-gender="jul25">места есть</b></div>
             </div>
-            <p class="event-card__price">Билет — <b>2 300 ₽</b> · 700 ₽ из них — на еду и напитки</p>
+            <p class="event-card__price">Билет — <b>2 300 ₽</b> · внутри депозит 700 ₽ на бар, доплат нет</p>
             <button class="btn btn--outline" type="button" data-open-booking data-event="jul25">Забронировать</button>
           </article>
           <article class="event-card">
@@ -363,7 +363,7 @@
               <div><span>Мужчины</span><b class="event-card__slot" data-availability-gender="aug1">места есть</b></div>
               <div><span>Женщины</span><b class="event-card__slot" data-availability-gender="aug1">места есть</b></div>
             </div>
-            <p class="event-card__price">Билет — <b>2 300 ₽</b> · 700 ₽ из них — на еду и напитки</p>
+            <p class="event-card__price">Билет — <b>2 300 ₽</b> · внутри депозит 700 ₽ на бар, доплат нет</p>
             <button class="btn btn--outline" type="button" data-open-booking data-event="aug1">Забронировать</button>
           </article>
         </section>
@@ -416,8 +416,8 @@
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 15v6M17 4H7v4a5 5 0 0010 0V4z"/><path d="M17 5h2.5a1.5 1.5 0 010 3H17M7 5H4.5a1.5 1.5 0 000 3H7"/></svg>
           </div>
           <div>
-            <h3>700 ₽ на еду и напитки</h3>
-            <p>Уже включены в билет — потратите в этот же вечер на меню бара-ресторана</p>
+            <h3>Депозит 700 ₽ на еду и напитки</h3>
+            <p>Уже входит в стоимость билета — потратите его в этот же вечер на меню бара-ресторана. Отдельно доплачивать не нужно</p>
           </div>
         </div>
         <div class="included-item reveal" data-delay="240">
@@ -607,7 +607,7 @@
 
     <form class="booking" id="booking-form" novalidate>
       <h2 id="booking-title">Заявка на вечер</h2>
-      <p class="booking__sub">Билет — 2 300 ₽, в цене 700 ₽ на меню бара-ресторана. Оплата онлайн — место закрепляется сразу</p>
+      <p class="booking__sub">Билет — 2 300 ₽, из которых 700 ₽ уже входят как депозит на меню бара-ресторана (доплачивать не нужно). Оплата онлайн — место закрепляется сразу</p>
 
       <!-- Honeypot: люди это поле не видят и не заполняют -->
       <input type="text" name="website" class="booking__hp" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -700,6 +700,6 @@
   </div>
 </div>
 
-<script src="script.js?v=20260722j"></script>
+<script src="script.js?v=20260722k"></script>
 </body>
 </html>

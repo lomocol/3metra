@@ -1,0 +1,46 @@
+name: Deploy to REG.RU
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts
+
+      - name: Deploy website
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PATH: ${{ secrets.SSH_PATH }}
+        run: |
+          rsync -avz --delete \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='.claude/' \
+            --exclude='amo-config.php' \
+            --exclude='notification-config.php' \
+            --exclude='payanyway-config.php' \
+            --exclude='payanyway-data/' \
+            --exclude='payanyway.log' \
+            -e "ssh -i ~/.ssh/deploy_key" \
+            ./ "$SSH_USER@$SSH_HOST:$SSH_PATH"
