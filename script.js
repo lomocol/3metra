@@ -13,10 +13,10 @@ const BOOKING_ENDPOINT = "/form-handler.php";
    backend). Allowed values: "open" | "few" | "closed" | null (hides it).
    No numeric counters: never show numbers you can't keep accurate. */
 const AVAILABILITY = {
-  jul24: "open",
-  jul25: "open",
   jul31: "open",
   aug1: "open",
+  aug7: "open",
+  aug8: "open",
 };
 
 const AVAILABILITY_LABELS = {
@@ -26,10 +26,10 @@ const AVAILABILITY_LABELS = {
 };
 
 const EVENTS = {
-  jul24: { label: "пятница, 24 июля", group: "основная группа" },
-  jul25: { label: "суббота, 25 июля", group: "старшая группа" },
   jul31: { label: "пятница, 31 июля", group: "основная группа" },
   aug1: { label: "суббота, 1 августа", group: "старшая группа" },
+  aug7: { label: "пятница, 7 августа", group: "основная группа" },
+  aug8: { label: "суббота, 8 августа", group: "старшая группа" },
 };
 
 const TICKET_PRICES = { m: "2 300 ₽", f: "2 300 ₽" };
