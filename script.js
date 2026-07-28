@@ -494,7 +494,7 @@ function showDoneView(data) {
   const ev = EVENTS[data.event];
   summaryEl.textContent =
     `${data.name.trim()}, вы выбрали: ${ev.label}, ${ev.group}, 19:00, бар-ресторан GasGas. ` +
-    `Билет — ${currentPrice()}`;
+    `Билет — ${currentPrice()}, доплат нет`;
 
   form.hidden = true;
   doneView.hidden = false;
