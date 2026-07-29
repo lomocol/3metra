@@ -275,7 +275,38 @@ if ($curlError === '' && $status >= 200 && $status < 300) {
 }
 
 if ($leadId === 0) {
-    logError('Создание сделки не удалось: ' . amoErrorSummary($status, $body, $curlError));
+    $amoError = amoErrorSummary($status, $body, $curlError);
+    logError('Создание сделки не удалось: ' . $amoError);
+
+    /* amoCRM недоступна (например, HTTP 402 — не оплачена подписка
+       аккаунта). Чтобы не терять заявку, всё равно отправляем её в
+       мессенджеры с пометкой «занести вручную». Если уведомление ушло —
+       показываем гостю успех (leadCreated:false, чтобы цель Метрики об
+       оплате не сработала), администратор свяжется вручную. */
+    $fallback = sendSiteNotification(
+        buildDealNotification(
+            'НОВАЯ ЗАЯВКА — занести в amoCRM вручную (CRM недоступна)',
+            array(
+                'name' => $name,
+                'phone' => $phone !== '' ? $phone : $contact,
+                'event' => EVENTS[$event],
+                'service' => SERVICES[$gender],
+                'amount' => null,
+                'currency' => 'RUB',
+                'deal_url' => 'сделка не создана (' . $amoError . ')',
+            )
+        )
+    );
+    if (!empty($fallback['enabled']) && empty($fallback['success'])) {
+        logError(
+            'Резервное уведомление о заявке не отправлено: '
+            . notificationFailureSummary($fallback)
+        );
+    }
+
+    if (!empty($fallback['enabled']) && !empty($fallback['success'])) {
+        respond(200, true, null, false);
+    }
     respond(502, false, 'Не удалось отправить заявку');
 }
 
