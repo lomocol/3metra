@@ -1297,6 +1297,11 @@ summary:focus-visible {
   background: rgba(41, 33, 26, 0.08);
 }
 
+.event-card__slot--none {
+  color: #c2314e;
+  background: rgba(194, 49, 78, 0.12);
+}
+
 .event-card__price {
   font-size: 13.5px;
   color: var(--text-soft);

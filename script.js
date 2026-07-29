@@ -481,7 +481,6 @@ function clearErrors() {
 const submitBtn = form.querySelector(".booking__submit");
 const submitBtnLabel = submitBtn.textContent;
 let submitting = false;
-let redirecting = false;
 
 function showSubmitError(message) {
   const el = document.querySelector('[data-error-for="submit"]');
@@ -494,7 +493,7 @@ function showDoneView(data) {
   const ev = EVENTS[data.event];
   summaryEl.textContent =
     `${data.name.trim()}, вы выбрали: ${ev.label}, ${ev.group}, 19:00, бар-ресторан GasGas. ` +
-    `Билет — ${currentPrice()}, доплат нет`;
+    `Билет — ${currentPrice()}, внутри 750 ₽ на еду и напитки`;
 
   form.hidden = true;
   doneView.hidden = false;
@@ -596,35 +595,17 @@ form.addEventListener("submit", async (e) => {
       window.ym(110737561, "reachGoal", "lead_success");
     }
 
-    /* Сделка создана — ведём гостя на оплату PayAnyWay. pay.php сам
-       определит цену по коду услуги, сумме из браузера сервер не верит */
-    if (result.leadCreated === true && result.leadId) {
-      redirecting = true;
-      submitBtn.textContent = "Переходим к оплате…";
-      const payParams = new URLSearchParams({
-        lead: String(result.leadId),
-        event: data.event,
-        gender: data.gender || "m",
-      });
-      /* Небольшая пауза, чтобы Метрика успела отправить цель */
-      setTimeout(() => {
-        window.location.assign("pay.php?" + payParams.toString());
-      }, 400);
-      return;
-    }
-
-    /* Запасной путь (бот в honeypot или сервер без leadId) — прежний
-       экран «заявка отправлена» */
+    /* Оплата на сайте отключена: заявка уходит в amoCRM и в мессенджеры,
+       дальше администратор сам связывается с гостем, подтверждает бронь
+       и принимает оплату */
     showDoneView(data);
     form.reset();
     applyContactMethod("phone");
   } catch {
     showSubmitError("Не удалось отправить заявку — проверьте связь и попробуйте ещё раз");
   } finally {
-    if (!redirecting) {
-      submitting = false;
-      submitBtn.disabled = false;
-      submitBtn.textContent = submitBtnLabel;
-    }
+    submitting = false;
+    submitBtn.disabled = false;
+    submitBtn.textContent = submitBtnLabel;
   }
 });
