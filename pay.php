@@ -4,7 +4,7 @@
  *
  * Принимает GET-параметры от script.js:
  *   lead   — ID сделки в amoCRM (создана form-handler.php)
- *   event  — код вечера (jul31, aug1, …) — из серверного списка
+ *   event  — код вечера (aug7, aug8, …) — из серверного списка
  *   gender — код услуги: m (мужской билет) или f (женский)
  *
  * Сумме из браузера не доверяет: цена берётся из payanyway-config.php.
@@ -26,10 +26,10 @@ const PAY_DATA_DIR = __DIR__ . '/payanyway-data';
 
 /* Список вечеров — должен совпадать с EVENTS в script.js и form-handler.php */
 const PAY_EVENTS = array(
-    'jul31' => 'пятница, 31 июля — основная группа',
-    'aug1'  => 'суббота, 1 августа — старшая группа',
     'aug7'  => 'пятница, 7 августа — основная группа',
     'aug8'  => 'суббота, 8 августа — старшая группа',
+    'aug14' => 'пятница, 14 августа — основная группа',
+    'aug15' => 'суббота, 15 августа — старшая группа',
 );
 
 const PAY_ASSISTANT_URL = 'https://www.payanyway.ru/assistant.htm';

@@ -1292,6 +1292,12 @@ summary:focus-visible {
   background: rgba(154, 91, 15, 0.12);
 }
 
+/* «Уточняйте наличие мест» — жёлтая плашка вместо да/нет */
+.event-card__slot--ask {
+  color: #8a6100;
+  background: rgba(245, 186, 24, 0.22);
+}
+
 .event-card__slot--closed {
   color: var(--text-faint);
   background: rgba(41, 33, 26, 0.08);

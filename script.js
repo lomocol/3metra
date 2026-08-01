@@ -10,26 +10,27 @@
 const BOOKING_ENDPOINT = "/form-handler.php";
 
 /* Honest availability status per event — update by hand (or wire to a
-   backend). Allowed values: "open" | "few" | "closed" | null (hides it).
+   backend). Allowed values: "open" | "few" | "ask" | "closed" | null (hides it).
    No numeric counters: never show numbers you can't keep accurate. */
 const AVAILABILITY = {
-  jul31: "open",
-  aug1: "open",
-  aug7: "open",
-  aug8: "open",
+  aug7: "ask",
+  aug8: "ask",
+  aug14: "ask",
+  aug15: "ask",
 };
 
 const AVAILABILITY_LABELS = {
   open: { short: "Места есть", long: "Места на этот вечер есть — состав собираем вручную, поровну мужчин и женщин" },
   few: { short: "Мест мало", long: "Мест на этот вечер осталось мало — успейте забронировать" },
+  ask: { short: "Уточняйте наличие мест", long: "Уточняйте наличие мест — состав собираем вручную, поровну мужчин и женщин. Оставьте заявку, администратор подтвердит бронь" },
   closed: { short: "Запись закрыта", long: "Запись на этот вечер закрыта — группа собрана. Выберите другую дату" },
 };
 
 const EVENTS = {
-  jul31: { label: "пятница, 31 июля", group: "основная группа" },
-  aug1: { label: "суббота, 1 августа", group: "старшая группа" },
   aug7: { label: "пятница, 7 августа", group: "основная группа" },
   aug8: { label: "суббота, 8 августа", group: "старшая группа" },
+  aug14: { label: "пятница, 14 августа", group: "основная группа" },
+  aug15: { label: "суббота, 15 августа", group: "старшая группа" },
 };
 
 const TICKET_PRICES = { m: "2 300 ₽", f: "2 300 ₽" };
@@ -44,15 +45,22 @@ const CONTACT_METHODS = {
    Availability statuses on event cards
    ============================================================ */
 
-/* Строки «места есть / мест мало / мест нет» напротив мужчин и женщин
-   в карточках расписания — управляются AVAILABILITY выше */
-const SLOT_LABELS = { open: "места есть", few: "мест мало", closed: "мест нет" };
+/* Строки «места есть / мест мало / уточняйте наличие мест / мест нет»
+   напротив мужчин и женщин в карточках расписания — управляются
+   AVAILABILITY выше */
+const SLOT_LABELS = {
+  open: "места есть",
+  few: "мест мало",
+  ask: "уточняйте наличие мест",
+  closed: "мест нет",
+};
 
 document.querySelectorAll("[data-availability-gender]").forEach((el) => {
   const status = AVAILABILITY[el.dataset.availabilityGender];
   const label = SLOT_LABELS[status];
   if (!label) return;
   el.textContent = label;
+  el.classList.toggle("event-card__slot--ask", status === "ask");
   if (status === "few") el.classList.add("event-card__slot--few");
   if (status === "closed") {
     el.classList.add("event-card__slot--closed");
@@ -493,7 +501,7 @@ function showDoneView(data) {
   const ev = EVENTS[data.event];
   summaryEl.textContent =
     `${data.name.trim()}, вы выбрали: ${ev.label}, ${ev.group}, 19:00, бар-ресторан GasGas. ` +
-    `Билет — ${currentPrice()}, внутри 750 ₽ на еду и напитки`;
+    `Билет — ${currentPrice()}, депозит 750 ₽ на напитки включён`;
 
   form.hidden = true;
   doneView.hidden = false;
