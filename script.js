@@ -13,10 +13,9 @@ const BOOKING_ENDPOINT = "/form-handler.php";
    backend). Allowed values: "open" | "few" | "ask" | "closed" | null (hides it).
    No numeric counters: never show numbers you can't keep accurate. */
 const AVAILABILITY = {
-  aug7: "ask",
-  aug8: "ask",
-  aug14: "ask",
   aug15: "ask",
+  aug21: "ask",
+  aug22: "ask",
 };
 
 const AVAILABILITY_LABELS = {
@@ -26,11 +25,11 @@ const AVAILABILITY_LABELS = {
   closed: { short: "Запись закрыта", long: "Запись на этот вечер закрыта — группа собрана. Выберите другую дату" },
 };
 
+/* time: "" — время вечера ещё не объявлено, в подтверждении его не показываем */
 const EVENTS = {
-  aug7: { label: "пятница, 7 августа", group: "основная группа" },
-  aug8: { label: "суббота, 8 августа", group: "старшая группа" },
-  aug14: { label: "пятница, 14 августа", group: "основная группа" },
-  aug15: { label: "суббота, 15 августа", group: "старшая группа" },
+  aug15: { label: "суббота, 15 августа", group: "старшая группа", time: "19:00" },
+  aug21: { label: "пятница, 21 августа", group: "основная группа", time: "" },
+  aug22: { label: "суббота, 22 августа", group: "основная группа, свидание по ценностям: ЗОЖ", time: "" },
 };
 
 const TICKET_PRICES = { m: "2 300 ₽", f: "2 300 ₽" };
@@ -500,8 +499,9 @@ function showSubmitError(message) {
 function showDoneView(data) {
   const ev = EVENTS[data.event];
   summaryEl.textContent =
-    `${data.name.trim()}, вы выбрали: ${ev.label}, ${ev.group}, 19:00, бар-ресторан GasGas. ` +
-    `Билет — ${currentPrice()}, депозит 750 ₽ на напитки включён`;
+    `${data.name.trim()}, вы выбрали: ${ev.label}, ${ev.group}, ${ev.time ? ev.time + ", " : ""}бар-ресторан GasGas. ` +
+    `Билет — ${currentPrice()} за участие` +
+    (ev.time ? "" : ". Точное время вечера подтвердит администратор");
 
   form.hidden = true;
   doneView.hidden = false;

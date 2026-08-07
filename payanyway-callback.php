@@ -22,10 +22,9 @@ ini_set('display_errors', '0');
 const CB_LOG_FILE = __DIR__ . '/payanyway.log';
 const CB_DATA_DIR = __DIR__ . '/payanyway-data';
 const CB_EVENTS = array(
-    'aug7'  => 'пятница, 7 августа — основная группа',
-    'aug8'  => 'суббота, 8 августа — старшая группа',
-    'aug14' => 'пятница, 14 августа — основная группа',
     'aug15' => 'суббота, 15 августа — старшая группа',
+    'aug21' => 'пятница, 21 августа — основная группа',
+    'aug22' => 'суббота, 22 августа — основная группа, свидание по ценностям: ЗОЖ',
 );
 
 require_once __DIR__ . '/notification-sender.php';
