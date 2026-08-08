@@ -38,6 +38,8 @@ jobs:
             --exclude='.github/' \
             --exclude='.claude/' \
             --exclude='amo-config.php' \
+            --exclude='amo-cache.json' \
+            --exclude='form-handler.log' \
             --exclude='notification-config.php' \
             --exclude='payanyway-config.php' \
             --exclude='payanyway-data/' \

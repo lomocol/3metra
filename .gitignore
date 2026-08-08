@@ -5,3 +5,4 @@ payanyway-config.php
 payanyway.log
 payanyway-data/
 notification-config.php
+amo-cache.json

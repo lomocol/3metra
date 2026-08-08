@@ -22,6 +22,8 @@ header('X-Content-Type-Options: nosniff');
 const MAX_FIELD_LENGTH = 500;
 const LOG_FILE = __DIR__ . '/form-handler.log';
 const PAYMENT_DATA_DIR = __DIR__ . '/payanyway-data';
+/* ID воронки и этапа, найденные по названиям из amo-config.php */
+const AMO_CACHE_FILE = __DIR__ . '/amo-cache.json';
 
 /* Список вечеров — должен совпадать с EVENTS в script.js и PAY_EVENTS
    в pay.php */
@@ -110,6 +112,119 @@ function amoRequest($url, $token, array $payload)
     $status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
     return array($status, is_string($body) ? $body : '', $error);
+}
+
+function amoGet($url, $token)
+{
+    $ch = curl_init($url);
+    curl_setopt_array($ch, array(
+        CURLOPT_HTTPHEADER => array('Authorization: Bearer ' . $token),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_CONNECTTIMEOUT => 5,
+        CURLOPT_TIMEOUT => 15,
+    ));
+    $body = curl_exec($ch);
+    $error = curl_error($ch);
+    $status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+    return array($status, is_string($body) ? $body : '', $error);
+}
+
+/* Первый рабочий этап воронки: без «Неразобранного» (type=1) и без системных
+   «Успешно реализовано» (142) и «Закрыто и не реализовано» (143) */
+function firstWorkingStatus(array $pipeline)
+{
+    $statuses = isset($pipeline['_embedded']['statuses'])
+        ? $pipeline['_embedded']['statuses']
+        : array();
+    usort($statuses, function ($a, $b) {
+        $sa = isset($a['sort']) ? (int) $a['sort'] : 0;
+        $sb = isset($b['sort']) ? (int) $b['sort'] : 0;
+        return $sa - $sb;
+    });
+    foreach ($statuses as $status) {
+        $id = isset($status['id']) ? (int) $status['id'] : 0;
+        if ($id === 142 || $id === 143) {
+            continue;
+        }
+        if (isset($status['type']) && (int) $status['type'] === 1) {
+            continue;
+        }
+        return $id;
+    }
+    return null;
+}
+
+/**
+ * ID воронки и этапа по их названиям из конфига. Результат кешируется в
+ * amo-cache.json; ключ кеша включает домен и оба названия, поэтому при
+ * переименовании воронки или смене аккаунта кеш обновляется сам.
+ *
+ * Воронку не нашли — возвращаем null: сделка уйдёт в основную воронку
+ * аккаунта. Терять заявку из-за переименования нельзя.
+ *
+ * @return array [int|null pipelineId, int|null statusId]
+ */
+function resolvePipeline($baseUrl, $token, $pipelineName, $statusName)
+{
+    if ($pipelineName === '') {
+        return array(null, null);
+    }
+
+    $cacheKey = $baseUrl . '|' . $pipelineName . '|' . $statusName;
+    $cache = json_decode((string) @file_get_contents(AMO_CACHE_FILE), true);
+    if (is_array($cache) && isset($cache['key']) && $cache['key'] === $cacheKey && !empty($cache['pipeline_id'])) {
+        return array(
+            (int) $cache['pipeline_id'],
+            empty($cache['status_id']) ? null : (int) $cache['status_id'],
+        );
+    }
+
+    list($status, $body, $curlError) = amoGet($baseUrl . '/api/v4/leads/pipelines', $token);
+    if ($curlError !== '' || $status < 200 || $status >= 300) {
+        logError('Список воронок не получен: ' . amoErrorSummary($status, $body, $curlError));
+        return array(null, null);
+    }
+
+    $json = json_decode($body, true);
+    $pipelines = isset($json['_embedded']['pipelines']) && is_array($json['_embedded']['pipelines'])
+        ? $json['_embedded']['pipelines']
+        : array();
+
+    foreach ($pipelines as $pipeline) {
+        if (!isset($pipeline['name']) || $pipeline['name'] !== $pipelineName) {
+            continue;
+        }
+        $pipelineId = (int) $pipeline['id'];
+        $statusId = null;
+        if ($statusName !== '' && isset($pipeline['_embedded']['statuses'])) {
+            foreach ($pipeline['_embedded']['statuses'] as $stage) {
+                if (isset($stage['name']) && $stage['name'] === $statusName) {
+                    $statusId = (int) $stage['id'];
+                    break;
+                }
+            }
+        }
+        if ($statusId === null) {
+            $statusId = firstWorkingStatus($pipeline);
+            if ($statusName !== '') {
+                logError('Этап «' . $statusName . '» не найден в воронке «' . $pipelineName
+                    . '» — заявка встанет на первый этап воронки');
+            }
+        }
+        @file_put_contents(
+            AMO_CACHE_FILE,
+            json_encode(
+                array('key' => $cacheKey, 'pipeline_id' => $pipelineId, 'status_id' => $statusId),
+                JSON_UNESCAPED_UNICODE
+            ),
+            LOCK_EX
+        );
+        return array($pipelineId, $statusId);
+    }
+
+    logError('Воронка «' . $pipelineName . '» не найдена — заявка уйдёт в основную воронку');
+    return array(null, null);
 }
 
 /* Краткое описание ошибки amoCRM для лога — заголовок и подсказка из
@@ -228,8 +343,8 @@ foreach (UTM_KEYS as $key) {
 }
 
 /* ------------------------------------------------------------------
-   amoCRM: контакт + сделка одним запросом (основная воронка, первый
-   статус — ID воронки и статуса не указываем намеренно)
+   amoCRM: контакт + сделка одним запросом. Воронка и этап — по названиям
+   из amo-config.php (ID ищутся и кешируются в amo-cache.json)
    ------------------------------------------------------------------ */
 
 $contactEmbed = array('first_name' => $name);
@@ -250,15 +365,31 @@ if ($contactFields !== array()) {
     $contactEmbed['custom_fields_values'] = $contactFields;
 }
 
-$lead = array(
-    'name' => 'Заявка с сайта',
-    '_embedded' => array(
-        'contacts' => array($contactEmbed),
-        'tags' => array(array('name' => 'Сайт')),
-    ),
+$baseUrl = 'https://' . $config['domain'];
+
+/* Воронка своя у каждого сайта — аккаунт amoCRM может быть общим */
+list($pipelineId, $statusId) = resolvePipeline(
+    $baseUrl,
+    $config['token'],
+    isset($config['pipeline']) ? (string) $config['pipeline'] : '',
+    isset($config['status']) ? (string) $config['status'] : ''
 );
 
-$baseUrl = 'https://' . $config['domain'];
+$lead = array(
+    'name' => 'Заявка на вечер — ' . $name,
+    '_embedded' => array(
+        'contacts' => array($contactEmbed),
+        'tags' => array(array('name' => 'Сайт 3metra-rostov.ru')),
+    ),
+);
+if ($pipelineId !== null) {
+    $lead['pipeline_id'] = $pipelineId;
+}
+if ($statusId !== null) {
+    /* без status_id сделка встаёт на первый этап указанной воронки */
+    $lead['status_id'] = $statusId;
+}
+
 list($status, $body, $curlError) = amoRequest(
     $baseUrl . '/api/v4/leads/complex',
     $config['token'],
