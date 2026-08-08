@@ -631,10 +631,12 @@ summary:focus-visible {
 /* auto сверху: у карточек разной высоты кнопки всё равно стоят по одной линии */
 .next-card .btn { margin-top: auto; }
 
-/* Эксклюзивный вечер: акцентная рамка и заполненный бейдж */
+/* Эксклюзивный вечер: акцентная рамка, тёплая подложка и заполненный бейдж */
 .next-card--exclusive {
-  border-color: rgba(190, 18, 60, 0.32);
-  box-shadow: 0 22px 46px -32px rgba(190, 18, 60, 0.5);
+  position: relative;
+  border: 2px solid rgba(190, 18, 60, 0.45);
+  background: linear-gradient(160deg, #fff 0%, #fdeef2 62%, #fbdfe7 100%);
+  box-shadow: 0 26px 54px -30px rgba(190, 18, 60, 0.65);
 }
 
 .next-card__tags {
@@ -1357,7 +1359,11 @@ summary:focus-visible {
 }
 
 /* Эксклюзивный вечер в расписании */
-.event-card--exclusive { border-color: rgba(190, 18, 60, 0.28); }
+.event-card--exclusive {
+  border: 2px solid rgba(190, 18, 60, 0.4);
+  background: linear-gradient(160deg, #fff 0%, #fdeef2 70%, #fbe3ea 100%);
+  box-shadow: 0 20px 44px -28px rgba(190, 18, 60, 0.55);
+}
 
 .event-card__badge {
   display: inline-block;
