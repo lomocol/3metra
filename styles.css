@@ -8,15 +8,19 @@
   --line: #ddd9d1;
   --line-strong: #c5c0b6;
 
-  --text: #17191c;
-  --text-soft: #55595f;
-  --text-faint: #85888d;
+  --text: #1f2328;
+  --text-soft: #585c62;
+  --text-faint: #888b90;
 
   /* Графит вместо малинового: им красятся кнопки, цифры, активные состояния.
      Имена переменных сохранены, чтобы не переписывать полфайла */
-  --brass: #1b1e22;
-  --brass-strong: #0d0f12;
+  --brass: #2b2f35;
+  --brass-strong: #1a1d22;
   --on-brass: #ffffff;
+
+  /* Крупные тёмные плиты — эксклюзивный вечер и финальный блок.
+     На тон светлее кнопок: сплошной чёрный на пол-экрана давит */
+  --ink-plate: #343941;
 
   /* Приглушённый кирпич — единственный тёплый акцент, строго точечно:
      эксклюзивный вечер, ошибки формы */
@@ -706,8 +710,8 @@ summary:focus-visible {
    Заметно сильнее розовой подложки и не выбивается из графитовой системы */
 .next-card--exclusive {
   position: relative;
-  border-color: var(--brass);
-  background: var(--brass);
+  border-color: var(--ink-plate);
+  background: var(--ink-plate);
   color: #fff;
 }
 
@@ -1500,7 +1504,7 @@ summary:focus-visible {
   gap: 16px;
   padding: clamp(36px, 5vw, 64px) clamp(24px, 4vw, 56px);
   border-radius: var(--radius-lg);
-  background: var(--brass);
+  background: var(--ink-plate);
 }
 
 .final__card h2 { color: #fff; max-width: 18ch; }
