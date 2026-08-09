@@ -63,7 +63,7 @@ document.querySelectorAll("[data-availability-gender]").forEach((el) => {
   if (status === "few") el.classList.add("event-card__slot--few");
   if (status === "closed") {
     el.classList.add("event-card__slot--closed");
-    const btn = el.closest(".event-card")?.querySelector("[data-open-booking]");
+    const btn = el.closest(".next-card, .event-card")?.querySelector("[data-open-booking]");
     if (btn) {
       btn.disabled = true;
       btn.textContent = "Запись закрыта";
@@ -303,20 +303,29 @@ function closeLightbox() {
   lightboxLastFocused?.focus({ preventScroll: true });
 }
 
-document.querySelectorAll(".gallery__item:not(.gallery__item--placeholder)").forEach((item) => {
-  const media = item.querySelector("img, video");
+function makeZoomable(el, clickableClass, label) {
+  const media = el.querySelector("img, video");
   if (!media) return;
-  item.classList.add("gallery__item--clickable");
-  item.setAttribute("role", "button");
-  item.setAttribute("tabindex", "0");
-  item.setAttribute("aria-label", "Открыть на весь экран");
-  item.addEventListener("click", () => openLightbox(media));
-  item.addEventListener("keydown", (e) => {
+  el.classList.add(clickableClass);
+  el.setAttribute("role", "button");
+  el.setAttribute("tabindex", "0");
+  el.setAttribute("aria-label", label);
+  el.addEventListener("click", () => openLightbox(media));
+  el.addEventListener("keydown", (e) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
       openLightbox(media);
     }
   });
+}
+
+document.querySelectorAll(".gallery__item:not(.gallery__item--placeholder)").forEach((item) => {
+  makeZoomable(item, "gallery__item--clickable", "Открыть на весь экран");
+});
+
+/* На телефоне скриншот отзыва мельче оригинала — тапом открываем его целиком */
+document.querySelectorAll(".review__shot").forEach((shot) => {
+  makeZoomable(shot, "review__shot--clickable", "Открыть отзыв на весь экран");
 });
 
 lightboxClose.addEventListener("click", closeLightbox);

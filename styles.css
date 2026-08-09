@@ -71,6 +71,11 @@ img, video { display: block; max-width: 100%; height: auto; }
   .container, .container--narrow { width: calc(100% - 36px); }
 }
 
+/* Более низкая шапка на телефоне — первый экран дороже, чем воздух над ним */
+@media (max-width: 700px) {
+  :root { --nav-h: 60px; }
+}
+
 .section { padding-block: clamp(56px, 10vw, 120px); }
 
 .section-head { margin-bottom: clamp(28px, 6vw, 60px); max-width: 680px; }
@@ -244,6 +249,17 @@ summary:focus-visible {
   .nav__inner { justify-content: space-between; }
 }
 
+/* Кнопка в шапке на телефоне съедала треть ширины — ужимаем,
+   сохраняя 44px высоты под палец */
+@media (max-width: 700px) {
+  .nav__inner { gap: 12px; }
+  .nav__cta {
+    min-height: 44px;
+    padding-inline: 18px;
+    font-size: 14px;
+  }
+}
+
 /* ---------- Hero ---------- */
 
 .hero {
@@ -303,14 +319,13 @@ summary:focus-visible {
   display: flex;
   flex-wrap: wrap;
   gap: 14px;
-  margin-bottom: 36px;
 }
 
 .hero__meta {
   display: flex;
   flex-wrap: wrap;
   gap: 10px 26px;
-  margin: 0;
+  margin: 0 0 32px;
   padding: 0;
   list-style: none;
 }
@@ -388,31 +403,56 @@ summary:focus-visible {
   .hero__actions .btn { flex: 1 1 auto; }
 }
 
-/* On phones: happy-people collage greets first, then headline and CTA.
-   The dark club video is hidden — the collage replaces it */
+/* On phones the headline leads: offer → explanation → facts → CTA, and only
+   then the photo collage as proof. The dark club video is hidden — the
+   collage replaces it */
 @media (max-width: 700px) {
   .hero {
     display: flex;
     flex-direction: column;
-    padding-top: calc(var(--nav-h) - 16px);
-    padding-bottom: 44px;
+    padding-top: calc(var(--nav-h) + 18px);
+    padding-bottom: 40px;
   }
 
   .hero__glow { display: none; }
 
-  .hero__strip {
-    order: -1;
-    margin-top: 0;
-    margin-bottom: 30px;
-  }
-
   .hero__media { display: none; }
 
-  .hero h1 { margin-bottom: 16px; }
-  .hero__lead { margin-bottom: 26px; }
-  .hero__actions { margin-bottom: 28px; }
-  .hero__meta { gap: 10px 22px; }
-  .hero__meta li { color: var(--text-soft); }
+  .hero h1 { margin-bottom: 14px; }
+  .hero__lead { margin-bottom: 18px; }
+
+  /* Факты в столбик: три коротких строки читаются быстрее, чем сетка в две
+     колонки, и занимают меньше первого экрана */
+  .hero__meta {
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 22px;
+  }
+
+  .hero__meta li {
+    font-size: 13.5px;
+    line-height: 1.4;
+    color: var(--text-soft);
+  }
+
+  .hero__actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    margin-bottom: 0;
+  }
+
+  /* Вторичное действие не спорит с основным: тихая ссылка вместо второй кнопки */
+  .hero__actions .btn--ghost {
+    border-color: transparent;
+    padding: 6px;
+    font-size: 15px;
+    color: var(--text-soft);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .hero__strip { margin-top: 26px; }
 }
 
 /* ---------- Photo strip + counters inside the hero ---------- */
@@ -550,8 +590,9 @@ summary:focus-visible {
 
   .strip__row::-webkit-scrollbar { display: none; }
 
+  /* Крупнее, чем сетка на десктопе: на телефоне важно разглядеть лица */
   .strip__item {
-    flex: 0 0 48vw;
+    flex: 0 0 66vw;
     scroll-snap-align: center;
   }
 
@@ -620,12 +661,38 @@ summary:focus-visible {
   margin-top: 4px;
 }
 
-.next-card__availability {
-  margin-top: 12px;
-  margin-bottom: 22px;
-  font-size: 13.5px;
-  font-weight: 500;
-  color: var(--brass);
+/* Наличие мест и цена прямо в карточке: раньше это жило во втором,
+   дублирующем блоке расписания */
+.next-card__slots {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.next-card__slots > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 14.5px;
+}
+
+.next-card__slots > div > span { color: var(--text-soft); }
+
+.next-card__price {
+  margin: 12px 0 18px;
+  font-size: 14px;
+  color: var(--text-soft);
+}
+
+.next-card__price b {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
 }
 
 /* auto сверху: у карточек разной высоты кнопки всё равно стоят по одной линии */
@@ -667,21 +734,26 @@ summary:focus-visible {
 }
 
 @media (max-width: 700px) {
-  .next-card { align-items: stretch; }
+  .next-card {
+    align-items: stretch;
+    padding: 22px 20px 20px;
+  }
+
   .next-card .pill { align-self: flex-start; }
-  .next-card .btn { width: 100%; }
+  .next-card__tags { align-self: flex-start; }
+  .next-card__date { font-size: 1.55rem; }
+  /* На 14px строка с временем и адресом укладывается в одну */
+  .next-card__meta { font-size: 14px; }
+  .next-card .btn { width: 100%; min-height: 50px; }
 }
 
-.next__more { margin-top: 24px; }
-
-.next__more a {
-  font-size: 14.5px;
+/* Про ручной подбор состава — один раз под сеткой, а не в каждой карточке */
+.next__note {
+  margin-top: 22px;
+  max-width: 62ch;
+  font-size: 14px;
   color: var(--text-soft);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  transition: color 0.2s var(--ease);
 }
-.next__more a:hover { color: var(--text); }
 
 /* ---------- Ticker ---------- */
 
@@ -884,6 +956,13 @@ summary:focus-visible {
 
 @media (max-width: 799px) {
   .gallery__item { aspect-ratio: 3 / 4; }
+
+  /* Видео с вечера ведёт галерею крупным кадром, остальное — сеткой по два */
+  .gallery__item:first-child {
+    grid-column: span 2;
+    aspect-ratio: 4 / 5;
+  }
+
   .gallery__item figcaption {
     left: 8px; right: 8px; bottom: 8px;
     padding: 6px 10px;
@@ -1063,10 +1142,21 @@ summary:focus-visible {
   height: auto;
 }
 
+/* Скриншот отзыва мельче оригинала — тапом открываем его во весь экран */
+.review__shot--clickable { cursor: zoom-in; }
+
+.review__shot--clickable:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 4px;
+}
+
 /* Horizontal swipe on phones instead of a tall stack */
 @media (max-width: 700px) {
+  /* justify-content сбрасываем явно: с центрированием флексбокса начало
+     ленты уезжает за левый край и до первого отзыва не долистать */
   .reviews__grid {
     display: flex;
+    justify-content: flex-start;
     gap: 12px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
@@ -1078,10 +1168,19 @@ summary:focus-visible {
 
   .reviews__grid::-webkit-scrollbar { display: none; }
 
+  /* Почти во всю ширину: в переписке на скриншоте текст мелкий, и каждый
+     лишний пиксель ширины решает, можно ли прочитать её без зума */
   .review {
-    flex: 0 0 min(300px, 80%);
+    flex: 0 0 86vw;
     scroll-snap-align: center;
-    padding: 20px;
+    padding: 16px 16px 14px;
+  }
+
+  .review__shot,
+  .review:nth-child(2) .review__shot,
+  .review:nth-child(3) .review__shot {
+    width: 100%;
+    transform: none;
   }
 }
 
@@ -1210,7 +1309,7 @@ summary:focus-visible {
   .venue__grid { grid-template-columns: 1fr; }
 }
 
-/* ---------- Schedule (two group columns) ---------- */
+/* ---------- Метки групп и статусы мест ---------- */
 
 .pill {
   font-size: 12.5px;
@@ -1224,109 +1323,8 @@ summary:focus-visible {
 .pill--rose { color: var(--rose); }
 .pill--amber { color: var(--amber-soft); }
 
-.schedule {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 18px;
-}
-
-@media (min-width: 760px) {
-  /* start, а не stretch: в колонках может быть разное число вечеров —
-     короткая колонка не должна растягиваться пустотой под последней карточкой */
-  .schedule { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
-}
-
-.group-col {
-  padding: 0 20px 20px;
-  background: var(--bg-elev);
-  border: 1px solid var(--line);
-  border-radius: 22px;
-  overflow: hidden;
-}
-
-.group-col__img {
-  width: calc(100% + 40px);
-  max-width: calc(100% + 40px);
-  height: auto;
-  margin: 0 -20px;
-  aspect-ratio: 2 / 1;
-  object-fit: cover;
-  object-position: 50% 38%;
-  display: block;
-}
-
-@media (max-width: 700px) {
-  .group-col__img { aspect-ratio: 16 / 10; }
-}
-
-.group-col__head {
-  padding: 22px 6px 16px;
-}
-
-.group-col__head h3 { font-size: 1.35rem; }
-
-.group-col__ages {
-  margin-top: 4px;
-  font-size: 14px;
-  color: var(--text-soft);
-}
-
-.event-card {
-  margin-top: 12px;
-  padding: 20px 22px;
-  background: var(--bg);
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  transition: border-color 0.3s var(--ease), transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
-}
-
-.event-card:hover {
-  border-color: rgba(190, 18, 60, 0.25);
-  transform: translateY(-3px);
-  box-shadow: 0 24px 50px -30px rgba(41, 33, 26, 0.2);
-}
-
-.event-card__top {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 6px 14px;
-  margin-bottom: 14px;
-}
-
-.event-card__date {
-  font-family: var(--font-display);
-  font-size: 1.5rem;
-  font-weight: 700;
-  line-height: 1.1;
-}
-
-.event-card__time {
-  font-family: var(--font-body);
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: var(--text-faint);
-}
-
-.event-card__slots {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding-bottom: 14px;
-  margin-bottom: 12px;
-  border-bottom: 1px solid var(--line);
-}
-
-.event-card__slots > div {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 14.5px;
-}
-
-.event-card__slots span { color: var(--text-soft); }
-
+/* Плашка напротив «Мужчины» / «Женщины» в карточке вечера.
+   Текст и модификатор проставляет script.js по карте AVAILABILITY */
 .event-card__slot {
   font-size: 12.5px;
   font-weight: 600;
@@ -1356,44 +1354,6 @@ summary:focus-visible {
 .event-card__slot--none {
   color: #c2314e;
   background: rgba(194, 49, 78, 0.12);
-}
-
-/* Эксклюзивный вечер в расписании */
-.event-card--exclusive {
-  border: 2px solid rgba(190, 18, 60, 0.4);
-  background: linear-gradient(160deg, #fff 0%, #fdeef2 70%, #fbe3ea 100%);
-  box-shadow: 0 20px 44px -28px rgba(190, 18, 60, 0.55);
-}
-
-.event-card__badge {
-  display: inline-block;
-  margin-bottom: 12px;
-  padding: 4px 11px;
-  border-radius: 999px;
-  font-size: 11.5px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--on-brass);
-  background: var(--brass);
-}
-
-.event-card__format {
-  margin: -6px 0 14px;
-  font-size: 14px;
-  color: var(--text-soft);
-}
-
-.event-card__price {
-  font-size: 13.5px;
-  color: var(--text-soft);
-  margin-bottom: 14px;
-}
-
-.event-card__price b {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--text);
 }
 
 /* ---------- What's included ---------- */
@@ -1626,6 +1586,12 @@ summary:focus-visible {
 
 @media (max-width: 820px) {
   .footer__inner { grid-template-columns: 1fr; gap: 28px; }
+}
+
+/* Ссылки в футере — строками под палец, а не 18-пиксельными мишенями */
+@media (max-width: 700px) {
+  .footer ul { gap: 0; }
+  .footer li a { display: inline-block; padding: 12px 0; }
 }
 
 /* ---------- Modal ---------- */
@@ -1906,9 +1872,59 @@ summary:focus-visible {
 }
 
 .booking__fineprint {
-  margin-top: 16px;
+  margin-bottom: 16px;
   font-size: 12px;
   color: var(--text-faint);
+}
+
+/* ---------- Форма на телефоне ---------- */
+
+@media (max-width: 600px) {
+  .booking h2 { font-size: 1.4rem; }
+  .booking__sub { margin-bottom: 20px; }
+
+  .booking__fieldset,
+  .booking__field,
+  .booking__row .booking__field { margin-bottom: 18px; }
+
+  /* Пол и способ связи: чипы не ниже 44px, чтобы попадать пальцем */
+  .method-option span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 8px 18px;
+    font-size: 15px;
+  }
+
+  /* Согласие: крупный чекбокс, вся строка — зона нажатия */
+  .booking__consent {
+    align-items: center;
+    gap: 14px;
+    padding: 6px 0;
+    margin-bottom: 18px;
+    font-size: 14.5px;
+  }
+
+  .booking__consent input {
+    width: 24px; height: 24px;
+    margin-top: 0;
+  }
+
+  /* Форма длиннее шторки: без липкой кнопки до отправки нужно прокрутить
+     почти весь экран.
+     Первая тень — полоса в цвет панели от верхнего края кнопки и ниже:
+     поля уезжают под кнопку, а не просвечивают из-под неё. Тени рисуются
+     под фоном элемента, поэтому саму кнопку она не закрывает.
+     Вторая — мягкая линия отрыва над кнопкой */
+  .booking__submit {
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+    min-height: 54px;
+    box-shadow:
+      0 44px 0 44px var(--bg-elev),
+      0 -12px 22px -14px rgba(41, 33, 26, 0.32);
+  }
 }
 
 /* ---------- Booking success ---------- */
@@ -1993,13 +2009,20 @@ summary:focus-visible {
 .cookie-note__close:hover { color: var(--text); background: rgba(41, 33, 26, 0.07); }
 .cookie-note__close:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
 
+/* На телефоне уведомление перекрывает кнопку в первом экране —
+   держим его максимально узким */
 @media (max-width: 700px) {
   .cookie-note {
     left: 10px;
     right: 10px;
     max-width: none;
-    bottom: calc(12px + env(safe-area-inset-bottom));
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    bottom: calc(10px + env(safe-area-inset-bottom));
   }
+
+  .cookie-note p { font-size: 11.5px; line-height: 1.45; }
 }
 
 /* ---------- Legal document pages ---------- */
