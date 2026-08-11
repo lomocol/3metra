@@ -1,37 +1,40 @@
 /* ============================================================
    «3 метра» — афиша вечеров быстрых свиданий.
-   Принцип оформления: светлый нейтральный фон, один акцентный цвет,
-   минимум декора. Страница должна читаться как расписание, а не как
-   продающий лендинг.
+   Принцип оформления: светло-серый фон, белые скруглённые панели,
+   кнопки-пилюли, один акцентный цвет и никаких линеек. Страница должна
+   читаться как расписание, а не как продающий лендинг.
    ============================================================ */
 
 :root {
-  /* Поверхности — тёплый светлый нейтральный */
-  --bg: #fbfaf8;
-  --bg-soft: #f4f2ee;
+  /* Серый «стол», на котором лежат белые панели */
+  --bg: #ececea;
   --surface: #ffffff;
+  --surface-soft: #f5f4f2;
 
-  --line: #e5e2db;
-  --line-strong: #d0ccc3;
+  /* Линии почти не используем: блоки разделяет фон панелей, а не рамки */
+  --line: #eceae7;
+  --line-strong: #ddd9d4;
 
-  --text: #1b1e22;
-  --text-soft: #565c63;
-  --text-faint: #868b92;
+  --text: #272525;
+  --text-soft: #5f5c5c;
+  --text-faint: #8d8a89;
 
-  /* Единственный акцент: кнопки, ссылки, активные состояния, ближайший вечер */
+  /* Единственный акцент: кнопки, ближайший вечер, активные состояния */
   --accent: #2f6b73;
   --accent-strong: #245660;
-  --accent-soft: #edf3f3;
+  --accent-soft: #e4eeef;
   --on-accent: #ffffff;
 
   /* Отдельный цвет только для ошибок формы */
   --danger: #9a3520;
 
-  --radius: 10px;
-  --radius-sm: 6px;
+  --radius-panel: 26px;
+  --radius: 18px;
+  --radius-sm: 12px;
+  --radius-pill: 999px;
   --ease: cubic-bezier(0.2, 0, 0, 1);
   --font: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --nav-h: 64px;
+  --nav-h: 66px;
 }
 
 * { box-sizing: border-box; }
@@ -69,23 +72,39 @@ p { margin: 0; }
 a { color: inherit; }
 img, video { display: block; max-width: 100%; height: auto; }
 
+/* Панели лежат в общем поле с одинаковыми полями по краям.
+   Отступ у краёв небольшой — на телефоне важнее ширина контента */
+main {
+  display: grid;
+  gap: 10px;
+  padding: 10px 10px 0;
+}
+
+@media (min-width: 760px) {
+  main { gap: 14px; padding: 14px 16px 0; }
+}
+
+/* Белая скруглённая панель — основной строительный блок страницы */
+.hero,
+.section {
+  background: var(--surface);
+  border-radius: var(--radius-panel);
+  padding: clamp(30px, 6vw, 60px) clamp(20px, 4vw, 48px);
+}
+
 .container {
-  width: min(1080px, 100% - 44px);
+  width: 100%;
+  max-width: 1040px;
   margin-inline: auto;
 }
 
-.container--narrow { width: min(720px, 100% - 44px); }
+.container--narrow { max-width: 720px; }
 
 @media (max-width: 600px) {
-  .container, .container--narrow { width: calc(100% - 32px); }
-  :root { --nav-h: 58px; }
+  :root { --nav-h: 60px; }
 }
 
-.section { padding-block: clamp(44px, 7vw, 76px); }
-
-.section + .section { border-top: 1px solid var(--line); }
-
-.section-head { margin-bottom: clamp(22px, 3.5vw, 32px); }
+.section-head { margin-bottom: clamp(20px, 3.5vw, 30px); }
 
 .section-head__sub {
   margin-top: 8px;
@@ -118,17 +137,18 @@ img, video { display: block; max-width: 100%; height: auto; }
 
 /* ---------- Buttons ---------- */
 
+/* Кнопка-пилюля: крупная, с большой площадью нажатия */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 12px 20px;
-  min-height: 44px;
-  border: 1px solid transparent;
-  border-radius: var(--radius-sm);
+  padding: 13px 24px;
+  min-height: 48px;
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-pill);
   font: inherit;
-  font-size: 15.5px;
+  font-size: 16px;
   font-weight: 600;
   line-height: 1.2;
   text-decoration: none;
@@ -136,7 +156,7 @@ img, video { display: block; max-width: 100%; height: auto; }
   transition: background-color 0.18s var(--ease), border-color 0.18s var(--ease), color 0.18s var(--ease);
 }
 
-.btn--lg { padding: 15px 26px; min-height: 52px; font-size: 16.5px; }
+.btn--lg { padding: 16px 30px; min-height: 54px; font-size: 17px; }
 
 .btn--primary {
   background: var(--accent);
@@ -159,7 +179,7 @@ img, video { display: block; max-width: 100%; height: auto; }
 }
 .btn--ghost:hover { border-color: var(--accent); color: var(--accent); }
 
-.btn:disabled { opacity: 0.5; cursor: default; }
+.btn:disabled { opacity: 0.45; cursor: default; }
 
 .btn:focus-visible,
 a:focus-visible,
@@ -167,27 +187,34 @@ summary:focus-visible,
 details:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
 }
+
+.btn:focus-visible { border-radius: var(--radius-pill); }
 
 /* ---------- Nav ---------- */
 
+/* Шапка лежит прямо на сером фоне, без панели и линеек */
 .nav {
   position: sticky;
   top: 0;
   z-index: 100;
   background: var(--bg);
-  border-bottom: 1px solid transparent;
-  transition: border-color 0.2s var(--ease);
+  transition: box-shadow 0.2s var(--ease);
 }
 
-.nav.is-scrolled { border-bottom-color: var(--line); }
+.nav.is-scrolled { box-shadow: 0 6px 20px -18px rgba(20, 20, 20, 0.9); }
 
 .nav__inner {
   height: var(--nav-h);
   display: flex;
   align-items: center;
   gap: 20px;
+  padding-inline: 10px;
+}
+
+@media (min-width: 760px) {
+  .nav__inner { padding-inline: 16px; }
 }
 
 .nav__logo {
@@ -198,7 +225,7 @@ details:focus-visible {
   margin-right: auto;
 }
 
-.nav__mark, .footer__mark { border-radius: 8px; flex-shrink: 0; }
+.nav__mark, .footer__mark { border-radius: 11px; flex-shrink: 0; }
 
 .nav__city {
   font-size: 14px;
@@ -230,41 +257,68 @@ details:focus-visible {
 
 /* ---------- Первый экран ---------- */
 
-.hero { padding-block: clamp(32px, 6vw, 68px) clamp(36px, 6vw, 64px); }
+.hero { padding-block: clamp(34px, 7vw, 72px); }
 
-.hero__inner { max-width: 760px; }
+.hero__inner { max-width: 780px; }
 
-.hero h1 { margin-bottom: 20px; }
+.hero h1 { margin-bottom: 18px; }
 
 .hero__lead {
   font-size: clamp(16.5px, 2.2vw, 18.5px);
   color: var(--text-soft);
-  max-width: 62ch;
+  max-width: 60ch;
 }
 
 .hero__lead + .hero__lead { margin-top: 14px; }
 
 .hero__lead b { color: var(--text); font-weight: 600; }
 
+/* Чип с ближайшей датой — отвечает на «когда» до того, как дойдут до расписания */
+.hero__next {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: clamp(20px, 3.5vw, 26px);
+  padding: 13px 18px 13px 14px;
+  background: var(--accent-soft);
+  border-radius: var(--radius);
+  text-decoration: none;
+  transition: background-color 0.18s var(--ease);
+}
+
+.hero__next:hover { background: #d8e7e8; }
+
+.hero__next-icon {
+  display: grid;
+  place-items: center;
+  width: 38px; height: 38px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--accent);
+}
+
+.hero__next-text { line-height: 1.35; }
+.hero__next-text b { display: block; font-size: 15.5px; font-weight: 600; }
+.hero__next-text span { display: block; font-size: 14.5px; color: var(--text-soft); }
+
+/* Факты — мягкие серые чипы, без сетки и рамок */
 .hero__facts {
   list-style: none;
-  margin: clamp(24px, 4vw, 32px) 0 0;
+  margin: clamp(22px, 4vw, 30px) 0 0;
   padding: 0;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1px;
-  background: var(--line);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  overflow: hidden;
+  gap: 8px;
 }
 
 @media (min-width: 760px) {
-  .hero__facts { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .hero__facts { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
 }
 
 .hero__facts li {
-  background: var(--surface);
+  background: var(--surface-soft);
+  border-radius: var(--radius);
   padding: 14px 16px;
 }
 
@@ -285,11 +339,12 @@ details:focus-visible {
 .hero__actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  margin-top: clamp(24px, 4vw, 32px);
+  gap: 10px;
+  margin-top: clamp(22px, 4vw, 30px);
 }
 
-@media (max-width: 520px) {
+/* На телефоне обе кнопки во всю ширину — целиться не нужно */
+@media (max-width: 560px) {
   .hero__actions { display: grid; grid-template-columns: 1fr; }
 }
 
@@ -304,36 +359,35 @@ details:focus-visible {
   .dates__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
+/* Карточка вечера — светло-серая плитка внутри белой панели */
 .event {
   display: flex;
   flex-direction: column;
   padding: 20px;
-  background: var(--surface);
-  border: 1px solid var(--line);
+  background: var(--surface-soft);
   border-radius: var(--radius);
 }
 
-/* Ближайший вечер выделен акцентной рамкой — единственный акцент в сетке */
+/* Ближайший вечер выделен акцентной обводкой — единственный акцент в сетке */
 .event--next {
-  border-color: var(--accent);
-  box-shadow: inset 0 0 0 1px var(--accent);
+  background: var(--accent-soft);
+  box-shadow: inset 0 0 0 2px var(--accent);
 }
 
 .event__flag {
   align-self: flex-start;
   margin-bottom: 12px;
-  padding: 4px 10px;
-  border-radius: 999px;
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
   background: var(--accent);
   color: var(--on-accent);
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 600;
-  letter-spacing: 0.02em;
 }
 
 .event__head {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 8px;
@@ -341,7 +395,7 @@ details:focus-visible {
 
 .event__date b {
   display: block;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.1;
@@ -354,14 +408,16 @@ details:focus-visible {
 }
 
 .event__age {
-  padding: 5px 10px;
-  border-radius: 999px;
-  background: var(--accent-soft);
-  color: var(--accent-strong);
+  padding: 6px 13px;
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--text);
   font-size: 14px;
   font-weight: 600;
   white-space: nowrap;
 }
+
+.event--next .event__age { background: var(--accent); color: var(--on-accent); }
 
 .event__note {
   margin-top: 12px;
@@ -369,9 +425,12 @@ details:focus-visible {
   color: var(--text-soft);
 }
 
+/* Параметры вечера — белая плашка со скруглением вместо строк на линейках */
 .event__rows {
   margin: 16px 0 0;
-  border-top: 1px solid var(--line);
+  padding: 4px 14px;
+  background: var(--surface);
+  border-radius: var(--radius-sm);
 }
 
 .event__rows > div {
@@ -379,9 +438,10 @@ details:focus-visible {
   justify-content: space-between;
   gap: 14px;
   padding: 9px 0;
-  border-bottom: 1px solid var(--line);
   font-size: 15px;
 }
+
+.event__rows > div + div { border-top: 1px solid var(--line); }
 
 .event__rows dt { color: var(--text-soft); flex-shrink: 0; }
 .event__rows dd { margin: 0; text-align: right; }
@@ -391,11 +451,15 @@ details:focus-visible {
 .event__status--few { color: var(--accent-strong); font-weight: 600; }
 .event__status--closed { color: var(--danger); }
 
-.event__btn { margin-top: 18px; }
+.event__btn { margin-top: 16px; width: 100%; }
+
+/* Внутри серой плитки вторичная кнопка — белая заливка, а не контур */
+.event .btn--outline { background: var(--surface); border-color: transparent; }
+.event .btn--outline:hover { color: var(--accent); }
 
 /* auto сверху: у карточек разной высоты кнопки стоят по одной линии */
 @media (min-width: 860px) {
-  .event__rows { margin-bottom: 18px; }
+  .event__rows { margin-bottom: 16px; }
   .event__btn { margin-top: auto; }
 }
 
@@ -422,7 +486,7 @@ details:focus-visible {
 
 .steps__list li {
   display: grid;
-  grid-template-columns: 34px 1fr;
+  grid-template-columns: 38px 1fr;
   column-gap: 12px;
   row-gap: 4px;
   align-items: start;
@@ -435,11 +499,11 @@ details:focus-visible {
 .steps__num {
   display: grid;
   place-items: center;
-  width: 30px; height: 30px;
+  width: 34px; height: 34px;
   border-radius: 50%;
   background: var(--accent-soft);
   color: var(--accent-strong);
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   grid-row: span 2;
 }
@@ -486,19 +550,19 @@ details:focus-visible {
   width: 100%;
   aspect-ratio: 4 / 5;
   object-fit: cover;
-  border-radius: var(--radius-sm);
-  background: var(--bg-soft);
+  border-radius: var(--radius);
+  background: var(--surface-soft);
 }
 
 .photo figcaption {
-  margin-top: 8px;
+  margin-top: 9px;
   font-size: 13.5px;
   line-height: 1.45;
   color: var(--text-soft);
 }
 
 .photo--clickable img { cursor: zoom-in; }
-.photo--clickable:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: var(--radius-sm); }
+.photo--clickable:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: var(--radius); }
 
 /* ---------- Где проходит ---------- */
 
@@ -517,10 +581,14 @@ details:focus-visible {
 .place__address b { font-weight: 600; }
 .place__info .btn { margin-top: 18px; }
 
+/* z-index: 0 — свой контекст наложения, чтобы iframe карты не всплывал
+   поверх модального окна записи */
 .place__map-wrap {
-  border: 1px solid var(--line);
+  position: relative;
+  z-index: 0;
   border-radius: var(--radius);
   overflow: hidden;
+  background: var(--surface-soft);
 }
 
 .place__map {
@@ -536,12 +604,18 @@ details:focus-visible {
 
 /* ---------- Вопросы ---------- */
 
+/* Вопросы — отдельные мягкие плитки вместо списка на линейках */
 .faq__list {
-  border-top: 1px solid var(--line);
-  max-width: 760px;
+  max-width: 780px;
+  display: grid;
+  gap: 8px;
 }
 
-.faq__list details { border-bottom: 1px solid var(--line); }
+.faq__list details {
+  background: var(--surface-soft);
+  border-radius: var(--radius);
+  padding-inline: 18px;
+}
 
 .faq__list summary {
   display: flex;
@@ -586,7 +660,7 @@ details:focus-visible {
 
 /* ---------- Финальный блок записи ---------- */
 
-.final { background: var(--bg-soft); }
+.final { background: var(--accent-soft); }
 
 .final h2 { margin-bottom: 10px; max-width: 22ch; }
 
@@ -597,23 +671,30 @@ details:focus-visible {
   margin-bottom: 22px;
 }
 
+@media (max-width: 560px) {
+  .final .btn { width: 100%; }
+}
+
 /* ---------- Постоянная кнопка записи на телефоне ---------- */
 
+/* Плавающая панель-пилюля над контентом: на телефоне это главный вход
+   в запись, поэтому она заметнее, чем что-либо ещё на экране */
 .sticky-cta { display: none; }
 
 @media (max-width: 760px) {
   .sticky-cta {
     position: fixed;
-    left: 0; right: 0; bottom: 0;
+    left: 10px; right: 10px;
+    bottom: calc(10px + env(safe-area-inset-bottom));
     z-index: 120;
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+    padding: 10px 10px 10px 18px;
     background: var(--surface);
-    border-top: 1px solid var(--line);
-    box-shadow: 0 -8px 24px -20px rgba(20, 24, 28, 0.6);
-    transform: translateY(110%);
+    border-radius: var(--radius-pill);
+    box-shadow: 0 12px 30px -12px rgba(20, 20, 20, 0.35);
+    transform: translateY(calc(100% + 20px));
     transition: transform 0.25s var(--ease);
   }
 
@@ -623,18 +704,23 @@ details:focus-visible {
   .sticky-cta__info b { display: block; font-size: 15px; font-weight: 600; }
   .sticky-cta__info span { display: block; font-size: 13px; color: var(--text-soft); }
 
-  .sticky-cta .btn { margin-left: auto; flex-shrink: 0; }
+  .sticky-cta .btn { margin-left: auto; flex-shrink: 0; min-height: 46px; padding-inline: 20px; }
 
   /* чтобы панель не перекрывала конец страницы */
-  body { padding-bottom: 72px; }
+  body { padding-bottom: 80px; }
 }
 
 /* ---------- Footer ---------- */
 
 .footer {
+  margin: 10px 10px 0;
+  padding: clamp(30px, 5vw, 50px) clamp(20px, 4vw, 48px);
   background: var(--surface);
-  border-top: 1px solid var(--line);
-  padding-block: clamp(32px, 5vw, 52px);
+  border-radius: var(--radius-panel) var(--radius-panel) 0 0;
+}
+
+@media (min-width: 760px) {
+  .footer { margin-inline: 16px; }
 }
 
 .footer__inner {
@@ -721,8 +807,7 @@ details:focus-visible {
   overflow-y: auto;
   padding: clamp(24px, 5vw, 38px);
   background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: var(--radius-panel);
   box-shadow: 0 30px 80px -40px rgba(20, 24, 28, 0.45);
   opacity: 0;
   transform: translateY(20px);
@@ -736,8 +821,7 @@ details:focus-visible {
   .modal__panel {
     width: 100%;
     max-height: 94dvh;
-    border-radius: 14px 14px 0 0;
-    border-bottom: none;
+    border-radius: var(--radius-panel) var(--radius-panel) 0 0;
     padding-bottom: calc(24px + env(safe-area-inset-bottom));
   }
 }
@@ -747,15 +831,15 @@ details:focus-visible {
   top: 14px; right: 14px;
   display: grid;
   place-items: center;
-  width: 40px; height: 40px;
+  width: 42px; height: 42px;
   border-radius: 50%;
-  border: 1px solid var(--line);
-  background: none;
+  border: 0;
+  background: var(--surface-soft);
   color: var(--text-soft);
   cursor: pointer;
-  transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+  transition: color 0.2s var(--ease), background-color 0.2s var(--ease);
 }
-.modal__close:hover { color: var(--text); border-color: var(--line-strong); }
+.modal__close:hover { color: var(--text); background: var(--line); }
 .modal__close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 .booking h2, .booking-done h2 {
@@ -813,8 +897,9 @@ details:focus-visible {
 .event-option {
   position: relative;
   display: block;
-  padding: 12px 14px;
-  border: 1px solid var(--line);
+  padding: 13px 16px;
+  background: var(--surface-soft);
+  border: 2px solid transparent;
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: border-color 0.18s var(--ease), background-color 0.18s var(--ease);
@@ -859,14 +944,14 @@ details:focus-visible {
 .booking input[type="tel"],
 .booking input[type="number"] {
   width: 100%;
-  padding: 13px 14px;
+  padding: 14px 16px;
   font: inherit;
   font-size: 16px;
   color: var(--text);
-  background: var(--surface);
-  border: 1px solid var(--line-strong);
+  background: var(--surface-soft);
+  border: 2px solid transparent;
   border-radius: var(--radius-sm);
-  transition: border-color 0.18s var(--ease);
+  transition: border-color 0.18s var(--ease), background-color 0.18s var(--ease);
 }
 
 .booking input::placeholder { color: var(--text-faint); }
@@ -875,8 +960,8 @@ details:focus-visible {
 .booking input[type="tel"]:focus,
 .booking input[type="number"]:focus {
   outline: none;
+  background: var(--surface);
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
 .booking__methods {
@@ -896,9 +981,10 @@ details:focus-visible {
 
 .method-option span {
   display: block;
-  padding: 10px 16px;
-  border: 1px solid var(--line-strong);
-  border-radius: var(--radius-sm);
+  padding: 11px 18px;
+  background: var(--surface-soft);
+  border: 2px solid transparent;
+  border-radius: var(--radius-pill);
   font-size: 15px;
   transition: background-color 0.18s var(--ease), border-color 0.18s var(--ease), color 0.18s var(--ease);
 }
@@ -993,11 +1079,10 @@ details:focus-visible {
   gap: 12px;
   max-width: 520px;
   margin-inline: auto;
-  padding: 14px 16px;
+  padding: 14px 18px;
   background: var(--surface);
-  border: 1px solid var(--line-strong);
   border-radius: var(--radius);
-  box-shadow: 0 20px 40px -28px rgba(20, 24, 28, 0.5);
+  box-shadow: 0 16px 36px -18px rgba(20, 20, 20, 0.35);
   opacity: 0;
   transform: translateY(16px);
   transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
@@ -1025,7 +1110,7 @@ details:focus-visible {
 
 /* На телефоне уведомление поднимаем над панелью записи */
 @media (max-width: 760px) {
-  .cookie-note { bottom: calc(78px + env(safe-area-inset-bottom)); }
+  .cookie-note { left: 10px; right: 10px; bottom: calc(84px + env(safe-area-inset-bottom)); }
 }
 
 /* ---------- Просмотр фото на весь экран ---------- */
@@ -1051,7 +1136,7 @@ details:focus-visible {
   max-width: min(100%, 900px);
   max-height: calc(100dvh - 96px);
   width: auto;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius);
   object-fit: contain;
 }
 
@@ -1072,9 +1157,18 @@ details:focus-visible {
 
 /* ---------- Страницы документов ---------- */
 
+/* Документ — такая же белая панель, как секции на главной.
+   Своя ширина и поля: у .container их нет, их задают панели */
 .doc {
-  padding-top: clamp(32px, 5vw, 56px);
-  padding-bottom: clamp(48px, 7vw, 80px);
+  max-width: 800px;
+  margin: 10px auto 0;
+  padding: clamp(30px, 6vw, 56px) clamp(20px, 4vw, 48px) clamp(44px, 7vw, 72px);
+  background: var(--surface);
+  border-radius: var(--radius-panel);
+}
+
+@media (max-width: 840px) {
+  .doc { margin-inline: 10px; }
 }
 
 .doc h1 {
