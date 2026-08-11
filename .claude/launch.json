@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "site",
-      "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "8321"],
+      "runtimeExecutable": "php",
+      "runtimeArgs": ["-S", "localhost:8321", "-t", "."],
       "port": 8321
     }
   ]

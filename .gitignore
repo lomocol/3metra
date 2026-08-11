@@ -4,5 +4,8 @@ form-handler.log
 payanyway-config.php
 payanyway.log
 payanyway-data/
+robokassa-config.php
+robokassa.log
+payment-data/
 notification-config.php
 amo-cache.json

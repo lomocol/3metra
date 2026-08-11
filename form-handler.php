@@ -21,7 +21,7 @@ header('X-Content-Type-Options: nosniff');
 
 const MAX_FIELD_LENGTH = 500;
 const LOG_FILE = __DIR__ . '/form-handler.log';
-const PAYMENT_DATA_DIR = __DIR__ . '/payanyway-data';
+const PAYMENT_DATA_DIR = __DIR__ . '/payment-data';
 /* ID воронки и этапа, найденные по названиям из amo-config.php */
 const AMO_CACHE_FILE = __DIR__ . '/amo-cache.json';
 
@@ -493,7 +493,7 @@ if ($noteCurlError !== '' || $noteStatus < 200 || $noteStatus >= 300) {
 }
 
 /* Сохраняем ClientID и данные заявки на сервере. pay.php прочитает их
-   по leadId и прикрепит к конкретному счёту PayAnyWay. */
+   по leadId и прикрепит к конкретному счёту Robokassa. */
 if (!is_dir(PAYMENT_DATA_DIR)) {
     @mkdir(PAYMENT_DATA_DIR, 0755);
     @file_put_contents(

@@ -9,6 +9,12 @@
    confirmation. */
 const BOOKING_ENDPOINT = "/form-handler.php";
 
+/* Шаг оплаты: pay.php считает подпись Robokassa по серверной цене и
+   отправляет гостя на платёжную страницу. Сумма и услуга в браузер не
+   попадают. Пустая строка — оплата отключена, гость увидит экран
+   «заявка отправлена» и с ним свяжется администратор. */
+const PAYMENT_ENDPOINT = "/pay.php";
+
 /* Honest availability status per event — update by hand (or wire to a
    backend). Allowed values: "open" | "few" | "ask" | "closed" | null (hides it).
    No numeric counters: never show numbers you can't keep accurate. */
@@ -497,6 +503,7 @@ function clearErrors() {
 const submitBtn = form.querySelector(".booking__submit");
 const submitBtnLabel = submitBtn.textContent;
 let submitting = false;
+let redirectingToPayment = false;
 
 function showSubmitError(message) {
   const el = document.querySelector('[data-error-for="submit"]');
@@ -612,17 +619,36 @@ form.addEventListener("submit", async (e) => {
       window.ym(110737561, "reachGoal", "lead_success");
     }
 
-    /* Оплата на сайте отключена: заявка уходит в amoCRM и в мессенджеры,
-       дальше администратор сам связывается с гостем, подтверждает бронь
-       и принимает оплату */
+    /* Сделка создана — сразу отправляем гостя на оплату Robokassa:
+       место закрепляется только после успешного платежа. Кнопку не
+       разблокируем, чтобы по дороге не отправить заявку второй раз */
+    const leadId = parseInt(result.leadId, 10);
+    if (PAYMENT_ENDPOINT && leadId > 0) {
+      redirectingToPayment = true;
+      submitBtn.textContent = "Переходим к оплате…";
+      const payParams = new URLSearchParams({
+        lead: String(leadId),
+        event: submittedData.event,
+        gender: submittedData.gender,
+      });
+      window.location.assign(`${PAYMENT_ENDPOINT}?${payParams}`);
+      return;
+    }
+
+    /* Сделка в amoCRM не создалась (заявка ушла в мессенджеры запасным
+       каналом) — оплату не открываем, с гостем свяжется администратор */
     showDoneView(data);
     form.reset();
     applyContactMethod("phone");
   } catch {
     showSubmitError("Не удалось отправить заявку — проверьте связь и попробуйте ещё раз");
   } finally {
-    submitting = false;
-    submitBtn.disabled = false;
-    submitBtn.textContent = submitBtnLabel;
+    /* Во время перехода на Robokassa страница ещё жива: не возвращаем
+       кнопку в исходное состояние, иначе заявку можно отправить дважды */
+    if (!redirectingToPayment) {
+      submitting = false;
+      submitBtn.disabled = false;
+      submitBtn.textContent = submitBtnLabel;
+    }
   }
 });

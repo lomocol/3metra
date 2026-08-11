@@ -44,5 +44,8 @@ jobs:
             --exclude='payanyway-config.php' \
             --exclude='payanyway-data/' \
             --exclude='payanyway.log' \
+            --exclude='robokassa-config.php' \
+            --exclude='robokassa.log' \
+            --exclude='payment-data/' \
             -e "ssh -i ~/.ssh/deploy_key" \
             ./ "$SSH_USER@$SSH_HOST:$SSH_PATH"
