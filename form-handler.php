@@ -501,7 +501,7 @@ if (!is_dir(PAYMENT_DATA_DIR)) {
         "Require all denied\n<IfModule !mod_authz_core.c>\nOrder allow,deny\nDeny from all\n</IfModule>\n"
     );
 }
-$paymentConfig = @include __DIR__ . '/payanyway-config.php';
+$paymentConfig = @include __DIR__ . '/robokassa-config.php';
 $leadAmount = is_array($paymentConfig) && isset($paymentConfig['prices'][$gender])
     ? number_format((float) $paymentConfig['prices'][$gender], 2, '.', '')
     : null;

@@ -23,9 +23,6 @@ ini_set('display_errors', '0');
 
 const PAY_LOG_FILE = __DIR__ . '/robokassa.log';
 const PAY_DATA_DIR = __DIR__ . '/payment-data';
-/* Каталог прошлой платёжной интеграции: заявки, отправленные до деплоя,
-   лежат ещё там — читаем их оттуда, чтобы не потерять ClientID Метрики */
-const PAY_LEGACY_DATA_DIR = __DIR__ . '/payanyway-data';
 
 /* Список вечеров — должен совпадать с EVENTS в script.js и form-handler.php */
 const PAY_EVENTS = array(
@@ -139,9 +136,6 @@ $metrikaClientId = '';
 $leadName = '';
 $leadPhone = '';
 $leadAnalyticsFile = PAY_DATA_DIR . '/lead-' . $leadId . '.json';
-if (!is_file($leadAnalyticsFile)) {
-    $leadAnalyticsFile = PAY_LEGACY_DATA_DIR . '/lead-' . $leadId . '.json';
-}
 if (is_file($leadAnalyticsFile)) {
     $leadAnalytics = json_decode((string) @file_get_contents($leadAnalyticsFile), true);
     if (
