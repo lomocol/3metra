@@ -379,7 +379,7 @@ _tmr.push({id: "3786513", type: "pageView", start: (new Date()).getTime()});
         </div>
       </div>
       <div class="included__cta reveal">
-        <p>Билет — <strong>2 300 ₽</strong> за участие, единая цена для всех. Заполните форму и оплатите онлайн — место закрепляется за вами сразу после оплаты</p>
+        <p>Билет — <strong>2 300 ₽</strong> за участие, единая цена для всех. Оставьте заявку — администратор свяжется, подтвердит место и подскажет, как оплатить</p>
         <button class="btn btn--primary" type="button" data-open-booking>Забронировать место</button>
       </div>
     </div>
@@ -556,7 +556,7 @@ _tmr.push({id: "3786513", type: "pageView", start: (new Date()).getTime()});
 
     <form class="booking" id="booking-form" novalidate>
       <h2 id="booking-title">Заявка на вечер</h2>
-      <p class="booking__sub">Билет — 2 300 ₽. Заполните форму и нажмите «Перейти к оплате» — мы отправим вас на защищённую страницу Robokassa. Место бронируется за вами только после успешной оплаты.</p>
+      <p class="booking__sub">Билет — 2 300 ₽. Оставьте заявку — администратор свяжется с вами, подтвердит наличие места и подскажет, как оплатить. Место бронируется после оплаты.</p>
 
       <!-- Honeypot: люди это поле не видят и не заполняют -->
       <input type="text" name="website" class="booking__hp" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -625,11 +625,11 @@ _tmr.push({id: "3786513", type: "pageView", start: (new Date()).getTime()});
       </label>
       <p class="booking__error" data-error-for="consent" hidden>Без согласия мы не можем принять бронь</p>
 
-      <p class="booking__legal">Нажимая кнопку «Перейти к оплате», я даю согласие на обработку моих персональных данных на условиях <a href="soglasie.html" target="_blank" rel="noopener">Согласия на обработку персональных данных</a>. С <a href="policy.html" target="_blank" rel="noopener">Политикой конфиденциальности</a> можно ознакомиться по ссылке.</p>
+      <p class="booking__legal">Нажимая кнопку «Отправить заявку», я даю согласие на обработку моих персональных данных на условиях <a href="soglasie.html" target="_blank" rel="noopener">Согласия на обработку персональных данных</a>. С <a href="policy.html" target="_blank" rel="noopener">Политикой конфиденциальности</a> можно ознакомиться по ссылке.</p>
 
-      <p class="booking__fineprint">Оплата проходит на защищённой странице Robokassa — реквизиты вашей карты мы не получаем и не храним. После оплаты придёт чек, а место будет закреплено за вами</p>
-      <p class="booking__error" data-error-for="submit" hidden>Не удалось перейти к оплате — попробуйте ещё раз</p>
-      <button class="btn btn--primary btn--lg booking__submit" type="submit">Перейти к оплате — 2 300 ₽</button>
+      <p class="booking__fineprint">Заявка ни к чему не обязывает — после отправки с вами свяжется администратор, подтвердит место и подскажет, как оплатить</p>
+      <p class="booking__error" data-error-for="submit" hidden>Не удалось отправить заявку — попробуйте ещё раз</p>
+      <button class="btn btn--primary btn--lg booking__submit" type="submit">Отправить заявку</button>
     </form>
 
     <div class="booking-done" id="booking-done" hidden>
@@ -639,7 +639,7 @@ _tmr.push({id: "3786513", type: "pageView", start: (new Date()).getTime()});
       <h2>Заявка принята</h2>
       <p class="booking-done__summary" id="booking-summary"></p>
       <button class="btn btn--primary btn--lg" type="button" data-close-booking>Хорошо</button>
-      <p class="booking-done__hint">Спасибо! Открыть оплату прямо сейчас не получилось. Администратор свяжется с вами по указанному контакту и поможет оплатить участие — место бронируется после оплаты.</p>
+      <p class="booking-done__hint">Спасибо! Заявка принята. Администратор свяжется с вами по указанному контакту, подтвердит наличие места и подскажет, как оплатить. Место бронируется после оплаты.</p>
     </div>
   </div>
 </div>

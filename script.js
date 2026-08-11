@@ -12,8 +12,16 @@ const BOOKING_ENDPOINT = "/form-handler.php";
 /* Шаг оплаты: pay.php считает подпись Robokassa по серверной цене и
    отправляет гостя на платёжную страницу. Сумма и услуга в браузер не
    попадают. Пустая строка — оплата отключена, гость увидит экран
-   «заявка отправлена» и с ним свяжется администратор. */
-const PAYMENT_ENDPOINT = "/pay.php";
+   «заявка принята» и с ним свяжется администратор.
+
+   ВРЕМЕННО ОТКЛЮЧЕНО — ждём подтверждения магазина в Robokassa.
+   Чтобы включить оплату обратно:
+     1) вернуть сюда "/pay.php";
+     2) заполнить robokassa-config.php на сервере;
+     3) вернуть «платёжные» тексты формы — см. коммит
+        «Временно: заявка вместо оплаты до подтверждения Robokassa»,
+        он меняет только index.html и soglasie.html. */
+const PAYMENT_ENDPOINT = "";
 
 /* Honest availability status per event — update by hand (or wire to a
    backend). Allowed values: "open" | "few" | "ask" | "closed" | null (hides it).
