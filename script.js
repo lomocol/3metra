@@ -23,30 +23,31 @@ const BOOKING_ENDPOINT = "/form-handler.php";
         он меняет только index.html и soglasie.html. */
 const PAYMENT_ENDPOINT = "";
 
-/* Honest availability status per event — update by hand (or wire to a
-   backend). Allowed values: "open" | "few" | "ask" | "closed" | null (hides it).
-   No numeric counters: never show numbers you can't keep accurate. */
+/* Честный статус мест по каждому вечеру — обновляется руками.
+   Допустимые значения: "open" | "few" | "ask" | "closed" | null (строку не трогаем).
+   Никаких числовых счётчиков: не показываем цифры, которые не можем держать точными. */
 const AVAILABILITY = {
   aug15: "ask",
   aug21: "ask",
   aug22: "ask",
 };
 
+/* Текст в строке «Места» карточки вечера */
 const AVAILABILITY_LABELS = {
-  open: { short: "Места есть", long: "Места на этот вечер есть — состав собираем вручную, поровну мужчин и женщин" },
-  few: { short: "Мест мало", long: "Мест на этот вечер осталось мало — успейте забронировать" },
-  ask: { short: "Уточняйте наличие мест", long: "Уточняйте наличие мест — состав собираем вручную, поровну мужчин и женщин. Оставьте заявку, администратор подтвердит бронь" },
-  closed: { short: "Запись закрыта", long: "Запись на этот вечер закрыта — группа собрана. Выберите другую дату" },
+  open: "места есть",
+  few: "мест мало",
+  ask: "уточняйте наличие мест",
+  closed: "запись закрыта",
 };
 
 /* time: "" — время вечера ещё не объявлено, в подтверждении его не показываем */
 const EVENTS = {
-  aug15: { label: "суббота, 15 августа", group: "старшая группа", time: "19:00" },
-  aug21: { label: "пятница, 21 августа", group: "основная группа", time: "19:00" },
-  aug22: { label: "суббота, 22 августа", group: "основная группа, свидание по ценностям: ЗОЖ", time: "19:00" },
+  aug15: { label: "суббота, 15 августа", group: "группа 35–55 лет", time: "19:00" },
+  aug21: { label: "пятница, 21 августа", group: "группа 22–35 лет", time: "19:00" },
+  aug22: { label: "суббота, 22 августа", group: "группа 22–35 лет, вечер для тех, кто занимается спортом", time: "19:00" },
 };
 
-const TICKET_PRICES = { m: "2 300 ₽", f: "2 300 ₽" };
+const TICKET_PRICES = { m: "2 300 ₽", f: "2 300 ₽" };
 
 const CONTACT_METHODS = {
   phone: { placeholder: "+7 900 000-00-00", type: "tel", inputmode: "tel", autocomplete: "tel" },
@@ -55,87 +56,46 @@ const CONTACT_METHODS = {
 };
 
 /* ============================================================
-   Availability statuses on event cards
+   Статус мест в карточках расписания
    ============================================================ */
 
-/* Строки «места есть / мест мало / уточняйте наличие мест / мест нет»
-   напротив мужчин и женщин в карточках расписания — управляются
-   AVAILABILITY выше */
-const SLOT_LABELS = {
-  open: "места есть",
-  few: "мест мало",
-  ask: "уточняйте наличие мест",
-  closed: "мест нет",
-};
-
-document.querySelectorAll("[data-availability-gender]").forEach((el) => {
-  const status = AVAILABILITY[el.dataset.availabilityGender];
-  const label = SLOT_LABELS[status];
+document.querySelectorAll("[data-availability]").forEach((el) => {
+  const status = AVAILABILITY[el.dataset.availability];
+  const label = AVAILABILITY_LABELS[status];
   if (!label) return;
+
   el.textContent = label;
-  el.classList.toggle("event-card__slot--ask", status === "ask");
-  if (status === "few") el.classList.add("event-card__slot--few");
-  if (status === "closed") {
-    el.classList.add("event-card__slot--closed");
-    const btn = el.closest(".next-card, .event-card")?.querySelector("[data-open-booking]");
-    if (btn) {
-      btn.disabled = true;
-      btn.textContent = "Запись закрыта";
-    }
+  el.classList.toggle("event__status--few", status === "few");
+  el.classList.toggle("event__status--closed", status === "closed");
+
+  if (status !== "closed") return;
+
+  /* Запись закрыта — кнопку в карточке выключаем, чтобы не собирать
+     заявки на собранную группу */
+  const btn = el.closest(".event")?.querySelector("[data-open-booking]");
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = "Запись закрыта";
   }
 });
 
-document.querySelectorAll("[data-availability-long]").forEach((el) => {
-  const label = AVAILABILITY_LABELS[AVAILABILITY[el.dataset.availabilityLong]];
-  if (!label) return;
-  el.textContent = label.long;
-  el.hidden = false;
-});
-
 /* ============================================================
-   Nav background on scroll
+   Шапка: линейка появляется только после прокрутки
    ============================================================ */
 
 const nav = document.querySelector(".nav");
-const onScrollNav = () => nav.classList.toggle("is-scrolled", window.scrollY > 12);
-onScrollNav();
-window.addEventListener("scroll", onScrollNav, { passive: true });
+const stickyCta = document.getElementById("sticky-cta");
 
-/* ============================================================
-   Счётчик «470 ростовчан познакомились» — оживает при появлении
-   ============================================================ */
-
-const countupEls = document.querySelectorAll("[data-countup]");
-if (
-  countupEls.length &&
-  "IntersectionObserver" in window &&
-  !window.matchMedia("(prefers-reduced-motion: reduce)").matches
-) {
-  const countupIo = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (!entry.isIntersecting) continue;
-        const el = entry.target;
-        countupIo.unobserve(el);
-        const target = parseInt(el.dataset.countup, 10);
-        if (!target) continue;
-        const started = performance.now();
-        const duration = 1200;
-        const tick = (now) => {
-          const p = Math.min(1, (now - started) / duration);
-          el.textContent = String(Math.round(target * (1 - Math.pow(1 - p, 3))));
-          if (p < 1) requestAnimationFrame(tick);
-        };
-        requestAnimationFrame(tick);
-        /* Страховка: если кадры анимации задушены (фоновая вкладка),
-           через duration всё равно показываем итоговое число */
-        setTimeout(() => { el.textContent = String(target); }, duration + 200);
-      }
-    },
-    { threshold: 0.6 }
-  );
-  countupEls.forEach((el) => countupIo.observe(el));
+function onScroll() {
+  const y = window.scrollY;
+  nav.classList.toggle("is-scrolled", y > 12);
+  /* Панель записи внизу экрана — после того, как первый экран прокручен:
+     пока видна кнопка в первом экране, дублировать её незачем */
+  if (stickyCta) stickyCta.classList.toggle("is-visible", y > 420);
 }
+
+onScroll();
+window.addEventListener("scroll", onScroll, { passive: true });
 
 /* ============================================================
    Cookie notice — уведомление без кнопок согласия (см. cookies.html);
@@ -162,116 +122,7 @@ if (cookieNote) {
 }
 
 /* ============================================================
-   Reveal-on-scroll
-   ============================================================ */
-
-const revealEls = document.querySelectorAll(".reveal");
-
-if ("IntersectionObserver" in window) {
-  const io = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (!entry.isIntersecting) continue;
-        const el = entry.target;
-        const delay = el.dataset.delay;
-        if (delay) el.style.transitionDelay = `${delay}ms`;
-        el.classList.add("is-in");
-        io.unobserve(el);
-      }
-    },
-    { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
-  );
-  revealEls.forEach((el) => io.observe(el));
-} else {
-  revealEls.forEach((el) => el.classList.add("is-in"));
-}
-
-/* ============================================================
-   Mobile hero-strip video — стартует после применения мобильных CSS
-   ============================================================ */
-
-const mobileStripVideo = document.querySelector("[data-mobile-strip-video]");
-const mobileStripQuery = window.matchMedia("(max-width: 760px)");
-
-function playMobileStripVideo() {
-  if (!mobileStripVideo) return;
-
-  if (!mobileStripQuery.matches) {
-    mobileStripVideo.pause?.();
-    return;
-  }
-
-  mobileStripVideo.muted = true;
-  mobileStripVideo.defaultMuted = true;
-  mobileStripVideo.loop = true;
-  mobileStripVideo.playsInline = true;
-  mobileStripVideo.setAttribute("muted", "");
-  mobileStripVideo.setAttribute("playsinline", "");
-
-  if (!mobileStripVideo.currentSrc) mobileStripVideo.load?.();
-  mobileStripVideo.play?.().catch(() => {});
-}
-
-if (mobileStripVideo) {
-  window.addEventListener("load", playMobileStripVideo, { once: true });
-  requestAnimationFrame(playMobileStripVideo);
-  document.addEventListener("visibilitychange", () => {
-    if (!document.hidden) playMobileStripVideo();
-  });
-  if (mobileStripQuery.addEventListener) {
-    mobileStripQuery.addEventListener("change", playMobileStripVideo);
-  } else {
-    mobileStripQuery.addListener(playMobileStripVideo);
-  }
-  document.addEventListener("touchstart", playMobileStripVideo, { once: true, passive: true });
-  document.addEventListener("pointerdown", playMobileStripVideo, { once: true, passive: true });
-}
-
-/* ============================================================
-   Gallery videos — load and play only near the viewport
-   ============================================================ */
-
-const galleryVideos = document.querySelectorAll("[data-gallery-video]");
-
-function playGalleryVideo(video) {
-  video.muted = true;
-  video.defaultMuted = true;
-  video.loop = true;
-  video.playsInline = true;
-  video.play?.().catch(() => {});
-}
-
-function isNearViewport(video) {
-  const rect = video.getBoundingClientRect();
-  return rect.bottom > -240 && rect.top < window.innerHeight + 240;
-}
-
-if (galleryVideos.length) {
-  if ("IntersectionObserver" in window) {
-    const galleryVideoIo = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) playGalleryVideo(entry.target);
-          else entry.target.pause?.();
-        }
-      },
-      { rootMargin: "240px 0px", threshold: 0.01 }
-    );
-    galleryVideos.forEach((video) => galleryVideoIo.observe(video));
-  } else {
-    galleryVideos.forEach(playGalleryVideo);
-  }
-
-  document.addEventListener("visibilitychange", () => {
-    galleryVideos.forEach((video) => {
-      if (document.hidden) video.pause?.();
-      else if (isNearViewport(video)) playGalleryVideo(video);
-    });
-  });
-}
-
-/* ============================================================
-   Gallery lightbox
+   Фотографии — тап открывает кадр во весь экран
    ============================================================ */
 
 const lightbox = document.getElementById("lightbox");
@@ -294,13 +145,6 @@ function openLightbox(media) {
     lightbox.classList.add("is-open");
     lightboxClose.focus({ preventScroll: true });
   });
-
-  if (clone.tagName === "VIDEO") {
-    clone.muted = true;
-    clone.loop = true;
-    clone.setAttribute("playsinline", "");
-    clone.play?.().catch(() => {});
-  }
 }
 
 function closeLightbox() {
@@ -317,29 +161,20 @@ function closeLightbox() {
   lightboxLastFocused?.focus({ preventScroll: true });
 }
 
-function makeZoomable(el, clickableClass, label) {
-  const media = el.querySelector("img, video");
+document.querySelectorAll(".photo").forEach((item) => {
+  const media = item.querySelector("img");
   if (!media) return;
-  el.classList.add(clickableClass);
-  el.setAttribute("role", "button");
-  el.setAttribute("tabindex", "0");
-  el.setAttribute("aria-label", label);
-  el.addEventListener("click", () => openLightbox(media));
-  el.addEventListener("keydown", (e) => {
+  item.classList.add("photo--clickable");
+  item.setAttribute("role", "button");
+  item.setAttribute("tabindex", "0");
+  item.setAttribute("aria-label", "Открыть фото на весь экран");
+  item.addEventListener("click", () => openLightbox(media));
+  item.addEventListener("keydown", (e) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
       openLightbox(media);
     }
   });
-}
-
-document.querySelectorAll(".gallery__item:not(.gallery__item--placeholder)").forEach((item) => {
-  makeZoomable(item, "gallery__item--clickable", "Открыть на весь экран");
-});
-
-/* На телефоне скриншот отзыва мельче оригинала — тапом открываем его целиком */
-document.querySelectorAll(".review__shot").forEach((shot) => {
-  makeZoomable(shot, "review__shot--clickable", "Открыть отзыв на весь экран");
 });
 
 lightboxClose.addEventListener("click", closeLightbox);
@@ -390,7 +225,7 @@ function closeModal() {
 
   const finish = () => { modal.hidden = true; };
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  reduced ? finish() : setTimeout(finish, 340);
+  reduced ? finish() : setTimeout(finish, 300);
 
   lastFocused?.focus({ preventScroll: true });
 }
@@ -523,8 +358,8 @@ function showSubmitError(message) {
 function showDoneView(data) {
   const ev = EVENTS[data.event];
   summaryEl.textContent =
-    `${data.name.trim()}, вы выбрали: ${ev.label}, ${ev.group}, ${ev.time ? ev.time + ", " : ""}бар-ресторан GasGas. ` +
-    `Билет — ${currentPrice()} за участие` +
+    `${data.name.trim()}, вы выбрали: ${ev.label}, ${ev.group}, ${ev.time ? ev.time + ", " : ""}бар GasGas. ` +
+    `Участие — ${currentPrice()}` +
     (ev.time ? "" : ". Точное время вечера подтвердит администратор");
 
   form.hidden = true;
