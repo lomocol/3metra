@@ -19,10 +19,11 @@
   --text-soft: #5f5c5c;
   --text-faint: #8d8a89;
 
-  /* Единственный акцент: кнопки, ближайший вечер, активные состояния */
-  --accent: #2f6b73;
-  --accent-strong: #245660;
-  --accent-soft: #e4eeef;
+  /* Единственный акцент — бордовый из логотипа: кнопки, ближайший вечер,
+     активные состояния. Больше на странице цветов нет */
+  --accent: #9b1b34;
+  --accent-strong: #7d1329;
+  --accent-soft: #f8eef0;
   --on-accent: #ffffff;
 
   /* Отдельный цвет только для ошибок формы */
@@ -259,7 +260,33 @@ details:focus-visible {
 
 .hero { padding-block: clamp(34px, 7vw, 72px); }
 
-.hero__inner { max-width: 780px; }
+/* На широком экране текст и фото стоят рядом, факты и кнопки — во всю ширину под ними */
+.hero__inner { display: grid; gap: clamp(22px, 3.5vw, 32px); }
+
+@media (min-width: 900px) {
+  .hero__inner {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    column-gap: 36px;
+    align-items: center;
+  }
+  .hero__facts, .hero__actions { grid-column: 1 / -1; }
+}
+
+.hero__copy { max-width: 620px; }
+
+.hero__photo { margin: 0; }
+
+.hero__photo img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: var(--radius);
+  background: var(--surface-soft);
+}
+
+@media (min-width: 900px) {
+  .hero__photo img { aspect-ratio: 4 / 3; }
+}
 
 .hero h1 { margin-bottom: 18px; }
 
@@ -286,7 +313,7 @@ details:focus-visible {
   transition: background-color 0.18s var(--ease);
 }
 
-.hero__next:hover { background: #d8e7e8; }
+.hero__next:hover { background: #f2e2e5; }
 
 .hero__next-icon {
   display: grid;
@@ -305,7 +332,7 @@ details:focus-visible {
 /* Факты — мягкие серые чипы, без сетки и рамок */
 .hero__facts {
   list-style: none;
-  margin: clamp(22px, 4vw, 30px) 0 0;
+  margin: 0;
   padding: 0;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -340,7 +367,6 @@ details:focus-visible {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: clamp(22px, 4vw, 30px);
 }
 
 /* На телефоне обе кнопки во всю ширину — целиться не нужно */
@@ -564,6 +590,23 @@ details:focus-visible {
 .photo--clickable img { cursor: zoom-in; }
 .photo--clickable:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: var(--radius); }
 
+/* Фотография-баннер внутри секции */
+.section-photo { margin: clamp(24px, 4vw, 34px) 0 0; }
+
+.section-photo img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: center 38%;
+  border-radius: var(--radius);
+  background: var(--surface-soft);
+}
+
+/* На широком экране полоса ниже: иначе снимок занимает пол-экрана */
+@media (min-width: 760px) {
+  .section-photo img { aspect-ratio: 2.8 / 1; }
+}
+
 /* ---------- Где проходит ---------- */
 
 .place__grid {
@@ -573,6 +616,16 @@ details:focus-visible {
 
 @media (min-width: 800px) {
   .place__grid { grid-template-columns: 1fr 1.1fr; gap: 28px; align-items: start; }
+}
+
+.place__photo { margin: 0 0 18px; }
+
+.place__photo img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: var(--radius);
+  background: var(--surface-soft);
 }
 
 .place__info p { font-size: 15.5px; color: var(--text-soft); max-width: 46ch; }
