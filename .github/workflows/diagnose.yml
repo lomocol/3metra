@@ -1,0 +1,31 @@
+name: Diagnose notifications
+
+on:
+  workflow_dispatch:
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts
+
+      - name: Run diagnostics on server
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PATH: ${{ secrets.SSH_PATH }}
+        run: |
+          scp -i ~/.ssh/deploy_key .github/diagnose-remote.php "$SSH_USER@$SSH_HOST:~/diagnose-remote.php"
+          ssh -i ~/.ssh/deploy_key "$SSH_USER@$SSH_HOST" "php ~/diagnose-remote.php '$SSH_PATH'; rm -f ~/diagnose-remote.php"
