@@ -6,21 +6,34 @@
 
 declare(strict_types=1);
 
+/* Соединение с api.telegram.org с хостинга иногда устанавливается дольше
+   двух секунд, поэтому таймауты выше исходных, а при сетевой ошибке
+   делаем одну повторную попытку. */
 function notificationPostJson($url, array $headers, array $payload)
 {
-    $ch = curl_init($url);
-    curl_setopt_array($ch, array(
-        CURLOPT_POST => true,
-        CURLOPT_POSTFIELDS => json_encode($payload, JSON_UNESCAPED_UNICODE),
-        CURLOPT_HTTPHEADER => $headers,
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_CONNECTTIMEOUT => 2,
-        CURLOPT_TIMEOUT => 5,
-    ));
-    $body = curl_exec($ch);
-    $error = curl_error($ch);
-    $status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
+    $attempts = 2;
+    $status = 0;
+    $body = '';
+    $error = '';
+    for ($i = 0; $i < $attempts; $i++) {
+        $ch = curl_init($url);
+        curl_setopt_array($ch, array(
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => json_encode($payload, JSON_UNESCAPED_UNICODE),
+            CURLOPT_HTTPHEADER => $headers,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_CONNECTTIMEOUT => 4,
+            CURLOPT_TIMEOUT => 8,
+        ));
+        $body = curl_exec($ch);
+        $error = curl_error($ch);
+        $status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if ($error === '') {
+            break;
+        }
+    }
 
     return array($status, is_string($body) ? $body : '', $error);
 }
