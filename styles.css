@@ -21,9 +21,9 @@
 
   /* Единственный акцент — бордовый из логотипа: кнопки, ближайший вечер,
      активные состояния. Больше на странице цветов нет */
-  --accent: #9b1b34;
-  --accent-strong: #7d1329;
-  --accent-soft: #f8eef0;
+  --accent: #8c3041;
+  --accent-strong: #732736;
+  --accent-soft: #f5eef0;
   --on-accent: #ffffff;
 
   /* Отдельный цвет только для ошибок формы */
@@ -34,7 +34,7 @@
   --radius-sm: 12px;
   --radius-pill: 999px;
   --ease: cubic-bezier(0.2, 0, 0, 1);
-  --font: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font: "Golos Text", system-ui, -apple-system, "Segoe UI", sans-serif;
   --nav-h: 66px;
 }
 
@@ -59,13 +59,14 @@ body {
 
 h1, h2, h3 {
   margin: 0;
-  font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
+  font-family: "Lora", Georgia, serif;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0;
   text-wrap: balance;
 }
 
-h1 { font-size: clamp(2rem, 7vw, 3.1rem); line-height: 1.08; }
+h1 { font-size: clamp(2rem, 7vw, 3.1rem); line-height: 1.15; }
 h2 { font-size: clamp(1.5rem, 4.6vw, 2.1rem); }
 h3 { font-size: 1.1rem; }
 
@@ -288,26 +289,14 @@ details:focus-visible {
   .hero__photo img { aspect-ratio: 4 / 3; }
 }
 
-.hero h1 { margin-bottom: 18px; }
+.hero h1 {
+  margin-bottom: 18px;
+  font-size: clamp(1.8rem, 5.5vw, 2.75rem);
+}
 
-/* На телефоне заголовок другой: акцентная фраза курсивной антиквой */
-.hero__title-mobile { display: none; }
-
-@media (max-width: 560px) {
-  .hero__title-desktop { display: none; }
-
-  .hero__title-mobile {
-    display: block;
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: clamp(1.6rem, 6.8vw, 2.2rem);
-    line-height: 1.15;
-    letter-spacing: -0.01em;
-  }
-
-  .hero__title-mobile em {
-    font-style: italic;
-    color: var(--accent);
-  }
+.hero h1 em {
+  font-style: italic;
+  color: var(--accent);
 }
 
 .hero__lead {
