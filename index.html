@@ -26,7 +26,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Lora:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260812b">
+  <link rel="stylesheet" href="styles.css?v=20260812c">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -125,7 +125,7 @@ _tmr.push({id: "3786513", type: "pageView", start: (new Date()).getTime()});
     <div class="container">
       <header class="section-head">
         <h2 id="dates-title">Ближайшие мероприятия</h2>
-        <p class="section-head__sub">Начало в 19:00, участие 2 300 ₽ · бар GasGas, Кировский проспект, 51</p>
+        <p class="section-head__sub">Начало в <b>19:00</b>, участие <b>2 300 ₽</b> · бар GasGas, Кировский проспект, 51</p>
       </header>
 
       <div class="dates__grid">
@@ -133,7 +133,7 @@ _tmr.push({id: "3786513", type: "pageView", start: (new Date()).getTime()});
         <article class="event event--next">
           <div class="event__info">
             <p class="event__date"><b>15 августа</b><span>суббота · <span class="u-nowrap">35–55 лет</span></span></p>
-            <p class="event__status" data-availability="aug15">уточняйте наличие мест</p>
+            <p class="event__status" data-availability="aug15"><span class="event__status-line event__status-line--ask">девушки: уточняйте наличие мест</span><span class="event__status-line event__status-line--open">мужчины: места есть</span></p>
           </div>
           <button class="btn btn--primary event__btn" type="button" data-open-booking data-event="aug15" aria-label="Записаться на 15 августа">Записаться</button>
         </article>
@@ -141,7 +141,7 @@ _tmr.push({id: "3786513", type: "pageView", start: (new Date()).getTime()});
         <article class="event">
           <div class="event__info">
             <p class="event__date"><b>21 августа</b><span>пятница · <span class="u-nowrap">22–35 лет</span></span></p>
-            <p class="event__status" data-availability="aug21">уточняйте наличие мест</p>
+            <p class="event__status" data-availability="aug21"><span class="event__status-line event__status-line--ask">девушки: уточняйте наличие мест</span><span class="event__status-line event__status-line--open">мужчины: места есть</span></p>
           </div>
           <button class="btn btn--outline event__btn" type="button" data-open-booking data-event="aug21" aria-label="Записаться на 21 августа">Записаться</button>
         </article>
@@ -149,7 +149,7 @@ _tmr.push({id: "3786513", type: "pageView", start: (new Date()).getTime()});
         <article class="event">
           <div class="event__info">
             <p class="event__date"><b>22 августа</b><span>суббота · <span class="u-nowrap">22–35 лет</span></span></p>
-            <p class="event__status" data-availability="aug22">уточняйте наличие мест</p>
+            <p class="event__status" data-availability="aug22"><span class="event__status-line event__status-line--ask">девушки: уточняйте наличие мест</span><span class="event__status-line event__status-line--open">мужчины: места есть</span></p>
           </div>
           <p class="event__note">Вечер для тех, кто занимается спортом и ведёт активный образ жизни</p>
           <button class="btn btn--outline event__btn" type="button" data-open-booking data-event="aug22" aria-label="Записаться на 22 августа">Записаться</button>
@@ -209,22 +209,18 @@ _tmr.push({id: "3786513", type: "pageView", start: (new Date()).getTime()});
         <figure class="photo">
           <img src="media/gallery-date-white.jpg" width="939" height="1675" loading="lazy" decoding="async"
                alt="Мужчина и женщина разговаривают за столиком с тюльпанами на вечере знакомств">
-          <figcaption>Разговор один на один</figcaption>
         </figure>
         <figure class="photo">
           <img src="media/gallery-evening.jpg" width="738" height="1600" loading="lazy" decoding="async"
                alt="Участники вечера знакомств общаются в лаунж-зоне бара">
-          <figcaption>Общение в лаунж-зоне</figcaption>
         </figure>
         <figure class="photo">
           <img src="media/gallery-host.jpg" width="736" height="1600" loading="lazy" decoding="async"
                alt="Зал бара во время вечера знакомств: пары сидят за отдельными столиками">
-          <figcaption>Зал во время вечера</figcaption>
         </figure>
         <figure class="photo">
           <img src="media/gallery-guests.jpg" width="736" height="1600" loading="lazy" decoding="async"
                alt="Мужчина и женщина разговаривают за столиком с тюльпанами">
-          <figcaption>Разговоры за столиками</figcaption>
         </figure>
       </div>
     </div>
@@ -316,23 +312,26 @@ _tmr.push({id: "3786513", type: "pageView", start: (new Date()).getTime()});
 </div>
 
 <footer class="footer">
-  <div class="container footer__inner">
-    <div class="footer__brand">
-      <p class="footer__logo">
-        <img class="footer__mark" src="media/favicon.png" width="36" height="36" loading="lazy" decoding="async" alt="" aria-hidden="true">
-        <span>3 метра · Ростов-на-Дону</span>
-      </p>
-      <p>Вечера быстрых свиданий. Проект ведут Илья и Миледа.</p>
+  <div class="container">
+
+    <div class="footer__main">
+      <div class="footer__brand">
+        <p class="footer__logo">
+          <img class="footer__mark" src="media/favicon.png" width="36" height="36" loading="lazy" decoding="async" alt="" aria-hidden="true">
+          <span>3 метра · Ростов-на-Дону</span>
+        </p>
+        <p>Вечера быстрых свиданий. Проект ведут Илья и Миледа.</p>
+      </div>
+      <div class="footer__contacts">
+        <p class="footer__head">Связаться с нами</p>
+        <ul>
+          <li><a href="https://t.me/tri_metra_rostov" target="_blank" rel="noopener">Telegram — @tri_metra_rostov</a></li>
+          <li><a href="https://max.ru/u/f9LHodD0cOKw9BFOAawZGr5EzV1emOzbzPuxz1mZuQUf6KIclcyHyzkPuz0" target="_blank" rel="noopener">MAX — написать администратору</a></li>
+        </ul>
+      </div>
     </div>
-    <div class="footer__contacts">
-      <p class="footer__head">Связаться с нами</p>
-      <ul>
-        <li><a href="https://t.me/tri_metra_rostov" target="_blank" rel="noopener">Telegram — @tri_metra_rostov</a></li>
-        <li><a href="https://max.ru/u/f9LHodD0cOKw9BFOAawZGr5EzV1emOzbzPuxz1mZuQUf6KIclcyHyzkPuz0" target="_blank" rel="noopener">MAX — написать администратору</a></li>
-        <li><a href="tel:+79524145368">+7 952 414-53-68</a></li>
-      </ul>
-    </div>
-    <div class="footer__legal">
+
+    <div class="footer__secondary">
       <p class="footer__head">Документы</p>
       <ul>
         <li><a href="offerta.html">Публичная оферта</a></li>
@@ -343,6 +342,7 @@ _tmr.push({id: "3786513", type: "pageView", start: (new Date()).getTime()});
       </ul>
       <p class="footer__requisites">© 2026 «Три метра»<br>Прудников Сергей Евгеньевич · ИНН 615435082459<br>Самозанятый · плательщик налога на профессиональный доход<br>Email: <a href="mailto:sprudnikov99@yandex.ru">sprudnikov99@yandex.ru</a></p>
     </div>
+
   </div>
 </footer>
 
@@ -450,6 +450,6 @@ _tmr.push({id: "3786513", type: "pageView", start: (new Date()).getTime()});
   </div>
 </div>
 
-<script src="script.js?v=20260811d"></script>
+<script src="script.js?v=20260812c"></script>
 </body>
 </html>

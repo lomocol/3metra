@@ -115,6 +115,11 @@ main {
   max-width: 52ch;
 }
 
+.section-head__sub b {
+  font-weight: 600;
+  color: var(--text);
+}
+
 .sr-only {
   position: absolute;
   width: 1px; height: 1px;
@@ -444,8 +449,12 @@ details:focus-visible {
   font-size: 13px;
   color: var(--text-soft);
 }
-.event__status--few { color: var(--accent-strong); font-weight: 600; }
-.event__status--closed { color: var(--danger); }
+
+.event__status-line { display: block; font-weight: 600; }
+.event__status-line--open { color: #2f7d46; }
+.event__status-line--ask,
+.event__status-line--few { color: #9a6b00; }
+.event__status-line--closed { color: var(--danger); }
 
 .event__btn { flex-shrink: 0; }
 
@@ -547,13 +556,6 @@ details:focus-visible {
   object-fit: cover;
   border-radius: var(--radius);
   background: var(--surface-soft);
-}
-
-.photo figcaption {
-  margin-top: 9px;
-  font-size: 13.5px;
-  line-height: 1.45;
-  color: var(--text-soft);
 }
 
 .photo--clickable img { cursor: zoom-in; }
@@ -745,13 +747,14 @@ details:focus-visible {
   .footer { margin-inline: 16px; }
 }
 
-.footer__inner {
+/* Первая часть футера — бренд и контакты, заметная и читаемая */
+.footer__main {
   display: grid;
   gap: 28px;
 }
 
 @media (min-width: 760px) {
-  .footer__inner { grid-template-columns: 1.1fr 1fr 1.2fr; gap: 36px; }
+  .footer__main { grid-template-columns: 1.1fr 1.2fr; gap: 36px; }
 }
 
 .footer__logo {
@@ -762,8 +765,7 @@ details:focus-visible {
   margin-bottom: 8px;
 }
 
-.footer__brand p:last-child,
-.footer__requisites {
+.footer__brand p:last-child {
   font-size: 14px;
   color: var(--text-soft);
   line-height: 1.6;
@@ -787,17 +789,43 @@ details:focus-visible {
   font-size: 15px;
 }
 
-.footer a {
-  color: var(--text-soft);
-  text-decoration: none;
-}
+.footer a { text-decoration: none; }
 .footer a:hover { color: var(--accent); }
 
-.footer__requisites { margin-top: 16px; }
-
-@media (max-width: 700px) {
-  .footer ul { gap: 12px; }
+.footer__contacts ul {
+  gap: 12px;
+  font-size: 16px;
 }
+
+.footer__contacts a {
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* Вторая часть — документы и реквизиты, отделена линией и приглушена */
+.footer__secondary {
+  margin-top: 30px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+}
+
+.footer__secondary .footer__head { margin-bottom: 10px; }
+
+.footer__secondary ul {
+  gap: 7px;
+  font-size: 13.5px;
+}
+
+.footer__secondary a { color: var(--text-faint); }
+
+.footer__requisites {
+  margin-top: 14px;
+  font-size: 12.5px;
+  color: var(--text-faint);
+  line-height: 1.6;
+}
+
+.footer__requisites a { color: var(--text-faint); }
 
 /* ---------- Модальное окно записи ---------- */
 

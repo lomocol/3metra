@@ -23,13 +23,14 @@ const BOOKING_ENDPOINT = "/form-handler.php";
         он меняет только index.html и soglasie.html. */
 const PAYMENT_ENDPOINT = "";
 
-/* Честный статус мест по каждому вечеру — обновляется руками.
+/* Честный статус мест по каждому вечеру — обновляется руками, отдельно
+   для девушек (f) и мужчин (m).
    Допустимые значения: "open" | "few" | "ask" | "closed" | null (строку не трогаем).
    Никаких числовых счётчиков: не показываем цифры, которые не можем держать точными. */
 const AVAILABILITY = {
-  aug15: "ask",
-  aug21: "ask",
-  aug22: "ask",
+  aug15: { f: "ask", m: "open" },
+  aug21: { f: "ask", m: "open" },
+  aug22: { f: "ask", m: "open" },
 };
 
 /* Текст в строке «Места» карточки вечера */
@@ -61,16 +62,21 @@ const CONTACT_METHODS = {
 
 document.querySelectorAll("[data-availability]").forEach((el) => {
   const status = AVAILABILITY[el.dataset.availability];
-  const label = AVAILABILITY_LABELS[status];
-  if (!label) return;
+  if (!status) return;
 
-  el.textContent = label;
-  el.classList.toggle("event__status--few", status === "few");
-  el.classList.toggle("event__status--closed", status === "closed");
+  el.textContent = "";
+  [["девушки", status.f], ["мужчины", status.m]].forEach(([who, st]) => {
+    const label = AVAILABILITY_LABELS[st];
+    if (!label) return;
+    const line = document.createElement("span");
+    line.className = "event__status-line event__status-line--" + st;
+    line.textContent = who + ": " + label;
+    el.append(line);
+  });
 
-  if (status !== "closed") return;
+  if (status.f !== "closed" || status.m !== "closed") return;
 
-  /* Запись закрыта — кнопку в карточке выключаем, чтобы не собирать
+  /* Запись закрыта для всех — кнопку в карточке выключаем, чтобы не собирать
      заявки на собранную группу */
   const btn = el.closest(".event")?.querySelector("[data-open-booking]");
   if (btn) {
