@@ -1272,3 +1272,21 @@ details:focus-visible {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ---------- Честно о том, что вас ждёт ---------- */
+
+.honest__box {
+  border-left: 3px solid var(--accent);
+  padding-left: clamp(18px, 4vw, 44px);
+}
+
+.honest__box h2 { margin-bottom: 18px; }
+
+.honest__box p {
+  max-width: 62ch;
+  font-size: clamp(16px, 2vw, 18px);
+  line-height: 1.65;
+  color: var(--text-soft);
+}
+
+.honest__box p + p { margin-top: 16px; }
