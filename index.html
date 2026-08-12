@@ -26,7 +26,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260811d">
+  <link rel="stylesheet" href="styles.css?v=20260812a">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -80,7 +80,10 @@ _tmr.push({id: "3786513", type: "pageView", start: (new Date()).getTime()});
   <section class="hero">
     <div class="container hero__inner">
       <div class="hero__copy">
-      <h1>Быстрые свидания<br>в Ростове-на-Дону</h1>
+      <h1>
+        <span class="hero__title-desktop">Быстрые свидания<br>в Ростове-на-Дону</span>
+        <span class="hero__title-mobile">Один вечер — <em>десять знакомств</em> вживую</span>
+      </h1>
       <p class="hero__lead">
         За вечер вы общаетесь один на один с 10–15 участниками своего возраста —
         по пять минут с каждым. После вечера мы передаём контакты тем, кто понравился
@@ -125,61 +128,41 @@ _tmr.push({id: "3786513", type: "pageView", start: (new Date()).getTime()});
     <div class="container">
       <header class="section-head">
         <h2 id="dates-title">Ближайшие мероприятия</h2>
-        <p class="section-head__sub">Все вечера проходят в баре-ресторане GasGas, Кировский проспект, 51</p>
+        <p class="section-head__sub">Начало в 19:00, участие 2 300 ₽ · бар GasGas, Кировский проспект, 51</p>
       </header>
 
       <div class="dates__grid">
 
         <article class="event event--next">
-          <p class="event__flag">ближайший вечер</p>
-          <div class="event__head">
-            <p class="event__date"><b>15 августа</b><span>суббота</span></p>
-            <p class="event__age">35–55 лет</p>
+          <div class="event__info">
+            <p class="event__date"><b>15 августа</b><span>суббота · <span class="u-nowrap">35–55 лет</span></span></p>
+            <p class="event__status" data-availability="aug15">уточняйте наличие мест</p>
           </div>
-          <dl class="event__rows">
-            <div><dt>Начало</dt><dd>19:00</dd></div>
-            <div><dt>Место</dt><dd>GasGas, Кировский, 51</dd></div>
-            <div><dt>Участие</dt><dd><b>2 300 ₽</b></dd></div>
-            <div><dt>Места</dt><dd class="event__status" data-availability="aug15">уточняйте наличие мест</dd></div>
-          </dl>
-          <button class="btn btn--primary event__btn" type="button" data-open-booking data-event="aug15">Записаться на 15 августа</button>
+          <button class="btn btn--primary event__btn" type="button" data-open-booking data-event="aug15" aria-label="Записаться на 15 августа">Записаться</button>
         </article>
 
         <article class="event">
-          <div class="event__head">
-            <p class="event__date"><b>21 августа</b><span>пятница</span></p>
-            <p class="event__age">22–35 лет</p>
+          <div class="event__info">
+            <p class="event__date"><b>21 августа</b><span>пятница · <span class="u-nowrap">22–35 лет</span></span></p>
+            <p class="event__status" data-availability="aug21">уточняйте наличие мест</p>
           </div>
-          <dl class="event__rows">
-            <div><dt>Начало</dt><dd>19:00</dd></div>
-            <div><dt>Место</dt><dd>GasGas, Кировский, 51</dd></div>
-            <div><dt>Участие</dt><dd><b>2 300 ₽</b></dd></div>
-            <div><dt>Места</dt><dd class="event__status" data-availability="aug21">уточняйте наличие мест</dd></div>
-          </dl>
-          <button class="btn btn--outline event__btn" type="button" data-open-booking data-event="aug21">Записаться на 21 августа</button>
+          <button class="btn btn--outline event__btn" type="button" data-open-booking data-event="aug21" aria-label="Записаться на 21 августа">Записаться</button>
         </article>
 
         <article class="event">
-          <div class="event__head">
-            <p class="event__date"><b>22 августа</b><span>суббота</span></p>
-            <p class="event__age">22–35 лет</p>
+          <div class="event__info">
+            <p class="event__date"><b>22 августа</b><span>суббота · <span class="u-nowrap">22–35 лет</span></span></p>
+            <p class="event__status" data-availability="aug22">уточняйте наличие мест</p>
           </div>
           <p class="event__note">Вечер для тех, кто занимается спортом и ведёт активный образ жизни</p>
-          <dl class="event__rows">
-            <div><dt>Начало</dt><dd>19:00</dd></div>
-            <div><dt>Место</dt><dd>GasGas, Кировский, 51</dd></div>
-            <div><dt>Участие</dt><dd><b>2 300 ₽</b></dd></div>
-            <div><dt>Места</dt><dd class="event__status" data-availability="aug22">уточняйте наличие мест</dd></div>
-          </dl>
-          <button class="btn btn--outline event__btn" type="button" data-open-booking data-event="aug22">Записаться на 22 августа</button>
+          <button class="btn btn--outline event__btn" type="button" data-open-booking data-event="aug22" aria-label="Записаться на 22 августа">Записаться</button>
         </article>
 
       </div>
 
       <p class="dates__note">
-        Состав каждого вечера мы собираем вручную: примерно поровну мужчин и женщин,
-        одна возрастная группа. После заявки администратор свяжется с вами, подтвердит
-        место и подскажет, как оплатить.
+        Группы собираем вручную: поровну мужчин и женщин, одна возрастная группа.
+        После заявки администратор подтвердит место и подскажет, как оплатить.
       </p>
     </div>
   </section>
@@ -227,23 +210,23 @@ _tmr.push({id: "3786513", type: "pageView", start: (new Date()).getTime()});
       </header>
       <div class="photos__grid">
         <figure class="photo">
-          <img src="media/gallery-guests.jpg" width="736" height="1600" loading="lazy" decoding="async"
-               alt="Мужчина и женщина разговаривают за столиком с тюльпанами">
+          <img src="media/gallery-date-white.jpg" width="939" height="1675" loading="lazy" decoding="async"
+               alt="Мужчина и женщина разговаривают за столиком с тюльпанами на вечере знакомств">
           <figcaption>Разговор один на один</figcaption>
         </figure>
         <figure class="photo">
-          <img src="media/gallery-room-wide.jpg" width="900" height="1572" loading="lazy" decoding="async"
+          <img src="media/gallery-evening.jpg" width="738" height="1600" loading="lazy" decoding="async"
+               alt="Участники вечера знакомств общаются в лаунж-зоне бара">
+          <figcaption>Общение в лаунж-зоне</figcaption>
+        </figure>
+        <figure class="photo">
+          <img src="media/gallery-host.jpg" width="736" height="1600" loading="lazy" decoding="async"
                alt="Зал бара во время вечера знакомств: пары сидят за отдельными столиками">
           <figcaption>Зал во время вечера</figcaption>
         </figure>
         <figure class="photo">
-          <img src="media/gallery-tables.jpg" width="787" height="1400" loading="lazy" decoding="async"
-               alt="Столик с номером 15: свеча, тюльпаны, карточка участника и ручка">
-          <figcaption>Столик с номером и карточкой для отметок</figcaption>
-        </figure>
-        <figure class="photo">
-          <img src="media/strip-4.jpg" width="736" height="920" loading="lazy" decoding="async"
-               alt="Участники вечера знакомств разговаривают за столиками">
+          <img src="media/gallery-guests.jpg" width="736" height="1600" loading="lazy" decoding="async"
+               alt="Мужчина и женщина разговаривают за столиком с тюльпанами">
           <figcaption>Разговоры за столиками</figcaption>
         </figure>
       </div>
@@ -394,12 +377,12 @@ _tmr.push({id: "3786513", type: "pageView", start: (new Date()).getTime()});
           <label class="event-option">
             <input type="radio" name="event" value="aug15">
             <span class="event-option__date">сб, 15 августа</span>
-            <span class="event-option__group">35–55 лет</span>
+            <span class="event-option__group">35–55 лет</span>
           </label>
           <label class="event-option">
             <input type="radio" name="event" value="aug21">
             <span class="event-option__date">пт, 21 августа</span>
-            <span class="event-option__group">22–35 лет</span>
+            <span class="event-option__group">22–35 лет</span>
           </label>
           <label class="event-option">
             <input type="radio" name="event" value="aug22">
