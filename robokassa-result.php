@@ -23,7 +23,6 @@ ini_set('display_errors', '0');
 const CB_LOG_FILE = __DIR__ . '/robokassa.log';
 const CB_DATA_DIR = __DIR__ . '/payment-data';
 const CB_EVENTS = array(
-    'aug15' => 'суббота, 15 августа — группа 35–55 лет',
     'aug21' => 'пятница, 21 августа — группа 22–35 лет',
     'aug22' => 'суббота, 22 августа — группа 22–35 лет, вечер для тех, кто занимается спортом',
 );
