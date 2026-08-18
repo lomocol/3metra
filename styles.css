@@ -69,9 +69,9 @@ body {
 h1, h2, h3 {
   margin: 0;
   font-family: var(--font);
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.2;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.01em;
   text-wrap: balance;
 }
 
@@ -177,12 +177,12 @@ main {
 .btn--primary {
   background: var(--accent);
   color: var(--on-accent);
-  box-shadow: 0 10px 22px -12px rgba(238, 39, 51, 0.55);
+  box-shadow: 0 10px 22px -14px rgba(238, 39, 51, 0.4);
 }
 .btn--primary:hover {
   background: var(--accent-strong);
   transform: translateY(-1px);
-  box-shadow: 0 14px 26px -12px rgba(238, 39, 51, 0.6);
+  box-shadow: 0 14px 26px -14px rgba(238, 39, 51, 0.45);
 }
 
 .btn--outline {
@@ -310,8 +310,8 @@ details:focus-visible {
 
 .hero h1 {
   margin-bottom: 22px;
-  font-size: clamp(2.4rem, 8.5vw, 4.2rem);
-  line-height: 1.06;
+  font-size: clamp(2.2rem, 7.5vw, 3.8rem);
+  line-height: 1.08;
   letter-spacing: -0.015em;
 }
 
@@ -408,106 +408,95 @@ details:focus-visible {
 
 .dates__grid {
   display: grid;
-  gap: 10px;
-  max-width: 640px;
+  gap: 14px;
 }
 
-/* Карточка вечера — компактный ряд: кнопка напротив даты, подпись и статус
-   во всю ширину. Общие время, место и цена вынесены в подзаголовок секции */
+@media (min-width: 760px) {
+  .dates__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+}
+
+/* Карточка вечера — афиша: фото, тип вечера, дата, статус мест, кнопка */
 .event {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 4px 16px;
-  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
   background: var(--surface-soft);
+  border: 2px solid transparent;
   border-radius: var(--radius);
+  overflow: hidden;
 }
 
-.event__info, .event__date { display: contents; }
-
-.event__date > span,
-.event__status { grid-column: 1 / -1; }
-
-.event__btn { grid-column: 2; grid-row: 1; }
-
-/* ЗОЖ-вечер: светло-зелёная карточка с обводкой и пиктограммой йоги */
+/* ЗОЖ-вечер выделен зелёной рамкой и фоном под цвет своей пометки */
 .event--zozh {
-  grid-template-columns: auto minmax(0, 1fr) auto;
   background: var(--fresh-soft);
-  box-shadow: inset 0 0 0 2px var(--fresh);
+  border-color: var(--fresh);
 }
 
-.event__art {
-  grid-column: 1;
-  grid-row: 1 / span 4;
-  align-self: center;
-  display: grid;
-  place-items: center;
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  background: var(--surface);
-  color: var(--fresh);
+.event__photo { margin: 0; }
+
+.event__photo img {
+  width: 100%;
+  aspect-ratio: 2.2 / 1;
+  object-fit: cover;
+  background: var(--surface-soft);
 }
 
-.event__art svg { width: 42px; height: 42px; }
+/* Вертикальный кадр пары за столиком — держим лица в кадре */
+.event__photo--date img { object-position: center 58%; }
 
-.event--zozh .event__date > span,
-.event--zozh .event__note,
-.event--zozh .event__status { grid-column: 2 / -1; }
-
-.event--zozh .event__btn { grid-column: 3; }
-
-@media (max-width: 560px) {
-  .event__art { width: 50px; height: 50px; }
-  .event__art svg { width: 33px; height: 33px; }
+.event__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 16px 18px 18px;
 }
 
-.event__date b {
-  display: block;
-  font-size: 1.2rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-}
+.event__tag { margin: 0; }
 
-.event__date > span {
-  display: block;
-  font-size: 13.5px;
-  color: var(--text-soft);
-}
-
-.event__note {
-  grid-column: 1 / -1;
-  margin: 2px 0 0;
-  font-size: 13.5px;
-  color: var(--text-soft);
-}
-
-/* Зелёная пилюля «ЗОЖ-вечер» — единственное место со вторым акцентом */
+/* Пометки типа вечера: зелёная — ЗОЖ, синяя — классический */
 .badge {
   display: inline-block;
-  margin-right: 8px;
-  padding: 3px 11px;
+  padding: 4px 12px;
   border-radius: var(--radius-pill);
-  background: var(--fresh-soft);
-  color: var(--fresh);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
-/* Внутри розовой карточки ближайшего вечера пилюля лежит на белом */
-.event--zozh .badge { background: var(--surface); }
+.badge--fresh { background: var(--fresh-soft); color: var(--fresh); }
+.badge--classic { background: var(--info-soft); color: var(--info); }
+
+/* Внутри зелёной карточки пилюля лежит на белом, чтобы не сливалась */
+.event--zozh .badge--fresh { background: var(--surface); }
+
+.event__date b {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+
+.event__date > span {
+  display: block;
+  margin-top: 2px;
+  font-size: 14px;
+  color: var(--text-soft);
+}
+
+.event__about {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-soft);
+}
 
 .u-nowrap { white-space: nowrap; }
 
 .event__status {
   margin: 0;
   font-size: 13px;
-  color: var(--text-soft);
 }
 
 .event__status-line { display: block; font-weight: 600; }
@@ -516,14 +505,13 @@ details:focus-visible {
 .event__status-line--few { color: #9a6b00; }
 .event__status-line--closed { color: var(--danger); }
 
-.event__btn { flex-shrink: 0; }
-
-/* На телефоне кнопка компактнее — дате и возрасту хватает одной строки */
-@media (max-width: 560px) {
-  .event__btn { padding: 10px 18px; min-height: 42px; font-size: 15px; }
+/* Кнопка прижата к низу карточки — в сетке карточки равной высоты */
+.event__btn {
+  margin-top: auto;
+  width: 100%;
 }
 
-/* Внутри серой плитки вторичная кнопка — белая заливка, а не контур */
+/* Внутри серой карточки вторичная кнопка — белая заливка, а не контур */
 .event .btn--outline { background: var(--surface); border-color: transparent; }
 .event .btn--outline:hover { color: var(--accent); }
 
@@ -744,19 +732,16 @@ details:focus-visible {
 
 /* ---------- Финальный блок записи ---------- */
 
-.final { background: linear-gradient(135deg, #2c2927, #1a1817); }
+.final { background: var(--accent-soft); }
 
-.final h2 { margin-bottom: 10px; max-width: 22ch; color: var(--on-accent); }
+.final h2 { margin-bottom: 10px; max-width: 22ch; }
 
 .final p {
   font-size: 16px;
-  color: rgba(255, 255, 255, 0.88);
+  color: var(--text-soft);
   max-width: 56ch;
   margin-bottom: 24px;
 }
-
-/* На тёмном фоне красной кнопке нужна тень потемнее */
-.final .btn--primary { box-shadow: 0 12px 26px -12px rgba(0, 0, 0, 0.6); }
 
 @media (max-width: 560px) {
   .final .btn { width: 100%; }
