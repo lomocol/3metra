@@ -24,6 +24,7 @@ const CB_LOG_FILE = __DIR__ . '/robokassa.log';
 const CB_DATA_DIR = __DIR__ . '/payment-data';
 const CB_EVENTS = array(
     'aug21' => 'пятница, 21 августа — ЗОЖ-вечер, группа 22–35 лет',
+    'aug22' => 'суббота, 22 августа — группа 22–35 лет',
 );
 
 require_once __DIR__ . '/notification-sender.php';

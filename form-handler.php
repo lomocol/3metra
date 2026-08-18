@@ -29,6 +29,7 @@ const AMO_CACHE_FILE = __DIR__ . '/amo-cache.json';
    в pay.php */
 const EVENTS = array(
     'aug21' => 'пятница, 21 августа — ЗОЖ-вечер, группа 22–35 лет',
+    'aug22' => 'суббота, 22 августа — группа 22–35 лет',
 );
 
 const GENDERS = array('m' => 'Мужчина', 'f' => 'Женщина');
