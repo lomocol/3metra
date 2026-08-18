@@ -1,35 +1,41 @@
 /* ============================================================
    «3 метра» — афиша вечеров быстрых свиданий.
-   Принцип оформления: светло-серый фон, белые скруглённые панели,
-   кнопки-пилюли, один акцентный цвет и никаких линеек. Страница должна
-   читаться как расписание, а не как продающий лендинг.
+   Принцип оформления: тёплый кремовый фон, белые скруглённые панели,
+   крупная типографика и много воздуха. Основной акцент — малиновый,
+   второй (только для ЗОЖ-пометок) — зелёный. Никаких линеек: блоки
+   разделяет фон панелей. Страница должна читаться легко и живо,
+   а не как формальное расписание.
    ============================================================ */
 
 :root {
-  /* Серый «стол», на котором лежат белые панели */
-  --bg: #ececea;
+  /* Тёплый кремовый «стол», на котором лежат белые панели */
+  --bg: #f5efe6;
   --surface: #ffffff;
-  --surface-soft: #f5f4f2;
+  --surface-soft: #f8f3ea;
 
   /* Линии почти не используем: блоки разделяет фон панелей, а не рамки */
-  --line: #eceae7;
-  --line-strong: #ddd9d4;
+  --line: #eee6d8;
+  --line-strong: #dcd1bd;
 
-  --text: #272525;
-  --text-soft: #5f5c5c;
-  --text-faint: #8d8a89;
+  --text: #262220;
+  --text-soft: #675e57;
+  --text-faint: #978d84;
 
-  /* Единственный акцент — бордовый из логотипа: кнопки, ближайший вечер,
-     активные состояния. Больше на странице цветов нет */
-  --accent: #8c3041;
-  --accent-strong: #732736;
-  --accent-soft: #f5eef0;
+  /* Основной акцент — малиновый, ярче исходного бордового из логотипа:
+     кнопки, ближайший вечер, активные состояния */
+  --accent: #d63b60;
+  --accent-strong: #b82950;
+  --accent-soft: #fbe9ee;
   --on-accent: #ffffff;
 
-  /* Отдельный цвет только для ошибок формы */
-  --danger: #9a3520;
+  /* Второй акцент — зелёный, только для ЗОЖ-пометок */
+  --fresh: #17925a;
+  --fresh-soft: #e3f4ea;
 
-  --radius-panel: 26px;
+  /* Отдельный цвет только для ошибок формы */
+  --danger: #c03a20;
+
+  --radius-panel: 30px;
   --radius: 18px;
   --radius-sm: 12px;
   --radius-pill: 999px;
@@ -66,8 +72,8 @@ h1, h2, h3 {
   text-wrap: balance;
 }
 
-h1 { font-size: clamp(2rem, 7vw, 3.1rem); line-height: 1.15; }
-h2 { font-size: clamp(1.5rem, 4.6vw, 2.1rem); }
+h1 { font-size: clamp(2.2rem, 7.5vw, 3.6rem); line-height: 1.1; }
+h2 { font-size: clamp(1.6rem, 5vw, 2.4rem); }
 h3 { font-size: 1.1rem; }
 
 p { margin: 0; }
@@ -78,12 +84,12 @@ img, video { display: block; max-width: 100%; height: auto; }
    Отступ у краёв небольшой — на телефоне важнее ширина контента */
 main {
   display: grid;
-  gap: 10px;
-  padding: 10px 10px 0;
+  gap: 12px;
+  padding: 12px 12px 0;
 }
 
 @media (min-width: 760px) {
-  main { gap: 14px; padding: 14px 16px 0; }
+  main { gap: 20px; padding: 20px 20px 0; }
 }
 
 /* Белая скруглённая панель — основной строительный блок страницы */
@@ -91,7 +97,7 @@ main {
 .section {
   background: var(--surface);
   border-radius: var(--radius-panel);
-  padding: clamp(30px, 6vw, 60px) clamp(20px, 4vw, 48px);
+  padding: clamp(38px, 7vw, 80px) clamp(20px, 4.5vw, 56px);
 }
 
 .container {
@@ -106,7 +112,7 @@ main {
   :root { --nav-h: 60px; }
 }
 
-.section-head { margin-bottom: clamp(20px, 3.5vw, 30px); }
+.section-head { margin-bottom: clamp(26px, 4.5vw, 42px); }
 
 .section-head__sub {
   margin-top: 8px;
@@ -160,7 +166,7 @@ main {
   line-height: 1.2;
   text-decoration: none;
   cursor: pointer;
-  transition: background-color 0.18s var(--ease), border-color 0.18s var(--ease), color 0.18s var(--ease);
+  transition: background-color 0.18s var(--ease), border-color 0.18s var(--ease), color 0.18s var(--ease), transform 0.18s var(--ease), box-shadow 0.18s var(--ease);
 }
 
 .btn--lg { padding: 16px 30px; min-height: 54px; font-size: 17px; }
@@ -168,8 +174,13 @@ main {
 .btn--primary {
   background: var(--accent);
   color: var(--on-accent);
+  box-shadow: 0 10px 22px -12px rgba(214, 59, 96, 0.65);
 }
-.btn--primary:hover { background: var(--accent-strong); }
+.btn--primary:hover {
+  background: var(--accent-strong);
+  transform: translateY(-1px);
+  box-shadow: 0 14px 26px -12px rgba(214, 59, 96, 0.7);
+}
 
 .btn--outline {
   background: transparent;
@@ -264,7 +275,10 @@ details:focus-visible {
 
 /* ---------- Первый экран ---------- */
 
-.hero { padding-block: clamp(34px, 7vw, 72px); }
+.hero {
+  padding-block: clamp(46px, 8vw, 96px);
+  background: linear-gradient(168deg, var(--surface) 52%, var(--accent-soft) 100%);
+}
 
 /* На широком экране текст и фото стоят рядом, факты и кнопки — во всю ширину под ними */
 .hero__inner { display: grid; gap: clamp(22px, 3.5vw, 32px); }
@@ -295,8 +309,10 @@ details:focus-visible {
 }
 
 .hero h1 {
-  margin-bottom: 18px;
-  font-size: clamp(1.8rem, 5.5vw, 2.75rem);
+  margin-bottom: 22px;
+  font-size: clamp(2.4rem, 8.5vw, 4.2rem);
+  line-height: 1.06;
+  letter-spacing: -0.015em;
 }
 
 .hero h1 em {
@@ -327,7 +343,7 @@ details:focus-visible {
   transition: background-color 0.18s var(--ease);
 }
 
-.hero__next:hover { background: #f2e2e5; }
+.hero__next:hover { background: #f8dde5; }
 
 .hero__next-icon {
   display: grid;
@@ -402,8 +418,8 @@ details:focus-visible {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  gap: 2px 14px;
-  padding: 14px 16px;
+  gap: 4px 16px;
+  padding: 18px 20px;
   background: var(--surface-soft);
   border-radius: var(--radius);
 }
@@ -437,10 +453,27 @@ details:focus-visible {
 
 .event__note {
   grid-column: 1 / -1;
-  margin: 0;
-  font-size: 13px;
+  margin: 2px 0 0;
+  font-size: 13.5px;
   color: var(--text-soft);
 }
+
+/* Зелёная пилюля «ЗОЖ-вечер» — единственное место со вторым акцентом */
+.badge {
+  display: inline-block;
+  margin-right: 8px;
+  padding: 3px 11px;
+  border-radius: var(--radius-pill);
+  background: var(--fresh-soft);
+  color: var(--fresh);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Внутри розовой карточки ближайшего вечера пилюля лежит на белом */
+.event--next .badge { background: var(--surface); }
 
 .u-nowrap { white-space: nowrap; }
 
@@ -505,8 +538,8 @@ details:focus-visible {
   place-items: center;
   width: 34px; height: 34px;
   border-radius: 50%;
-  background: var(--accent-soft);
-  color: var(--accent-strong);
+  background: var(--accent);
+  color: var(--on-accent);
   font-size: 16px;
   font-weight: 600;
   grid-row: span 2;
@@ -684,16 +717,24 @@ details:focus-visible {
 
 /* ---------- Финальный блок записи ---------- */
 
-.final { background: var(--accent-soft); }
+.final { background: linear-gradient(135deg, var(--accent), var(--accent-strong)); }
 
-.final h2 { margin-bottom: 10px; max-width: 22ch; }
+.final h2 { margin-bottom: 10px; max-width: 22ch; color: var(--on-accent); }
 
 .final p {
   font-size: 16px;
-  color: var(--text-soft);
+  color: rgba(255, 255, 255, 0.88);
   max-width: 56ch;
-  margin-bottom: 22px;
+  margin-bottom: 24px;
 }
+
+/* На малиновом фоне основная кнопка — белая */
+.final .btn--primary {
+  background: var(--surface);
+  color: var(--accent);
+  box-shadow: 0 10px 24px -12px rgba(60, 8, 20, 0.55);
+}
+.final .btn--primary:hover { background: var(--accent-soft); }
 
 @media (max-width: 560px) {
   .final .btn { width: 100%; }
@@ -936,12 +977,8 @@ details:focus-visible {
 
 .booking__events {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 10px;
-}
-
-@media (max-width: 480px) {
-  .booking__events { grid-template-columns: 1fr; }
 }
 
 .event-option {
@@ -1276,8 +1313,9 @@ details:focus-visible {
 /* ---------- Честно о том, что вас ждёт ---------- */
 
 .honest__box {
-  border-left: 3px solid var(--accent);
-  padding-left: clamp(18px, 4vw, 44px);
+  background: var(--accent-soft);
+  border-radius: var(--radius);
+  padding: clamp(24px, 5vw, 44px);
 }
 
 .honest__box h2 { margin-bottom: 18px; }
