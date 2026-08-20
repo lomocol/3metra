@@ -28,8 +28,8 @@ const PAYMENT_ENDPOINT = "";
    Допустимые значения: "open" | "few" | "ask" | "closed" | null (строку не трогаем).
    Никаких числовых счётчиков: не показываем цифры, которые не можем держать точными. */
 const AVAILABILITY = {
-  aug21: { f: "ask", m: "open" },
-  aug22: { f: "ask", m: "open" },
+  aug21: { f: "closed", m: "open" },
+  aug22: { f: "closed", m: "open" },
 };
 
 /* Текст в строке «Места» карточки вечера */
@@ -37,7 +37,7 @@ const AVAILABILITY_LABELS = {
   open: "места есть",
   few: "мест мало",
   ask: "уточняйте наличие мест",
-  closed: "запись закрыта",
+  closed: "группа собрана",
 };
 
 /* time: "" — время вечера ещё не объявлено, в подтверждении его не показываем */
@@ -46,7 +46,8 @@ const EVENTS = {
   aug22: { label: "суббота, 22 августа", group: "группа 22–35 лет", time: "19:00" },
 };
 
-const TICKET_PRICES = { m: "2 300 ₽", f: "2 300 ₽" };
+/* Женская группа собрана: продаём только мужские места, цена снижена с 2 300 ₽ */
+const TICKET_PRICES = { m: "1 400 ₽", f: "2 300 ₽" };
 
 const CONTACT_METHODS = {
   phone: { placeholder: "+7 900 000-00-00", type: "tel", inputmode: "tel", autocomplete: "tel" },
