@@ -46,8 +46,8 @@ const EVENTS = {
   aug22: { label: "суббота, 22 августа", group: "группа 22–35 лет", time: "19:00" },
 };
 
-/* Женская группа собрана: продаём только мужские места, цена снижена с 2 300 ₽ */
-const TICKET_PRICES = { m: "1 400 ₽", f: "2 300 ₽" };
+/* Женская группа собрана: продаём только мужские места. Цена единая */
+const TICKET_PRICES = { m: "2 300 ₽", f: "2 300 ₽" };
 
 const CONTACT_METHODS = {
   phone: { placeholder: "+7 900 000-00-00", type: "tel", inputmode: "tel", autocomplete: "tel" },

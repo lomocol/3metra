@@ -499,13 +499,6 @@ details:focus-visible {
   font-size: 13px;
 }
 
-/* Старая цена рядом с новой — приглушена и зачёркнута */
-.price-old {
-  color: var(--text-faint);
-  font-weight: 400;
-  text-decoration-thickness: 1.5px;
-}
-
 .event__status-line { display: block; font-weight: 600; }
 .event__status-line--open { color: #2f7d46; }
 .event__status-line--ask,
