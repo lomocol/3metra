@@ -413,6 +413,40 @@ details:focus-visible {
 
 @media (min-width: 760px) {
   .dates__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+
+  /* Когда вечер один, карточка занимает всю ширину и раскладывается
+     горизонтально: фото слева, описание справа */
+  .dates__grid--single { grid-template-columns: 1fr; }
+
+  .dates__grid--single .event { flex-direction: row; }
+
+  /* Фото абсолютное: иначе вертикальный кадр растянул бы карточку
+     на всю свою высоту. Высоту строки задаёт текст справа */
+  .dates__grid--single .event__photo {
+    flex: 0 0 44%;
+    position: relative;
+    min-height: 320px;
+  }
+
+  .dates__grid--single .event__photo img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+  }
+
+  .dates__grid--single .event__body {
+    justify-content: center;
+    gap: 14px;
+    padding: 34px 38px;
+  }
+
+  .dates__grid--single .event__date b { font-size: 2rem; }
+  .dates__grid--single .event__about { font-size: 15px; max-width: 52ch; }
+
+  /* В горизонтальной карточке кнопка по размеру текста, а не во всю колонку */
+  .dates__grid--single .event__btn { width: auto; margin-top: 6px; }
 }
 
 /* Карточка вечера — афиша: фото, тип вечера, дата, статус мест, кнопка */
