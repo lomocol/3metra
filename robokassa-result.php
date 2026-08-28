@@ -23,7 +23,7 @@ ini_set('display_errors', '0');
 const CB_LOG_FILE = __DIR__ . '/robokassa.log';
 const CB_DATA_DIR = __DIR__ . '/payment-data';
 const CB_EVENTS = array(
-    'aug29' => 'суббота, 29 августа — группа 22–35 лет, 15 пар',
+    'sep5' => 'суббота, 5 сентября — группа 22–35 лет, 15 пар',
 );
 
 require_once __DIR__ . '/notification-sender.php';
