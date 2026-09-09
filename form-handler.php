@@ -28,7 +28,7 @@ const AMO_CACHE_FILE = __DIR__ . '/amo-cache.json';
 /* Список вечеров — должен совпадать с EVENTS в script.js и PAY_EVENTS
    в pay.php */
 const EVENTS = array(
-    'sep5' => 'суббота, 5 сентября — группа 22–35 лет, 15 пар',
+    'waitlist' => 'список ожидания — дата следующего вечера ещё не назначена',
 );
 
 const GENDERS = array('m' => 'Мужчина', 'f' => 'Женщина');

@@ -549,6 +549,38 @@ details:focus-visible {
 .event .btn--outline { background: var(--surface); border-color: transparent; }
 .event .btn--outline:hover { color: var(--accent); }
 
+/* Пустое расписание: вечеров нет — вместо карточек одна плашка */
+.dates__empty {
+  background: var(--surface-soft);
+  border-radius: var(--radius);
+  padding: 34px 28px;
+  text-align: center;
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+}
+
+.dates__empty-title {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.dates__empty-text {
+  margin: 0;
+  max-width: 52ch;
+  color: var(--text-soft);
+  font-size: 15px;
+}
+
+.dates__empty .btn { margin-top: 6px; }
+
+@media (min-width: 760px) {
+  .dates__empty { padding: 48px 40px; }
+  .dates__empty-title { font-size: 1.6rem; }
+}
+
 .dates__note {
   margin-top: 20px;
   font-size: 15px;

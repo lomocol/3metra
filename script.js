@@ -27,9 +27,7 @@ const PAYMENT_ENDPOINT = "";
    для девушек (f) и мужчин (m).
    Допустимые значения: "open" | "few" | "ask" | "closed" | null (строку не трогаем).
    Никаких числовых счётчиков: не показываем цифры, которые не можем держать точными. */
-const AVAILABILITY = {
-  sep5: { f: "open", m: "open" },
-};
+const AVAILABILITY = {};
 
 /* Текст в строке «Места» карточки вечера */
 const AVAILABILITY_LABELS = {
@@ -39,9 +37,13 @@ const AVAILABILITY_LABELS = {
   closed: "группа собрана",
 };
 
-/* time: "" — время вечера ещё не объявлено, в подтверждении его не показываем */
+/* Вечеров в расписании нет: сайт показывает «мероприятий не запланировано»,
+   а форма работает как список ожидания — заявка уходит с кодом waitlist.
+   Когда появится дата, вернуть сюда обычную запись вида
+   { label: "суббота, 5 сентября", group: "группа 22–35 лет, 15 пар", time: "19:00" }
+   и радиокнопки вечера в index.html */
 const EVENTS = {
-  sep5: { label: "суббота, 5 сентября", group: "группа 22–35 лет, 15 пар", time: "19:00" },
+  waitlist: { label: "список ожидания", group: "", time: "" },
 };
 
 /* Цена участия единая для всех */
@@ -360,6 +362,18 @@ function showSubmitError(message) {
 
 function showDoneView(data) {
   const ev = EVENTS[data.event];
+
+  /* Список ожидания: даты ещё нет — вечер в подтверждении не называем */
+  if (!ev || !ev.group) {
+    summaryEl.textContent =
+      `${data.name.trim()}, вы в списке ожидания. Как только назначим дату следующего вечера, ` +
+      `администратор напишет вам первым. Участие — ${currentPrice()}`;
+    form.hidden = true;
+    doneView.hidden = false;
+    doneView.querySelector("button")?.focus({ preventScroll: true });
+    return;
+  }
+
   summaryEl.textContent =
     `${data.name.trim()}, вы выбрали: ${ev.label}, ${ev.group}, ${ev.time ? ev.time + ", " : ""}бар GasGas. ` +
     `Участие — ${currentPrice()}` +
