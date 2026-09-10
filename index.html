@@ -16,7 +16,7 @@
   <!-- /Yandex.Metrika counter -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Быстрые свидания в Ростове-на-Дону — вечера знакомств «3 метра»</title>
-  <meta name="description" content="«Продай друга» — интерактивный вечер знакомств в Ростове-на-Дону 13 сентября в 19:00. Одни продают со сцены своих холостых друзей, другие следят из зала и участвуют в аукционе. Запись на сайте">
+  <meta name="description" content="«Продай друга» — интерактивный вечер знакомств в Ростове-на-Дону 13 сентября в 19:00. Одни продают со сцены своих холостых друзей, другие следят из зала и торгуются на аукционе. Запись на сайте">
   <meta property="og:title" content="Быстрые свидания в Ростове-на-Дону — вечера знакомств «3 метра»">
   <meta property="og:description" content="Ближайший вечер — 13 сентября, 19:00: интерактивное знакомство «Продай друга». Участвуйте со сцены или из зала">
   <meta property="og:type" content="website">
@@ -31,14 +31,14 @@
     "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
     "location": {"@type": "Place", "name": "Кафе в центре Ростова-на-Дону", "address": {"@type": "PostalAddress", "addressLocality": "Ростов-на-Дону", "addressCountry": "RU"}},
     "image": "media/prodai-druga-still.jpg",
-    "description": "Одни участники продают со сцены своих холостых друзей, другие следят из зала и участвуют в аукционе. Итог вечера — от восьми новых контактов."
+    "description": "Одни участники продают со сцены своих холостых друзей, другие следят из зала и торгуются на аукционе. Вечер для тех, кто хочет посмеяться и познакомиться вживую."
   }
   </script>
   <script>document.documentElement.classList.add('js');</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260910a">
+  <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=20260910b">
 </head>
 <body>
 <!-- Top.Mail.Ru counter -->
@@ -62,12 +62,15 @@ _tmr.push({id: "3786513", type: "pageView", start: (new Date()).getTime()});
 
 <header class="nav" id="top">
   <div class="nav__inner container">
-    <a class="nav__logo" href="#top" aria-label="3 метра — на главную">
-      <img class="nav__mark" src="media/favicon.png" width="42" height="42" decoding="async" alt="Логотип «3 метра»">
-      <span class="nav__city">Ростов-на-Дону</span>
+    <a class="nav__logo" href="#top" aria-label="«Три метра» — на главную">
+      <img class="nav__mark" src="media/logo-3metra.png" width="42" height="42" decoding="async" alt="Логотип «Три метра»">
+      <span class="nav__brand">
+        <span class="nav__name">Три метра</span>
+        <span class="nav__city">Ростов-на-Дону</span>
+      </span>
     </a>
     <nav class="nav__links" aria-label="Разделы страницы">
-      <a href="#dates">Расписание</a>
+      <a href="#dates">Ближайший вечер</a>
       <a href="#format">Как проходит</a>
       <a href="#place">Место</a>
       <a href="#faq">Вопросы</a>
@@ -79,104 +82,170 @@ _tmr.push({id: "3786513", type: "pageView", start: (new Date()).getTime()});
 <main id="main">
 
   <section class="hero">
-    <div class="container hero__inner">
-      <div class="hero__copy">
-      <h1>Один вечер — <em>десять знакомств</em> вживую</h1>
-      <p class="hero__lead">
-        За вечер вы общаетесь один на один с 10–15 участницами своего возраста —
-        по пять минут с каждой. После вечера мы передаём контакты тем, кто понравился
-        друг другу.
-      </p>
-      <p class="hero__lead">
-        Ближайший вечер — <b>13 сентября</b>: интерактивное знакомство
-        <b>«Продай друга»</b>. Одни продают со сцены своих холостых друзей,
-        другие следят из зала и торгуются на аукционе.
-      </p>
+    <div class="container">
+      <div class="hero__card">
+        <svg class="hero__heart" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+          <path d="M50 84C50 84 14 62 12 38C11 24 22 15 33 16C41 17 47 22 50 28C53 22 59 17 67 16C78 15 89 24 88 38C86 62 50 84 50 84Z" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
 
-      <a class="hero__next" href="#dates">
-        <span class="hero__next-icon" aria-hidden="true">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="3"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg>
-        </span>
-        <span class="hero__next-text">
-          <b>Ближайший вечер</b>
-          <span>воскресенье, 13 сентября, 19:00</span>
-        </span>
-      </a>
+        <div class="hero__inner">
+          <div class="hero__copy">
+            <p class="hero__eyebrow">Вечера знакомств в Ростове</p>
+            <h1>Знакомься вживую, а не в переписке</h1>
+            <p class="hero__lead">
+              Мы собираем вечера, где люди знакомятся лицом к лицу — без анкет,
+              свайпов и «привет, как дела». Ближайший — интерактивное шоу
+              <b>«Продай друга»</b>.
+            </p>
+
+            <a class="hero__next" href="#dates">
+              <span class="hero__next-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="3"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg>
+              </span>
+              <span class="hero__next-text">
+                <b>Ближайший вечер</b>
+                <span>воскресенье, 13 сентября, 19:00</span>
+              </span>
+            </a>
+
+            <div class="hero__actions">
+              <button class="btn btn--primary btn--lg" type="button" data-open-booking data-event="sep13">Записаться на вечер</button>
+              <a class="btn btn--outline btn--lg" href="#dates">Что за «Продай друга»</a>
+            </div>
+
+            <p class="hero__hint">Заявка ни к чему не обязывает — место подтверждаем вручную</p>
+          </div>
+
+          <figure class="hero__photo hero__aside">
+            <img src="media/gallery-guests.jpg" width="736" height="1600" fetchpriority="high" decoding="async"
+                 alt="Мужчина и женщина разговаривают за столиком с тюльпанами на вечере знакомств">
+          </figure>
+        </div>
+
+        <svg class="hero__skyline" viewBox="0 0 390 132" fill="none" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+          <g stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="343" cy="26" r="11"></circle>
+            <path d="M343 8V2M343 50V44M325 26H319M367 26H361M330 13L326 9M356 13L360 9"></path>
+            <path d="M37.9 118.0 V90.1 H142.1 V118.0"></path>
+            <path d="M52.8 118.0 V107.8 Q58.4 101.3 64.0 107.8 V118.0"></path>
+            <path d="M84.4 118.0 V107.8 Q90.0 101.3 95.6 107.8 V118.0"></path>
+            <path d="M116.0 118.0 V107.8 Q121.6 101.3 127.2 107.8 V118.0"></path>
+            <path d="M84.4 90.1 V74.3 H104.9 V90.1"></path>
+            <path d="M84.4 74.3 Q84.4 62.2 94.7 52.9 Q104.9 62.2 104.9 74.3"></path>
+            <path d="M94.7 52.9 V44.5 M90.9 48.2 H98.4"></path>
+            <path d="M49.1 90.1 Q49.1 78.9 54.7 72.4 Q60.2 78.9 60.2 90.1"></path>
+            <path d="M65.8 90.1 Q65.8 78.9 71.4 72.4 Q77.0 78.9 77.0 90.1"></path>
+            <path d="M112.3 90.1 Q112.3 78.9 117.9 72.4 Q123.5 78.9 123.5 90.1"></path>
+            <path d="M129.1 90.1 Q129.1 78.9 134.6 72.4 Q140.2 78.9 140.2 90.1"></path>
+            <path d="M159 118Q158 102 159.5 87H193Q194.5 102 194 118"></path>
+            <path d="M165 87Q164 74 165.5 61H188Q189 74 188 87"></path>
+            <path d="M172 87V72Q176.5 65 181 72V87"></path>
+            <path d="M162 61Q176.5 42 191 61"></path>
+            <path d="M176.5 44V27M172 32H181"></path>
+            <path d="M214 100H382"></path>
+            <path d="M222 100Q298 74 378 100"></path>
+            <path d="M244 100V92M270 100V86M298 100V84M326 100V86M352 100V92"></path>
+            <path d="M232 118V100M300 118V100M366 118V100"></path>
+            <path d="M216 112Q224 108 232 112T248 112"></path>
+            <path d="M300 114Q308 110 316 114T332 114"></path>
+            <path d="M256 122Q264 118 272 122T288 122"></path>
+            <path d="M338 124Q346 120 354 124T370 124"></path>
+            <path d="M290 40C290 40 279 33 278 26C278 22 281 19 285 20C287 20 289 22 290 24C291 22 293 20 295 20C299 19 302 22 302 26C301 33 290 40 290 40Z"></path>
+            <path d="M8 118H382"></path>
+            <path d="M14 118Q60 122 100 118"></path>
+          </g>
+        </svg>
       </div>
-
-      <figure class="hero__photo">
-        <img src="media/gallery-guests.jpg" width="736" height="1600" fetchpriority="high" decoding="async"
-             alt="Мужчина и женщина разговаривают за столиком с тюльпанами на вечере знакомств">
-      </figure>
 
       <ul class="hero__facts">
-        <li><b>13 сентября</b><span>воскресенье, начало в 19:00</span></li>
-        <li><b>2 формата</b><span>на сцене или в зрительном зале</span></li>
-        <li><b>от 8 контактов</b><span>новых знакомств за вечер</span></li>
-        <li><b>Центр Ростова</b><span>кафе, адрес сообщим после записи</span></li>
+        <li><b>13 сентября</b><span>воскресенье, 19:00</span></li>
+        <li><b>2 часа</b><span>обычная длительность вечера</span></li>
+        <li><b>2 формата</b><span>на сцене или в зале</span></li>
+        <li><b>Центр</b><span>кафе в центре Ростова</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section stats" aria-labelledby="stats-title">
+    <div class="container stats__inner">
+      <p class="stats__big">50+<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 20C12 20 3.5 14.8 3 9.2C2.8 5.9 5.3 3.8 7.9 4C9.8 4.2 11.2 5.4 12 6.8C12.8 5.4 14.2 4.2 16.1 4C18.7 3.8 21.2 5.9 21 9.2C20.5 14.8 12 20 12 20Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></p>
+      <h2 class="stats__caption" id="stats-title">вечеров знакомств уже провели</h2>
+
+      <ul class="stats__row">
+        <li>
+          <span class="stats__num">15–20
+            <svg class="stats__mark" viewBox="0 0 120 54" fill="none" preserveAspectRatio="none" aria-hidden="true"><path d="M60 4C92 4 116 12 116 27C116 42 92 50 60 50C28 50 4 42 4 27C4 12 28 4 60 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </span>
+          <span class="stats__label">человек на вечере</span>
+        </li>
+        <li>
+          <span class="stats__num">50/50
+            <svg class="stats__mark" viewBox="0 0 120 54" fill="none" preserveAspectRatio="none" aria-hidden="true"><path d="M8 46Q60 38 112 46" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+          </span>
+          <span class="stats__label">мужчин и женщин</span>
+        </li>
+        <li>
+          <span class="stats__num">18+
+            <svg class="stats__mark" viewBox="0 0 120 54" fill="none" preserveAspectRatio="none" aria-hidden="true"><path d="M10 44Q60 36 110 44" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+          </span>
+          <span class="stats__label">возраст участников</span>
+        </li>
       </ul>
 
-      <div class="hero__actions">
-        <a class="btn btn--primary btn--lg" href="#dates">Что за вечер 13 сентября</a>
-        <button class="btn btn--outline btn--lg" type="button" data-open-booking data-event="sep13">Записаться</button>
-      </div>
+      <p class="stats__promise">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v6c0 4.2-2.9 7.6-7 9-4.1-1.4-7-4.8-7-9V6l7-3Z"/><path d="M9 12l2 2 4-4"/></svg>
+        <span>Каждую заявку подтверждаем вручную и сами собираем состав вечера</span>
+      </p>
     </div>
   </section>
 
   <section class="section dates" id="dates" aria-labelledby="dates-title">
     <div class="container">
       <header class="section-head">
-        <h2 id="dates-title">Ближайший вечер</h2>
-        <p class="section-head__sub">Начало в <b>19:00</b> · кафе в центре Ростова, адрес сообщим после подтверждения заявки</p>
+        <p class="eyebrow">Ближайший вечер</p>
+        <h2 id="dates-title">Продай друга 🎉</h2>
       </header>
 
       <article class="event event--show">
-        <div class="show__media">
-          <div class="show__video-wrap">
-            <video class="show__video" data-autoplay-video
-                   poster="media/prodai-druga-poster.jpg"
-                   width="540" height="960" muted loop playsinline preload="none"
-                   aria-label="Видео с вечера «Продай друга»: ведущий на сцене">
-              <source src="media/prodai-druga.mp4" type="video/mp4">
-            </video>
-            <button class="show__sound" type="button" data-video-sound aria-pressed="false">
-              <span class="show__sound-icon" aria-hidden="true">🔊</span><span class="show__sound-text">Включить звук</span>
-            </button>
-          </div>
-          <figure class="photo show__still">
-            <img src="media/prodai-druga-still.jpg" width="900" height="1600" loading="lazy" decoding="async"
-                 alt="Ведущий на сцене на фоне экрана с надписью «Продай друга»">
-          </figure>
+        <div class="show__video-wrap">
+          <video class="show__video" data-autoplay-video
+                 poster="media/prodai-druga-poster.jpg"
+                 width="720" height="1280" muted loop playsinline preload="none"
+                 aria-label="Видео с вечера «Продай друга»: ведущий на сцене">
+            <source src="media/prodai-druga.mp4" type="video/mp4">
+          </video>
+          <button class="show__sound" type="button" data-video-sound aria-pressed="false">
+            <span class="show__sound-icon" aria-hidden="true">🔊</span><span class="show__sound-text">Включить звук</span>
+          </button>
         </div>
 
         <div class="show__body">
-          <p class="event__tag"><span class="badge badge--classic">новый формат</span></p>
-          <h3 class="show__title">«Продай друга»</h3>
-          <p class="event__date"><b>13 сентября</b><span>воскресенье · 19:00 · <span class="u-nowrap">кафе в центре</span></span></p>
+          <p class="event__tag"><span class="badge badge--classic">новый формат</span><span class="badge badge--soft">18+</span></p>
+          <p class="show__when"><b>13 сентября</b><span>воскресенье · 19:00</span></p>
+          <p class="show__where">Кафе в центре Ростова — адрес сообщим после подтверждения заявки</p>
 
           <p class="show__lead">Вечер, на котором за вас работают друзья. Одни выходят на сцену и убеждают
-            зал, что их холостой друг или подруга — лучшее, что можно найти в этом городе. Другие следят
-            из зала, задают неудобные вопросы и участвуют в аукционе.</p>
+            зал, что их холостой друг или подруга — <b>лучшее, что можно найти в этом городе</b>. Другие
+            следят из зала, задают неудобные вопросы и торгуются на аукционе.</p>
 
-          <p class="show__sub">Есть два варианта участия — выбираете при записи:</p>
+          <p class="show__sub">Два варианта участия — выбираете при записи</p>
           <ul class="show__options">
-            <li>
+            <li data-icon="🎤">
               <b>На сцене</b>
-              <span>Вы готовите короткую презентацию о своём холостом друге по нашему шаблону — пришлём
+              <span>Готовите короткую презентацию о своём холостом друге по нашему шаблону — пришлём
                 его после записи. Кринж-фото из архива, смешные факты, честные достоинства: всё, что
                 поможет другу найти любовь.</span>
             </li>
-            <li>
+            <li data-icon="🍿">
               <b>В зрительном зале</b>
-              <span>Вы смотрите, как продают чужих друзей, реагируете, спорите со сценой и торгуетесь
+              <span>Смотрите, как продают чужих друзей, реагируете, спорите со сценой и торгуетесь
                 на аукционе за понравившегося героя.</span>
             </li>
           </ul>
 
-          <p class="show__result">Итог вечера: пара часов в хорошей компании и <b>от 8 новых контактов</b>
-            в вашем телефоне.</p>
+          <p class="show__result">Вечер прежде всего развлекательный: два часа смеха, шоу и аукцион.
+            А знакомства случаются сами собой — <b>в зале все пришли ради одного</b>.</p>
 
-          <p class="event__status" data-availability="sep13"><span class="event__status-line event__status-line--open">девушки: места есть</span><span class="event__status-line event__status-line--open">мужчины: места есть</span></p>
           <button class="btn btn--primary event__btn" type="button" data-open-booking data-event="sep13" aria-label="Записаться на вечер 13 сентября">Записаться на 13 сентября</button>
         </div>
       </article>
@@ -192,28 +261,29 @@ _tmr.push({id: "3786513", type: "pageView", start: (new Date()).getTime()});
   <section class="section steps" id="format" aria-labelledby="format-title">
     <div class="container">
       <header class="section-head">
+        <p class="eyebrow">Сценарий вечера</p>
         <h2 id="format-title">Как это проходит</h2>
       </header>
       <ol class="steps__list">
         <li>
           <span class="steps__num">1</span>
-          <h3>Приходите к 19:00</h3>
-          <p>Вас встречают у входа и провожают за столик. Зал на это время закрыт для посторонних</p>
+          <h3>Собираемся к 19:00</h3>
+          <p>Кафе в центре, зал только для участников. Знакомитесь с ведущим, занимаете места, берёте напитки</p>
         </li>
         <li>
           <span class="steps__num">2</span>
-          <h3>Разговариваете по очереди</h3>
-          <p>Каждые пять минут пары меняются. За вечер получается 10–15 коротких разговоров один на один</p>
+          <h3>Друзей продают со сцены</h3>
+          <p>Спикеры по очереди выходят с презентацией: кринж-фото, смешные истории и честные достоинства своего холостого друга</p>
         </li>
         <li>
           <span class="steps__num">3</span>
-          <h3>Отмечаете, кто понравился</h3>
-          <p>В своей карточке вы отмечаете участников, с которыми хотели бы продолжить общение. Это видим только мы</p>
+          <h3>Зал торгуется</h3>
+          <p>Аукцион, выкрики с мест, спор со сценой — зрители решают, кто сегодня главный лот вечера</p>
         </li>
         <li>
           <span class="steps__num">4</span>
-          <h3>Получаете контакты</h3>
-          <p>После вечера мы передаём контакты тем, у кого симпатия оказалась взаимной</p>
+          <h3>Общаемся дальше</h3>
+          <p>После шоу все остаются в зале. Знакомиться проще, когда полвечера смеялись вместе над одними и теми же шутками</p>
         </li>
       </ol>
 
@@ -253,14 +323,16 @@ _tmr.push({id: "3786513", type: "pageView", start: (new Date()).getTime()});
   <section class="section honest" aria-labelledby="honest-title">
     <div class="container">
       <div class="honest__box">
+        <svg class="honest__heart" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+          <path d="M50 84C50 84 14 62 12 38C11 24 22 15 33 16C41 17 47 22 50 28C53 22 59 17 67 16C78 15 89 24 88 38C86 62 50 84 50 84Z" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
         <h2 id="honest-title">Честно о том, что вас ждёт</h2>
-        <p>Это не клубная вечеринка и не сайт с анкетами. Это обычный вечер, где за
-           два часа вы вживую поговорите с десятью и более женщинами вашего возраста,
-           которые тоже пришли познакомиться.</p>
-        <p>Мы не обещаем, что каждый встретит пару за один вечер. Но каждый уходит
-           с живыми впечатлениями, а большинство — с двумя-тремя взаимными контактами.</p>
-        <p>Формат работает в мире уже больше двадцати лет именно потому, что он простой:
-           никаких переписок неделями — сразу видно, интересен вам человек или нет.</p>
+        <p>Это не тренинг по знакомствам и не клубная вечеринка. Это шоу: друзья
+           рекламируют друг друга со сцены, а зал реагирует и торгуется.</p>
+        <p>Мы не обещаем, что вы уйдёте с парой. Но в зале не будет случайных людей —
+           все пришли посмеяться и познакомиться, так что повод заговорить искать не придётся.</p>
+        <p>Заявки подтверждаем вручную и следим, чтобы мужчин и женщин в зале было
+           примерно поровну. Никаких анкет и переписок неделями.</p>
       </div>
     </div>
   </section>
@@ -277,7 +349,7 @@ _tmr.push({id: "3786513", type: "pageView", start: (new Date()).getTime()});
         </details>
         <details>
           <summary>Чем «Продай друга» отличается от обычного вечера?<span class="faq__icon" aria-hidden="true"></span></summary>
-          <p>Это интерактивное шоу вместо привычных пятиминутных свиданий. Часть гостей выходит на сцену с презентацией о своём холостом друге, остальные следят из зала, реагируют и участвуют в аукционе. Знакомства происходят сами собой: к концу вечера в телефоне остаётся от восьми новых контактов.</p>
+          <p>Это интерактивное шоу, а не привычные пятиминутные свидания. Часть гостей выходит на сцену с презентацией о своём холостом друге, остальные следят из зала, реагируют и торгуются на аукционе. Знакомства случаются сами собой: после такого вечера в зале не остаётся незнакомых людей.</p>
         </details>
         <details>
           <summary>Обязательно приводить друга?<span class="faq__icon" aria-hidden="true"></span></summary>
@@ -289,11 +361,11 @@ _tmr.push({id: "3786513", type: "pageView", start: (new Date()).getTime()});
         </details>
         <details>
           <summary>Сколько длится вечер?<span class="faq__icon" aria-hidden="true"></span></summary>
-          <p>Около двух часов. После окончания можно остаться в баре и пообщаться дальше.</p>
+          <p>Около двух часов вместе с аукционом. После финала можно остаться в зале и пообщаться дальше.</p>
         </details>
         <details>
           <summary>А если никто не понравится?<span class="faq__icon" aria-hidden="true"></span></summary>
-          <p>Тогда вы просто ничего не отмечаете в карточке. Никто не узнает ни ваш выбор, ни его отсутствие.</p>
+          <p>Тогда это просто хороший вечер: шоу, аукцион и компания, в которой не скучно. Никаких анкет и обязательных знакомств — общаетесь ровно столько, сколько хочется.</p>
         </details>
         <details>
           <summary>Как записаться и оплатить?<span class="faq__icon" aria-hidden="true"></span></summary>
@@ -319,7 +391,7 @@ _tmr.push({id: "3786513", type: "pageView", start: (new Date()).getTime()});
                  alt="Зал бара-ресторана GasGas: мягкие диваны, столики с лампами">
           </figure>
           <p class="place__address"><b>Бар-ресторан GasGas</b><br>Ростов-на-Дону, Кировский проспект, 51</p>
-          <p>На время вечера зал закрыт: в нём только участники и команда мероприятия.</p>
+          <p>Обычно наши вечера проходят здесь: на время мероприятия зал закрыт, в нём только участники и команда.</p>
           <p>Вечер 13 сентября пройдёт не здесь, а в кафе в центре города: точный адрес сообщим после подтверждения заявки.</p>
           <button class="btn btn--primary" type="button" data-open-booking data-event="sep13">Записаться на вечер</button>
         </div>
@@ -333,11 +405,18 @@ _tmr.push({id: "3786513", type: "pageView", start: (new Date()).getTime()});
   </section>
 
   <section class="section final">
-    <div class="container">
-      <h2>«Продай друга» — 13 сентября</h2>
-      <p>Воскресенье, 19:00, кафе в центре Ростова. На сцене или в зале — выбираете сами.
+    <div class="container final__inner">
+      <p class="eyebrow">13 сентября, 19:00</p>
+      <div class="final__title">
+        <svg class="final__ring" viewBox="0 0 312 190" fill="none" preserveAspectRatio="none" aria-hidden="true">
+          <ellipse cx="156" cy="92" rx="150" ry="86" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5 7" opacity="0.5"/>
+        </svg>
+        <h2>До встречи на «Продай друга»!</h2>
+      </div>
+      <p class="final__text">Кафе в центре Ростова. На сцене или в зале — выбираете сами.
          Мест в зале ограниченное количество, заявки подтверждаем вручную.</p>
-      <button class="btn btn--primary btn--lg" type="button" data-open-booking>Оставить заявку</button>
+      <button class="btn btn--primary btn--lg" type="button" data-open-booking data-event="sep13">Записаться на вечер</button>
+      <p class="final__note">Заявка ни к чему не обязывает — администратор свяжется и всё расскажет</p>
     </div>
   </section>
 
@@ -367,7 +446,7 @@ _tmr.push({id: "3786513", type: "pageView", start: (new Date()).getTime()});
           <img class="footer__mark" src="media/favicon.png" width="36" height="36" loading="lazy" decoding="async" alt="" aria-hidden="true">
           <span>3 метра · Ростов-на-Дону</span>
         </p>
-        <p>Вечера быстрых свиданий. Проект ведут Илья и Миледа.</p>
+        <p>Вечера знакомств в Ростове. Проект ведут Илья и Миледа.</p>
       </div>
       <div class="footer__contacts">
         <p class="footer__head">Связаться с нами</p>
@@ -496,6 +575,6 @@ _tmr.push({id: "3786513", type: "pageView", start: (new Date()).getTime()});
   </div>
 </div>
 
-<script src="script.js?v=20260910a"></script>
+<script src="script.js?v=20260910b"></script>
 </body>
 </html>
