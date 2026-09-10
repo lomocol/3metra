@@ -23,7 +23,7 @@ ini_set('display_errors', '0');
 const CB_LOG_FILE = __DIR__ . '/robokassa.log';
 const CB_DATA_DIR = __DIR__ . '/payment-data';
 const CB_EVENTS = array(
-    'waitlist' => 'список ожидания — дата следующего вечера ещё не назначена',
+    'sep13' => 'воскресенье, 13 сентября — «Продай друга», кафе в центре Ростова',
 );
 
 require_once __DIR__ . '/notification-sender.php';

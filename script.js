@@ -27,7 +27,9 @@ const PAYMENT_ENDPOINT = "";
    для девушек (f) и мужчин (m).
    Допустимые значения: "open" | "few" | "ask" | "closed" | null (строку не трогаем).
    Никаких числовых счётчиков: не показываем цифры, которые не можем держать точными. */
-const AVAILABILITY = {};
+const AVAILABILITY = {
+  sep13: { f: "open", m: "open" },
+};
 
 /* Текст в строке «Места» карточки вечера */
 const AVAILABILITY_LABELS = {
@@ -37,17 +39,17 @@ const AVAILABILITY_LABELS = {
   closed: "группа собрана",
 };
 
-/* Вечеров в расписании нет: сайт показывает «мероприятий не запланировано»,
-   а форма работает как список ожидания — заявка уходит с кодом waitlist.
-   Когда появится дата, вернуть сюда обычную запись вида
-   { label: "суббота, 5 сентября", group: "группа 22–35 лет, 15 пар", time: "19:00" }
-   и радиокнопки вечера в index.html */
+/* time: "" — время вечера ещё не объявлено, в подтверждении его не показываем */
 const EVENTS = {
-  waitlist: { label: "список ожидания", group: "", time: "" },
+  sep13: { label: "воскресенье, 13 сентября", group: "«Продай друга», кафе в центре Ростова", time: "19:00" },
 };
 
-/* Цена участия единая для всех */
-const TICKET_PRICES = { m: "2 300 ₽", f: "2 300 ₽" };
+/* Формат участия — только для интерактивных вечеров вроде «Продай друга» */
+const ROLES = {
+  hall: "в зрительном зале",
+  stage: "на сцене",
+};
+
 
 const CONTACT_METHODS = {
   phone: { placeholder: "+7 900 000-00-00", type: "tel", inputmode: "tel", autocomplete: "tel" },
@@ -191,6 +193,41 @@ document.addEventListener("keydown", (e) => {
 });
 
 /* ============================================================
+   Видео мероприятия: играет без звука, пока карточка на экране.
+   preload="none" — до появления в поле зрения ничего не качается
+   ============================================================ */
+
+document.querySelectorAll("[data-autoplay-video]").forEach((video) => {
+  video.muted = true; /* без этого автозапуск запрещён на iOS и в Chrome */
+
+  const play = () => video.play().catch(() => {});
+
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver((entries) => {
+      entries.forEach((entry) => (entry.isIntersecting ? play() : video.pause()));
+    }, { threshold: 0.4 }).observe(video);
+  } else {
+    play();
+  }
+
+  /* Тап по кадру — пауза и обратно: видео вертикальное, его удобно рассматривать */
+  video.addEventListener("click", () => (video.paused ? play() : video.pause()));
+
+  const soundBtn = video.closest(".show__video-wrap")?.querySelector("[data-video-sound]");
+  if (!soundBtn) return;
+
+  soundBtn.addEventListener("click", () => {
+    video.muted = !video.muted;
+    if (!video.muted) play();
+    soundBtn.setAttribute("aria-pressed", String(!video.muted));
+    soundBtn.querySelector(".show__sound-icon").textContent = video.muted ? "🔊" : "🔇";
+    soundBtn.querySelector(".show__sound-text").textContent = video.muted
+      ? "Включить звук"
+      : "Выключить звук";
+  });
+});
+
+/* ============================================================
    Booking modal
    ============================================================ */
 
@@ -263,13 +300,6 @@ document.addEventListener("keydown", (e) => {
     }
   }
 });
-
-/* Ticket price for the selected gender — shown in the confirmation summary */
-
-function currentPrice() {
-  const g = form.querySelector('input[name="gender"]:checked');
-  return TICKET_PRICES[g ? g.value : "m"];
-}
 
 /* Contact method switches the input's keyboard and placeholder */
 
@@ -362,22 +392,12 @@ function showSubmitError(message) {
 
 function showDoneView(data) {
   const ev = EVENTS[data.event];
-
-  /* Список ожидания: даты ещё нет — вечер в подтверждении не называем */
-  if (!ev || !ev.group) {
-    summaryEl.textContent =
-      `${data.name.trim()}, вы в списке ожидания. Как только назначим дату следующего вечера, ` +
-      `администратор напишет вам первым. Участие — ${currentPrice()}`;
-    form.hidden = true;
-    doneView.hidden = false;
-    doneView.querySelector("button")?.focus({ preventScroll: true });
-    return;
-  }
+  const role = ROLES[data.role];
 
   summaryEl.textContent =
-    `${data.name.trim()}, вы выбрали: ${ev.label}, ${ev.group}, ${ev.time ? ev.time + ", " : ""}бар GasGas. ` +
-    `Участие — ${currentPrice()}` +
-    (ev.time ? "" : ". Точное время вечера подтвердит администратор");
+    `${data.name.trim()}, вы выбрали: ${ev.label}${ev.time ? ", " + ev.time : ""}, ${ev.group}` +
+    (role ? `. Участие — ${role}` : "") +
+    ". Стоимость и адрес подтвердит администратор";
 
   form.hidden = true;
   doneView.hidden = false;
@@ -430,6 +450,7 @@ form.addEventListener("submit", async (e) => {
 
   submittedData = {
     event: data.event,
+    role: data.role || "hall",
     name: data.name.trim(),
     age,
     gender: data.gender || "m",
