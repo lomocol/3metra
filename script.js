@@ -41,8 +41,12 @@ const AVAILABILITY_LABELS = {
 };
 
 /* time: "" — время вечера ещё не объявлено, в подтверждении его не показываем */
+/* Вечеров в расписании нет: форма работает как список ожидания и
+   отправляет код waitlist. Когда появится дата, вернуть сюда запись вида
+   sep13: { label: "воскресенье, 13 сентября", group: "…", time: "19:00" }
+   и радиокнопки вечера в index.html */
 const EVENTS = {
-  sep13: { label: "воскресенье, 13 сентября", group: "«Продай друга», кафе в центре Ростова", time: "19:00" },
+  waitlist: { label: "список ожидания", group: "", time: "" },
 };
 
 /* Формат участия — только для интерактивных вечеров вроде «Продай друга» */
@@ -395,6 +399,17 @@ function showDoneView(data) {
   const ev = EVENTS[data.event];
   const role = ROLES[data.role];
 
+  /* Список ожидания: даты ещё нет — вечер в подтверждении не называем */
+  if (!ev || !ev.group) {
+    summaryEl.textContent =
+      `${data.name.trim()}, вы в списке ожидания. Как только назначим дату следующего вечера, ` +
+      "администратор напишет вам первым";
+    form.hidden = true;
+    doneView.hidden = false;
+    doneView.querySelector("button")?.focus({ preventScroll: true });
+    return;
+  }
+
   summaryEl.textContent =
     `${data.name.trim()}, вы выбрали: ${ev.label}${ev.time ? ", " + ev.time : ""}, ${ev.group}` +
     (role ? `. Участие — ${role}` : "") +
@@ -451,7 +466,7 @@ form.addEventListener("submit", async (e) => {
 
   submittedData = {
     event: data.event,
-    role: data.role || "hall",
+    role: data.role || "",
     name: data.name.trim(),
     age,
     gender: data.gender || "m",

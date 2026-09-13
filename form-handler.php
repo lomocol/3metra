@@ -28,15 +28,15 @@ const AMO_CACHE_FILE = __DIR__ . '/amo-cache.json';
 /* Список вечеров — должен совпадать с EVENTS в script.js и PAY_EVENTS
    в pay.php */
 const EVENTS = array(
-    'sep13' => 'воскресенье, 13 сентября — «Продай друга», кафе в центре Ростова',
+    'waitlist' => 'список ожидания — дата следующего вечера ещё не назначена',
 );
 
 const GENDERS = array('m' => 'Мужчина', 'f' => 'Женщина');
 const SERVICES = array('m' => 'Мужской билет', 'f' => 'Женский билет');
 
 /* Формат участия в интерактивных вечерах («Продай друга») — должен
-   совпадать с ROLES в script.js. Старые вкладки поля не присылают:
-   такие заявки считаем зрительскими, а не отклоняем */
+   совпадать с ROLES в script.js. Для обычных вечеров и списка ожидания
+   поле не приходит — тогда формат в заявке не указываем */
 const ROLES = array('hall' => 'В зрительном зале', 'stage' => 'На сцене');
 const METHODS = array('phone' => 'Телефон', 'telegram' => 'Telegram', 'max' => 'MAX');
 const UTM_KEYS = array('utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term');
@@ -299,9 +299,7 @@ $age = (int) cleanString(isset($input['age']) ? $input['age'] : '');
 $event = cleanString(isset($input['event']) ? $input['event'] : '');
 $gender = cleanString(isset($input['gender']) ? $input['gender'] : '');
 $role = cleanString(isset($input['role']) ? $input['role'] : '');
-if ($role === '') {
-    $role = 'hall';
-}
+$roleSuffix = $role !== '' && isset(ROLES[$role]) ? ' — ' . ROLES[$role] : '';
 $method = cleanString(isset($input['method']) ? $input['method'] : '');
 $contact = cleanString(isset($input['contact']) ? $input['contact'] : '');
 $email = cleanString(isset($input['email']) ? $input['email'] : '');
@@ -317,7 +315,7 @@ $valid = mb_strlen($name) >= 2
     && $age >= 18 && $age <= 99
     && isset(EVENTS[$event])
     && isset(GENDERS[$gender])
-    && isset(ROLES[$role])
+    && ($role === '' || isset(ROLES[$role]))
     && isset(METHODS[$method])
     && $consent;
 
@@ -427,7 +425,7 @@ if ($leadId === 0) {
             array(
                 'name' => $name,
                 'phone' => $phone !== '' ? $phone : $contact,
-                'event' => EVENTS[$event] . ' — ' . ROLES[$role],
+                'event' => EVENTS[$event] . $roleSuffix,
                 'service' => SERVICES[$gender],
                 'amount' => null,
                 'currency' => 'RUB',
@@ -459,10 +457,12 @@ $lines = array(
     'Имя: ' . $name,
     'Возраст: ' . $age,
     'Пол: ' . GENDERS[$gender],
-    'Формат участия: ' . ROLES[$role],
     'Способ связи: ' . METHODS[$method],
     'Контакт: ' . $contact,
 );
+if ($role !== '') {
+    array_splice($lines, 6, 0, array('Формат участия: ' . ROLES[$role]));
+}
 if ($phone !== '' && $phone !== $contact) {
     $lines[] = 'Телефон (нормализованный): ' . $phone;
 }
@@ -546,7 +546,7 @@ $notification = sendSiteNotification(
         array(
             'name' => $name,
             'phone' => $phone !== '' ? $phone : $contact,
-            'event' => EVENTS[$event] . ' — ' . ROLES[$role],
+            'event' => EVENTS[$event] . $roleSuffix,
             'service' => SERVICES[$gender],
             'amount' => $leadAmount,
             'currency' => $leadCurrency,

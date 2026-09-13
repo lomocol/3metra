@@ -904,6 +904,57 @@ details:focus-visible {
   .event--show .event__btn { width: auto; }
 }
 
+/* Пустое расписание: вечеров нет — вместо карточки одна плашка */
+.dates__empty {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  padding: clamp(34px, 6vw, 56px) clamp(20px, 4vw, 40px);
+  background: var(--surface-soft);
+  border-radius: var(--radius-panel);
+  text-align: center;
+}
+
+.dates__empty-heart {
+  position: absolute;
+  top: -30px;
+  right: -26px;
+  width: 160px;
+  height: 160px;
+  color: var(--accent);
+  opacity: 0.09;
+  pointer-events: none;
+}
+
+.dates__empty-title {
+  position: relative;
+  margin: 0;
+  max-width: 20ch;
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 7vw, 3rem);
+  font-weight: 700;
+  line-height: 1.05;
+  color: var(--accent);
+}
+
+.dates__empty-text {
+  position: relative;
+  margin: 0;
+  max-width: 50ch;
+  font-size: 16px;
+  color: var(--text);
+}
+
+.dates__empty-text b { color: var(--accent); }
+
+.dates__empty .btn { position: relative; margin-top: 8px; }
+
+@media (max-width: 560px) {
+  .dates__empty .btn { width: 100%; }
+}
+
 .dates__note {
   margin-top: 20px;
   font-size: 15px;
