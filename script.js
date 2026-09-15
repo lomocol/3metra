@@ -549,3 +549,16 @@ form.addEventListener("submit", async (e) => {
     }
   }
 });
+
+/* ---------- Переход в онлайн-знакомства ---------- */
+
+/* Цель Метрики на кнопку секции онлайн-знакомств: сколько человек ушло
+   отсюда в регистрацию. Кто из них дошёл до анкеты — видно уже в базе
+   сервиса по utm_source=3metra_rostov */
+document.querySelectorAll("[data-online-cta]").forEach((link) => {
+  link.addEventListener("click", () => {
+    if (typeof window.ym === "function") {
+      window.ym(110737561, "reachGoal", "online_dating_click");
+    }
+  });
+});

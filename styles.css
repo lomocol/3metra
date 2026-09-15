@@ -1843,3 +1843,279 @@ details:focus-visible {
 }
 
 .honest__box p + p { margin-top: 16px; }
+
+/* ---------- Онлайн-знакомства «Три метра» ---------- */
+
+.online { overflow: hidden; }
+
+.online__grid {
+  display: grid;
+  gap: clamp(36px, 6vw, 56px);
+  align-items: center;
+}
+
+@media (min-width: 860px) {
+  .online__grid { grid-template-columns: 1.05fr 0.95fr; }
+}
+
+.online h2 { margin-bottom: 16px; }
+
+.online__lead {
+  max-width: 56ch;
+  font-size: clamp(16px, 2vw, 18px);
+  line-height: 1.6;
+  color: var(--text-soft);
+}
+
+.online__lead b { color: var(--text); font-weight: 600; }
+
+.online__points {
+  display: grid;
+  gap: 12px;
+  margin: clamp(20px, 3vw, 26px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.online__points li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 16px;
+  line-height: 1.45;
+  color: var(--text-soft);
+}
+
+.online__points b { color: var(--text); font-weight: 600; }
+
+.online__points svg {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  margin-top: -3px;
+  padding: 5px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.online__actions { margin-top: clamp(24px, 3.5vw, 32px); }
+
+.online__hint {
+  margin-top: 12px;
+  font-size: 13.5px;
+  color: var(--text-faint);
+}
+
+@media (max-width: 560px) {
+  .online__actions .btn { width: 100%; }
+  .online__hint { text-align: center; }
+}
+
+/* Витрина: телефон на вишнёвой подложке, по бокам — ещё анкеты */
+.online__visual {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: clamp(28px, 5vw, 44px) 0;
+  isolation: isolate;
+}
+
+.online__visual::before {
+  content: "";
+  position: absolute;
+  inset: 8% 4%;
+  z-index: -1;
+  border-radius: 40px;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.16), transparent 55%),
+    var(--accent);
+}
+
+.phone {
+  position: relative;
+  width: min(270px, 68vw);
+  aspect-ratio: 9 / 18.6;
+  padding: 9px;
+  border-radius: 44px;
+  background: #1b1b1d;
+  box-shadow:
+    inset 0 0 0 1.5px #3a3a3e,
+    0 30px 60px -24px rgba(43, 26, 30, 0.55),
+    0 12px 24px -12px rgba(43, 26, 30, 0.35);
+}
+
+.phone__screen {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 36px;
+  background: #0d0d0d;
+  color: #fff;
+  font-family: var(--font);
+}
+
+.phone__status {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 34px;
+  padding: 0 22px 0 26px;
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.phone__island {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  width: 78px;
+  height: 22px;
+  border-radius: 12px;
+  background: #000;
+  transform: translateX(-50%);
+}
+
+.phone__signal { display: flex; align-items: flex-end; gap: 1.5px; height: 10px; }
+.phone__signal i { display: block; width: 3px; border-radius: 1px; background: #fff; }
+.phone__signal i:nth-child(1) { height: 4px; }
+.phone__signal i:nth-child(2) { height: 6px; }
+.phone__signal i:nth-child(3) { height: 8px; }
+.phone__signal i:nth-child(4) { height: 10px; }
+
+/* Карточка анкеты — как в ленте приложения: фото целиком, имя рукописным */
+.app-card {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  margin: 4px 8px 0;
+  overflow: hidden;
+  border-radius: 22px;
+  background: #191919;
+}
+
+.app-card picture,
+.app-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.app-card__info {
+  position: absolute;
+  inset: auto 0 0;
+  padding: 60px 14px 14px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.6) 45%, transparent);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+}
+
+.app-card__name {
+  font-family: var(--font-display);
+  font-size: 38px;
+  font-weight: 700;
+  line-height: 0.95;
+}
+
+.app-card__city { margin-top: 3px; font-size: 11px; color: rgba(255, 255, 255, 0.85); }
+
+.app-card__check {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 7px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  font-size: 10px;
+  font-weight: 600;
+  text-shadow: none;
+  backdrop-filter: blur(4px);
+}
+
+.app-card__check svg { color: #6ee7b7; }
+
+.app-actions {
+  display: flex;
+  gap: 6px;
+  padding: 8px 8px 6px;
+}
+
+.app-actions span {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  height: 36px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.app-actions__skip { background: #262626; color: #e5e5e5; }
+.app-actions__like { background: var(--accent); color: #fff; box-shadow: 0 6px 14px -6px rgba(160, 21, 42, 0.7); }
+
+.app-tabs {
+  display: flex;
+  justify-content: space-around;
+  padding: 6px 4px 14px;
+  border-top: 1px solid #262626;
+  background: #0a0a0a;
+}
+
+.app-tabs span {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-size: 8.5px;
+  font-weight: 500;
+  color: #a3a3a3;
+}
+
+.app-tabs i { font-style: normal; font-size: 17px; line-height: 18px; }
+.app-tabs img { width: 18px; height: 18px; border-radius: 5px; }
+.app-tabs .is-active { color: #e22645; }
+
+/* Анкеты по бокам — белые карточки, чуть повёрнуты */
+.online__float {
+  position: absolute;
+  z-index: 1;
+  width: clamp(104px, 26vw, 138px);
+  padding: 6px 6px 8px;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 18px 36px -18px rgba(43, 26, 30, 0.5);
+}
+
+.online__float img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: 13px;
+}
+
+.online__float p { padding: 7px 4px 0; line-height: 1.25; }
+.online__float b { display: block; font-size: 13px; font-weight: 700; }
+.online__float span { display: block; font-size: 10.5px; color: var(--text-faint); }
+
+.online__float--left { top: 14%; left: 0; transform: rotate(-7deg); }
+.online__float--right { bottom: 30%; right: 0; transform: rotate(6deg); }
+
+@media (min-width: 860px) {
+  .online__float--left { left: -2%; }
+  .online__float--right { right: -2%; }
+}
+
+/* На узком экране карточки не должны закрывать экран телефона */
+@media (max-width: 420px) {
+  .online__float { width: 92px; padding: 4px 4px 6px; border-radius: 14px; }
+  .online__float img { border-radius: 10px; }
+  .online__float b { font-size: 11px; }
+  .online__float span { display: none; }
+  .online__float--left { left: -6px; }
+  .online__float--right { right: -6px; }
+}

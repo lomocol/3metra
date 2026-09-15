@@ -26,7 +26,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260913a">
+  <link rel="stylesheet" href="styles.css?v=20260915a">
 </head>
 <body>
 <!-- Top.Mail.Ru counter -->
@@ -289,6 +289,105 @@ _tmr.push({id: "3786513", type: "pageView", start: (new Date()).getTime()});
     </div>
   </section>
 
+  <!-- Онлайн-знакомства «Три метра» (3metra-online.ru). Кнопка ведёт сразу
+       в регистрацию, минуя лендинг сервиса. UTM-метку сайт сервиса сохраняет
+       в анкете (Users.source = 3metra_rostov) — по ней видно, что человек
+       пришёл отсюда. Фото берём прямо с витрины сервиса: показывать их
+       публично люди разрешили. -->
+  <section class="section online" id="online" aria-labelledby="online-title">
+    <div class="container online__grid">
+      <div class="online__copy">
+        <p class="eyebrow">Новое у «Трёх метров»</p>
+        <h2 id="online-title">Знакомства онлайн — только&nbsp;ростовчане</h2>
+        <p class="online__lead">
+          Вечера бывают не каждую неделю, поэтому мы сделали свой сервис
+          знакомств. Это не очередное приложение с фейками: там только живые
+          люди из Ростова, и
+          <b>каждую анкету модератор проверяет вручную</b>, прежде чем её увидят другие.
+        </p>
+        <ul class="online__points">
+          <li>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+            <span><b>Без фейков и ботов</b> — анкеты проверяем вручную</span>
+          </li>
+          <li>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+            <span><b>Только Ростов</b> — рядом, а не в другом городе</span>
+          </li>
+          <li>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+            <span><b>Анкета бесплатно</b> — в браузере, ничего скачивать не нужно</span>
+          </li>
+        </ul>
+        <div class="online__actions">
+          <a class="btn btn--primary btn--lg" data-online-cta target="_blank" rel="noopener"
+             href="https://3metra-online.ru/register/partner-sex?utm_source=3metra_rostov&amp;utm_medium=referral&amp;utm_campaign=evenings_site&amp;utm_content=online_section">Создать анкету</a>
+          <p class="online__hint">Займёт пару минут · сервис от команды вечеров</p>
+        </div>
+      </div>
+
+      <div class="online__visual" aria-hidden="true">
+        <!-- Карточки по бокам телефона — ещё анкеты из ленты -->
+        <div class="online__float online__float--left">
+          <picture>
+            <source srcset="https://3metra-online.ru/images/showcase/sergey.webp" type="image/webp">
+            <img src="https://3metra-online.ru/images/showcase/sergey.jpg" width="480" height="640" loading="lazy" decoding="async" alt="">
+          </picture>
+          <p><b>Сергей, 27</b><span>Кировский район</span></p>
+        </div>
+        <div class="online__float online__float--right">
+          <picture>
+            <source srcset="https://3metra-online.ru/images/showcase/katerina.webp" type="image/webp">
+            <img src="https://3metra-online.ru/images/showcase/katerina.jpg" width="480" height="640" loading="lazy" decoding="async" alt="">
+          </picture>
+          <p><b>Катерина, 21</b><span>Ленинский район</span></p>
+        </div>
+
+        <!-- Телефон: экран ленты приложения, как он выглядит у человека -->
+        <div class="phone">
+          <div class="phone__screen">
+            <div class="phone__status">
+              <span>9:41</span>
+              <span class="phone__island"></span>
+              <span class="phone__signal"><i></i><i></i><i></i><i></i></span>
+            </div>
+
+            <div class="app-card">
+              <picture>
+                <source srcset="https://3metra-online.ru/images/showcase/anastasia.webp" type="image/webp">
+                <img src="https://3metra-online.ru/images/showcase/anastasia.jpg" width="480" height="640" loading="lazy" decoding="async" alt="">
+              </picture>
+              <div class="app-card__info">
+                <p class="app-card__name">Анастасия, 31</p>
+                <p class="app-card__city">📍 Ростов-на-Дону</p>
+                <p class="app-card__check">
+                  <svg viewBox="0 0 20 20" width="12" height="12"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  Анкета проверена
+                </p>
+              </div>
+            </div>
+
+            <div class="app-actions">
+              <span class="app-actions__skip">🙈 Пропустить</span>
+              <span class="app-actions__like">
+                <svg viewBox="0 0 100 100" width="15" height="15" fill="none"><path d="M50 84C50 84 14 62 12 38C11 24 22 15 33 16C41 17 47 22 50 28C53 22 59 17 67 16C78 15 89 24 88 38C86 62 50 84 50 84Z" stroke="currentColor" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Нравится
+              </span>
+            </div>
+
+            <div class="app-tabs">
+              <span class="is-active"><i>🔥</i>Лента</span>
+              <span><i>💌</i>Лайки</span>
+              <span><img src="https://3metra-online.ru/icon-192.png" width="18" height="18" loading="lazy" alt="">Пары</span>
+              <span><i>🎉</i>Вечера</span>
+              <span><i>👤</i>Профиль</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="section faq" id="faq" aria-labelledby="faq-title">
     <div class="container">
       <header class="section-head">
@@ -502,6 +601,6 @@ _tmr.push({id: "3786513", type: "pageView", start: (new Date()).getTime()});
   </div>
 </div>
 
-<script src="script.js?v=20260913a"></script>
+<script src="script.js?v=20260915a"></script>
 </body>
 </html>
