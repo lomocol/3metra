@@ -26,8 +26,8 @@ const PAY_DATA_DIR = __DIR__ . '/payment-data';
 
 /* Список вечеров — должен совпадать с EVENTS в script.js и form-handler.php */
 const PAY_EVENTS = array(
-    'sep26' => 'суббота, 26 сентября, 19:30 — группа 23–35 лет, бар GasGas',
-    'sep35m' => 'конец сентября (дата уточняется) — предзапись, группа 35+, бар GasGas',
+    'sep26' => 'суббота, 26 сентября, 19:30 — группа 23–35 лет, бар-ресторан GasGas',
+    'sep35m' => 'конец сентября (дата уточняется) — предзапись, группа 35+, бар-ресторан GasGas',
 );
 
 const PAY_ROBOKASSA_URL = 'https://auth.robokassa.ru/Merchant/Index.aspx';
