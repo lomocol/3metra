@@ -649,6 +649,26 @@ details:focus-visible {
   overflow: hidden;
 }
 
+/* Карточка с предзаписью: пунктирная рамка и белый фон — вечер ещё
+   не подтверждён датой, поэтому он визуально тише основного */
+.event--preorder {
+  background: var(--surface);
+  border: 2px dashed var(--line-strong);
+}
+
+.event--preorder .badge--soft { background: var(--surface-soft); }
+
+.event--preorder .event__photo img { opacity: 0.85; }
+
+/* В белой карточке вторичная кнопка нуждается в контуре, иначе теряется */
+.event--preorder .btn--outline {
+  background: transparent;
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.event--preorder .btn--outline:hover { background: var(--accent-soft); }
+
 /* ЗОЖ-вечер выделен зелёной рамкой и фоном под цвет своей пометки */
 .event--zozh {
   background: var(--fresh-soft);
@@ -694,15 +714,24 @@ details:focus-visible {
 
 .badge--soft { background: var(--surface-soft); color: var(--text-soft); }
 
+/* Предзапись: пунктирная пилюля — дата вечера ещё не назначена */
+.badge--preorder {
+  background: transparent;
+  color: var(--accent);
+  box-shadow: inset 0 0 0 1.5px currentColor;
+}
+
 /* Внутри зелёной карточки пилюля лежит на белом, чтобы не сливалась */
 .event--zozh .badge--fresh { background: var(--surface); }
 
+/* Дата — рукописным акцентом, как крупные цифры на основном сервисе */
 .event__date b {
   display: block;
-  font-size: 1.5rem;
+  font-family: var(--font-display);
+  font-size: 2.3rem;
   font-weight: 700;
-  letter-spacing: -0.01em;
-  line-height: 1.15;
+  line-height: 1;
+  color: var(--accent-bright);
 }
 
 .event__date > span {
@@ -713,10 +742,12 @@ details:focus-visible {
 }
 
 .event__about {
-  font-size: 14px;
+  font-size: 14.5px;
   line-height: 1.5;
-  color: var(--text-soft);
+  color: var(--text);
 }
+
+.event__about b { color: var(--accent); }
 
 .u-nowrap { white-space: nowrap; }
 
