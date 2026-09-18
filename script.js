@@ -48,6 +48,9 @@ const EVENTS = {
   sep35m: { label: "конец сентября", group: "группа 35+, бар GasGas", time: "" },
 };
 
+/* Цена участия — единая для обоих вечеров */
+const TICKET_PRICE = "2 500 ₽";
+
 /* Формат участия — только для интерактивных вечеров вроде «Продай друга» */
 const ROLES = {
   hall: "в зрительном зале",
@@ -401,9 +404,8 @@ function showDoneView(data) {
   summaryEl.textContent =
     `${data.name.trim()}, вы выбрали: ${ev.label}${ev.time ? ", " + ev.time : ""}, ${ev.group}` +
     (role ? `. Участие — ${role}` : "") +
-    (ev.time
-      ? ". Стоимость участия подтвердит администратор"
-      : ". Это предзапись: точную дату и стоимость сообщит администратор");
+    `. Участие — ${TICKET_PRICE}` +
+    (ev.time ? "" : ". Это предзапись: точную дату вечера сообщит администратор");
 
   form.hidden = true;
   doneView.hidden = false;

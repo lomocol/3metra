@@ -696,7 +696,12 @@ details:focus-visible {
   padding: 16px 18px 18px;
 }
 
-.event__tag { margin: 0; }
+.event__tag {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
 
 /* Пометки типа вечера: зелёная — ЗОЖ, синяя — классический */
 .badge {
@@ -713,6 +718,9 @@ details:focus-visible {
 .badge--classic { background: var(--accent-soft); color: var(--accent); }
 
 .badge--soft { background: var(--surface-soft); color: var(--text-soft); }
+
+/* Цена участия — контрастная пилюля рядом с типом вечера */
+.badge--price { background: var(--accent); color: var(--on-accent); }
 
 /* Предзапись: пунктирная пилюля — дата вечера ещё не назначена */
 .badge--preorder {
