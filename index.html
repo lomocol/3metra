@@ -35,7 +35,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260918a">
+  <link rel="stylesheet" href="styles.css?v=20260919a">
 </head>
 <body>
 <!-- Top.Mail.Ru counter -->
@@ -618,16 +618,19 @@ _tmr.push({id: "3786513", type: "pageView", start: (new Date()).getTime()});
       </div>
 
       <fieldset class="booking__fieldset">
-        <legend>Как с вами связаться</legend>
+        <legend>Куда вам написать</legend>
+        <p class="booking__hint booking__hint--top"><b>Мы связываемся только в мессенджерах и не звоним.</b>
+          Подойдёт ник в Telegram или MAX — либо номер телефона, к которому привязан один из них.
+          Номер без Telegram и без MAX не подойдёт: написать вам будет некуда.</p>
         <div class="booking__methods" role="radiogroup">
-          <label class="method-option"><input type="radio" name="method" value="phone" checked><span>Телефон</span></label>
-          <label class="method-option"><input type="radio" name="method" value="telegram"><span>Telegram</span></label>
+          <label class="method-option"><input type="radio" name="method" value="telegram" checked><span>Telegram</span></label>
           <label class="method-option"><input type="radio" name="method" value="max"><span>MAX</span></label>
+          <label class="method-option"><input type="radio" name="method" value="phone"><span>Номер с Telegram или MAX</span></label>
         </div>
         <div class="booking__field">
-          <label for="booking-contact" class="sr-only">Контакт</label>
-          <input type="tel" id="booking-contact" name="contact" inputmode="tel" autocomplete="tel" placeholder="+7 900 000-00-00">
-          <p class="booking__error" data-error-for="contact" hidden>Оставьте контакт, чтобы мы подтвердили запись</p>
+          <label for="booking-contact" class="sr-only">Ник в мессенджере или номер телефона, к которому он привязан</label>
+          <input type="text" id="booking-contact" name="contact" inputmode="text" autocomplete="off" placeholder="@username или номер с Telegram">
+          <p class="booking__error" data-error-for="contact" hidden>Оставьте ник в мессенджере или номер, к которому привязан Telegram или MAX</p>
         </div>
       </fieldset>
 
@@ -639,7 +642,7 @@ _tmr.push({id: "3786513", type: "pageView", start: (new Date()).getTime()});
 
       <p class="booking__legal">Нажимая кнопку «Отправить заявку», я даю согласие на обработку моих персональных данных на условиях <a href="soglasie.html" target="_blank" rel="noopener">Согласия на обработку персональных данных</a>. С <a href="policy.html" target="_blank" rel="noopener">Политикой конфиденциальности</a> можно ознакомиться по ссылке.</p>
 
-      <p class="booking__fineprint">После отправки с вами свяжется администратор, подтвердит место и подскажет, как оплатить</p>
+      <p class="booking__fineprint">После отправки администратор напишет вам в мессенджере, подтвердит место и подскажет, как оплатить</p>
       <p class="booking__error" data-error-for="submit" hidden>Не удалось отправить заявку — попробуйте ещё раз</p>
       <button class="btn btn--primary btn--lg booking__submit" type="submit">Отправить заявку</button>
     </form>
@@ -651,11 +654,11 @@ _tmr.push({id: "3786513", type: "pageView", start: (new Date()).getTime()});
       <h2>Заявка принята</h2>
       <p class="booking-done__summary" id="booking-summary"></p>
       <button class="btn btn--primary btn--lg" type="button" data-close-booking>Хорошо</button>
-      <p class="booking-done__hint">Спасибо! Администратор свяжется с вами по указанному контакту, подтвердит место и подскажет, как оплатить.</p>
+      <p class="booking-done__hint">Спасибо! Администратор напишет вам в мессенджере по указанному контакту, подтвердит место и подскажет, как оплатить. Проверьте, что сообщения от новых контактов у вас не заблокированы.</p>
     </div>
   </div>
 </div>
 
-<script src="script.js?v=20260918a"></script>
+<script src="script.js?v=20260919a"></script>
 </body>
 </html>

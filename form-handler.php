@@ -39,7 +39,7 @@ const SERVICES = array('m' => 'Мужской билет', 'f' => 'Женски�
    совпадать с ROLES в script.js. Для обычных вечеров и списка ожидания
    поле не приходит — тогда формат в заявке не указываем */
 const ROLES = array('hall' => 'В зрительном зале', 'stage' => 'На сцене');
-const METHODS = array('phone' => 'Телефон', 'telegram' => 'Telegram', 'max' => 'MAX');
+const METHODS = array('phone' => 'Номер телефона (Telegram или MAX)', 'telegram' => 'Telegram', 'max' => 'MAX');
 const UTM_KEYS = array('utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term');
 
 require_once __DIR__ . '/notification-sender.php';

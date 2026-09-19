@@ -58,10 +58,12 @@ const ROLES = {
 };
 
 
+/* Пишем только в мессенджерах, поэтому номер принимаем лишь как адрес
+   Telegram или MAX — об этом говорят и подписи, и подсказки в поле */
 const CONTACT_METHODS = {
-  phone: { placeholder: "+7 900 000-00-00", type: "tel", inputmode: "tel", autocomplete: "tel" },
-  telegram: { placeholder: "@username", type: "text", inputmode: "text", autocomplete: "off" },
-  max: { placeholder: "+7 900 000-00-00 или @username", type: "text", inputmode: "text", autocomplete: "off" },
+  telegram: { placeholder: "@username или номер с Telegram", type: "text", inputmode: "text", autocomplete: "off" },
+  max: { placeholder: "@username или номер с MAX", type: "text", inputmode: "text", autocomplete: "off" },
+  phone: { placeholder: "+7 900 000-00-00 — с Telegram или MAX", type: "tel", inputmode: "tel", autocomplete: "tel" },
 };
 
 /* ============================================================
@@ -528,7 +530,7 @@ form.addEventListener("submit", async (e) => {
        каналом) — оплату не открываем, с гостем свяжется администратор */
     showDoneView(data);
     form.reset();
-    applyContactMethod("phone");
+    applyContactMethod("telegram");
   } catch {
     showSubmitError("Не удалось отправить заявку — проверьте связь и попробуйте ещё раз");
   } finally {

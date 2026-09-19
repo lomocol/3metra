@@ -1654,6 +1654,17 @@ details:focus-visible {
 }
 
 /* Пояснение под переключателем формата участия */
+/* Подсказка над переключателем: правила видно до выбора, а не после */
+.booking__hint--top {
+  margin: 0 0 12px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--accent-soft);
+  color: var(--text);
+}
+
+.booking__hint--top b { color: var(--accent); }
+
 .booking__hint {
   margin-top: 8px;
   font-size: 13px;
