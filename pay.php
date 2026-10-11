@@ -5,7 +5,7 @@
  *
  * Принимает GET-параметры от script.js:
  *   lead   — ID сделки в amoCRM, он же InvId счёта в Robokassa
- *   event  — код вечера (oct35m, …) — из серверного списка
+ *   event  — код вечера (oct23, …) — из серверного списка
  *   gender — код услуги: m (мужской билет) или f (женский)
  *
  * Сумме из браузера не доверяет: цена берётся из robokassa-config.php.
@@ -26,7 +26,8 @@ const PAY_DATA_DIR = __DIR__ . '/payment-data';
 
 /* Список вечеров — должен совпадать с EVENTS в script.js и form-handler.php */
 const PAY_EVENTS = array(
-    'oct35m' => 'начало октября (дата уточняется) — предзапись, группа 35+, бар-ресторан GasGas',
+    'oct23' => 'пятница, 23 октября, 18:30 — группа 40–50 лет (записываем мужчин), бар-ресторан GasGas',
+    'oct24' => 'суббота, 24 октября, 18:30 — девушки 23–35 и мужчины 25–38, бар-ресторан GasGas',
 );
 
 const PAY_ROBOKASSA_URL = 'https://auth.robokassa.ru/Merchant/Index.aspx';

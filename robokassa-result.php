@@ -23,7 +23,8 @@ ini_set('display_errors', '0');
 const CB_LOG_FILE = __DIR__ . '/robokassa.log';
 const CB_DATA_DIR = __DIR__ . '/payment-data';
 const CB_EVENTS = array(
-    'oct35m' => 'начало октября (дата уточняется) — предзапись, группа 35+, бар-ресторан GasGas',
+    'oct23' => 'пятница, 23 октября, 18:30 — группа 40–50 лет (записываем мужчин), бар-ресторан GasGas',
+    'oct24' => 'суббота, 24 октября, 18:30 — девушки 23–35 и мужчины 25–38, бар-ресторан GasGas',
 );
 
 require_once __DIR__ . '/notification-sender.php';
